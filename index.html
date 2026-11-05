@@ -120,7 +120,7 @@
             display: none;
         }
         #view-home {
-            display: block; /* Bezpiecznik: strona główna zawsze widoczna */
+            display: block;
         }
 
         /* Sekcja Gwarancji */
@@ -541,7 +541,9 @@
             <div class="cart-wrapper">
                 <div id="cart-content"></div>
                 <div class="total-display">
-                    Razem: <strong id="cart-sum">0</strong> <span>PLN</span>
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px;">Wartość produktów: <span id="cart-subtotal" style="color: #fff; font-weight: normal;">0</span> PLN</div>
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Koszty dostawy: <span id="cart-shipping" style="color: #fff; font-weight: normal;">15</span> PLN</div>
+                    Razem do zapłaty: <strong id="cart-sum">0</strong> <span>PLN</span>
                 </div>
             </div>
 
@@ -570,10 +572,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Forma Płatności</label>
-                        <select id="order-payment" required>
-                            <option value="blik">Paczkomat - Przedpłata (BLIK na telefon)</option>
-                            <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze)</option>
+                        <label>Forma Płatności / Dostawy</label>
+                        <select id="order-payment" required onchange="updateCartUI()">
+                            <option value="blik">Paczkomat - Przedpłata (BLIK na telefon) - 15 PLN</option>
+                            <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
 
@@ -592,7 +594,7 @@
             <div id="modal-blik" style="display: none;">
                 <p style="color: #fff; font-size: 0.9rem;">Wykonaj przelew na telefon BLIK na numer:</p>
                 <div class="blik-card">+48 123 456 789</div>
-                <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule przelewu podaj swój adres e-mail.</p>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule podaj swój adres e-mail podany w zamówieniu.</p>
             </div>
 
             <button class="btn-action" onclick="closeModalWindow()" style="margin-top: 1.5rem;">Zamknij</button>
@@ -679,15 +681,20 @@
         function updateCartUI() {
             var container = document.getElementById('cart-content');
             var formWrapper = document.getElementById('form-container');
+            
+            var subtotalDisplay = document.getElementById('cart-subtotal');
+            var shippingDisplay = document.getElementById('cart-shipping');
             var sumDisplay = document.getElementById('cart-sum');
             
             container.innerHTML = '';
-            var total = 0;
+            var subtotal = 0;
             var totalQty = userCart.retatrutyd + userCart.melanotan;
 
             if (totalQty === 0) {
                 container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 1.5rem 0;">Twój koszyk jest pusty.</p>';
                 formWrapper.style.display = 'none';
+                subtotalDisplay.innerText = '0';
+                shippingDisplay.innerText = '0';
                 sumDisplay.innerText = '0';
                 return;
             }
@@ -697,8 +704,8 @@
             for (var key in userCart) {
                 if (userCart[key] > 0) {
                     var prod = catalog[key];
-                    var subtotal = userCart[key] * prod.price;
-                    total += subtotal;
+                    var itemSubtotal = userCart[key] * prod.price;
+                    subtotal += itemSubtotal;
 
                     var row = document.createElement('div');
                     row.className = 'cart-row';
@@ -712,12 +719,18 @@
                             '<span style="font-weight:bold; width:20px; text-align:center;">' + userCart[key] + '</span>' +
                             '<button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', 1)">+</button>' +
                         '</div>' +
-                        '<div style="font-weight:bold;">' + subtotal + ' PLN</div>';
+                        '<div style="font-weight:bold;">' + itemSubtotal + ' PLN</div>';
                     container.appendChild(row);
                 }
             }
 
-            sumDisplay.innerText = total;
+            var paymentMethod = document.getElementById('order-payment').value;
+            var shippingCost = (paymentMethod === 'pobranie') ? 20 : 15;
+            var finalTotal = subtotal + shippingCost;
+
+            subtotalDisplay.innerText = subtotal;
+            shippingDisplay.innerText = shippingCost;
+            sumDisplay.innerText = finalTotal;
         }
 
         function handleOrderSubmit(e) {
@@ -729,15 +742,17 @@
 
             setTimeout(function() {
                 var payment = document.getElementById('order-payment').value;
+                var finalAmount = document.getElementById('cart-sum').innerText;
+                
                 var modal = document.getElementById('modal-box');
                 var desc = document.getElementById('modal-desc');
                 var blikBox = document.getElementById('modal-blik');
 
                 if (payment === 'blik') {
-                    desc.innerText = 'Dziękujemy! Abyśmy mogli zrealizować wysyłkę, opłać zamówienie BLIKiem:';
+                    desc.innerText = 'Dziękujemy! Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie (kwota: ' + finalAmount + ' PLN) BLIKiem:';
                     blikBox.style.display = 'block';
                 } else {
-                    desc.innerText = 'Dziękujemy! Twoje zamówienie za pobraniem zostało przyjęte do realizacji.';
+                    desc.innerText = 'Dziękujemy! Twoje zamówienie za pobraniem (kwota: ' + finalAmount + ' PLN) zostało przyjęte do realizacji.';
                     blikBox.style.display = 'none';
                 }
 
@@ -748,6 +763,7 @@
                 userCart.melanotan = 0;
                 refreshBadge();
                 document.getElementById('order-form').reset();
+                updateCartUI(); // Zerowanie wyświetlania po wysyłce
                 
                 btn.innerText = 'ZŁÓŻ ZAMÓWIENIE';
                 btn.disabled = false;
@@ -761,3 +777,4 @@
     </script>
 </body>
 </html>
+
