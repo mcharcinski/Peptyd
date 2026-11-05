@@ -8,10 +8,12 @@
         :root {
             --bg-color: #0a0a0a;
             --surface-color: #141414;
+            --surface-light: #1e1e1e;
             --gold: #D4AF37;
             --text-main: #f0f0f0;
             --text-muted: #888888;
             --danger: #ff4444;
+            --success: #4CAF50;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         body { background: var(--bg-color); color: var(--text-main); }
@@ -37,7 +39,7 @@
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 1rem; margin-bottom: 2rem; }
         h1 { color: var(--gold); font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
         
-        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 1rem; flex-wrap: wrap; }
         .tab-btn { background: transparent; color: var(--text-muted); border: 1px solid #333; padding: 10px 20px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
         .tab-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); }
         
@@ -55,11 +57,17 @@
         .search-input { width: 100%; max-width: 350px; padding: 10px 15px; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; outline: none; border-radius: 4px; }
         .search-input:focus { border-color: var(--gold); }
 
-        .summary-panel { display: flex; gap: 1.5rem; }
-        .summary-card { background: var(--surface-color); border: 1px dashed var(--gold); padding: 15px 25px; border-radius: 4px; text-align: right; min-width: 150px; }
+        .summary-panel { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .summary-card { background: var(--surface-color); border: 1px dashed var(--gold); padding: 15px 25px; border-radius: 4px; text-align: right; min-width: 150px; flex: 1; }
         .summary-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .summary-value { color: #fff; font-size: 1.5rem; font-weight: bold; }
+        .summary-value { color: #fff; font-size: 1.4rem; font-weight: bold; }
         .summary-value span { color: var(--gold); font-size: 1rem; }
+
+        .summary-card.cost-card { border-color: #555; }
+        .summary-card.profit-card { border-color: var(--success); background: rgba(76, 175, 80, 0.05); }
+        .summary-card.profit-card .summary-label { color: var(--success); }
+        .summary-card.profit-card .summary-value { color: var(--success); }
+        .summary-card.profit-card .summary-value span { color: var(--success); }
 
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; background: var(--surface-color); border: 1px solid #333; }
@@ -70,9 +78,19 @@
         button.logout-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
         button.logout-btn:hover { background: var(--danger); color: #fff; }
         
-        .badge-qty { color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+        .badge-qty { color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; display: inline-block; min-width: 20px; text-align: center; margin-left: 4px; }
         .badge-blik { color: #fff; background: #9c27b0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
         .badge-pobranie { color: #000; background: var(--gold); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
+
+        /* Formularz Kosztów Zakupu */
+        .cost-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2rem; max-width: 700px; border-radius: 4px; margin-bottom: 2rem; }
+        .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .cost-field label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+        .cost-field input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; font-size: 1rem; outline: none; }
+        .cost-field input:focus { border-color: var(--gold); }
+        .cost-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+        .save-cost-btn { background: var(--gold); color: #000; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .save-cost-btn:hover { background: #b8972e; }
     </style>
 
     <script type="module">
@@ -94,13 +112,20 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // Zmienne systemowe
         window.currentDateFilter = 'all';
+        window.knownProducts = new Set();
+        window.costSettings = {
+            products: { retatrutyd: 35, melanotan: 15 },
+            extras: 5,
+            pkg: 3
+        };
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                loadOrders();
+                loadOrders(); // ładuje zamówienia, wyciąga produkty, ładuje koszty i filtruje
                 loadMessages();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -112,24 +137,17 @@
             e.preventDefault();
             const btn = document.getElementById('login-btn');
             btn.innerText = 'Logowanie...';
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            
-            signInWithEmailAndPassword(auth, email, pass)
+            signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
                 .then(() => { btn.innerText = 'ZALOGUJ SIĘ'; })
-                .catch(err => {
-                    alert("Błąd logowania. Sprawdź e-mail i hasło.");
-                    btn.innerText = 'ZALOGUJ SIĘ';
-                });
+                .catch(err => { alert("Błąd logowania."); btn.innerText = 'ZALOGUJ SIĘ'; });
         };
 
-        window.logoutCRM = function() {
-            signOut(auth);
-        };
+        window.logoutCRM = function() { signOut(auth); };
 
         async function loadOrders() {
             const tbody = document.getElementById('orders-body');
             tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Ładowanie danych...</td></tr>';
+            window.knownProducts.clear();
             
             try {
                 const q = query(collection(db, "orders"), orderBy("date", "desc"));
@@ -138,7 +156,7 @@
                 
                 if (snapshot.empty) {
                     tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
-                    window.applyFilters();
+                    window.loadCostSettings();
                     return;
                 }
 
@@ -147,24 +165,32 @@
                     const dateObj = new Date(data.date);
                     const dateFormatted = dateObj.toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
                     
-                    const paymentBadge = data.payment === 'blik' 
-                        ? '<span class="badge-blik">BLIK (15zł)</span>' 
-                        : '<span class="badge-pobranie">Pobranie (20zł)</span>';
-                    
-                    // Zapisujemy oryginalną datę i kwotę jako atrybuty do późniejszego filtrowania i sumowania
+                    const paymentBadge = data.payment === 'blik' ? '<span class="badge-blik">BLIK (15zł)</span>' : '<span class="badge-pobranie">Pobranie (20zł)</span>';
                     const totalAmt = parseFloat(data.total_amount) || 0;
+                    
+                    // Dynamiczne generowanie wyświetlania produktów na podstawie kluczy *_qty
+                    let productsDisplay = '';
+                    for (let key in data) {
+                        if (key.endsWith('_qty') && data[key] > 0) {
+                            let prodId = key.replace('_qty', '');
+                            window.knownProducts.add(prodId); // Dodaj do znanych produktów
+                            
+                            let displayName = prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' ');
+                            productsDisplay += `<div style="margin-bottom: 2px;">${displayName}: <span class="badge-qty">${data[key]}</span></div>`;
+                        }
+                    }
+
+                    // Bezpieczne zapisanie pełnego JSONa w wierszu do późniejszego filtrowania i matematyki
+                    const rawDataStr = encodeURIComponent(JSON.stringify(data));
 
                     tbody.innerHTML += `
-                        <tr class="order-row" data-date="${data.date}" data-amount="${totalAmt}">
+                        <tr class="order-row" data-date="${data.date}" data-raw="${rawDataStr}">
                             <td style="color: var(--text-muted); font-size: 0.85rem;">${dateFormatted}</td>
                             <td>
                                 <strong style="color: #fff;">${data.name}</strong><br>
                                 <span style="color:var(--text-muted); font-size: 0.8rem;">${data.email} | ${data.phone}</span>
                             </td>
-                            <td>
-                                Reta: <span class="badge-qty">${data.retatrutyd_qty}</span><br>
-                                Mela: <span class="badge-qty">${data.melanotan_qty}</span>
-                            </td>
+                            <td>${productsDisplay || '-'}</td>
                             <td style="font-weight: bold; color: var(--gold);">${totalAmt} PLN</td>
                             <td>${paymentBadge}</td>
                             <td style="font-weight: bold; letter-spacing: 1px;">${data.paczkomat}</td>
@@ -172,8 +198,7 @@
                     `;
                 });
 
-                // Uruchamiamy przeliczenie podsumowania po załadowaniu
-                window.applyFilters();
+                window.loadCostSettings();
 
             } catch(e) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
@@ -182,181 +207,160 @@
 
         async function loadMessages() {
             const tbody = document.getElementById('messages-body');
+            const q = query(collection(db, "messages"), orderBy("date", "desc"));
+            const snapshot = await getDocs(q);
+            tbody.innerHTML = '';
             
-            try {
-                const q = query(collection(db, "messages"), orderBy("date", "desc"));
-                const snapshot = await getDocs(q);
-                tbody.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-                    
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
-                            <td style="width: 250px;">
-                                <strong style="color: #fff;">${data.name}</strong><br>
-                                <span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span>
-                            </td>
-                            <td style="line-height: 1.4;">${data.message}</td>
-                        </tr>
-                    `;
-                });
-            } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
+                return;
             }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+                tbody.innerHTML += `<tr>
+                    <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
+                    <td style="width: 250px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
+                    <td style="line-height: 1.4;">${data.message}</td>
+                </tr>`;
+            });
         }
-    </script>
-</head>
-<body>
 
-    <div id="login-screen">
-        <form class="login-box" onsubmit="window.loginCRM(event)">
-            <h2 style="color: var(--gold); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">HexaLabs CRM</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.85rem;">Autoryzowany dostęp</p>
-            <input type="email" id="email" placeholder="Adres E-mail" required>
-            <input type="password" id="password" placeholder="Hasło" required>
-            <button type="submit" id="login-btn">Zaloguj się</button>
-        </form>
-    </div>
+        // --- ZARZĄDZANIE KOSZTAMI (DYNAMICZNE) ---
+        window.loadCostSettings = function() {
+            const saved = localStorage.getItem('hexalabs_costs');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.products) window.costSettings.products = { ...window.costSettings.products, ...parsed.products };
+                    if (parsed.extras !== undefined) window.costSettings.extras = parsed.extras;
+                    if (parsed.pkg !== undefined) window.costSettings.pkg = parsed.pkg;
+                } catch(e) {}
+            }
+            window.renderCostSettings();
+            window.applyFilters();
+        };
 
-    <div id="dashboard">
-        <header>
-            <h1>HexaLabs Panel</h1>
-            <button class="logout-btn" onclick="window.logoutCRM()">Wyloguj</button>
-        </header>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('orders-tab', this)">📦 Zamówienia</button>
-            <button class="tab-btn" onclick="switchTab('messages-tab', this)">✉️ Wiadomości z Kontaktu</button>
-        </div>
-
-        <div id="orders-tab" class="tab-content active">
+        window.renderCostSettings = function() {
+            const grid = document.getElementById('dynamic-costs-grid');
+            grid.innerHTML = '';
             
-            <div class="controls-wrapper">
-                <div class="filters-group">
-                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
-                    <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
-                    <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
-                    <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
-                    <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
-                </div>
+            // Połącz produkty domyślne z produktami wykrytymi w bazie (dynamicznie)
+            const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
+            
+            allProducts.forEach(prod => {
+                const val = window.costSettings.products[prod] || 0;
+                const displayName = prod.charAt(0).toUpperCase() + prod.slice(1).replace(/_/g, ' ');
                 
-                <div class="summary-panel">
-                    <div class="summary-card">
-                        <div class="summary-label">Zamówienia</div>
-                        <div class="summary-value" id="sum-count">0</div>
+                grid.innerHTML += `
+                    <div class="cost-field">
+                        <label>${displayName} (fiolka)</label>
+                        <input type="number" id="cost-prod-${prod}" value="${val}" step="0.5" min="0">
+                        <div class="cost-desc">Cena zakupu samej fiolki (PLN)</div>
                     </div>
-                    <div class="summary-card">
-                        <div class="summary-label">Przychód ze sprzedaży</div>
-                        <div class="summary-value"><span id="sum-amount">0</span> <span>PLN</span></div>
-                    </div>
-                </div>
-            </div>
+                `;
+            });
+
+            document.getElementById('cost-extras').value = window.costSettings.extras;
+            document.getElementById('cost-pkg').value = window.costSettings.pkg;
+        };
+
+        window.saveCostSettings = function() {
+            const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
+            allProducts.forEach(prod => {
+                const input = document.getElementById(`cost-prod-${prod}`);
+                if(input) { window.costSettings.products[prod] = parseFloat(input.value) || 0; }
+            });
             
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Klient & Kontakt</th>
-                            <th>Produkty</th>
-                            <th>Kwota</th>
-                            <th>Dostawa / Płatność</th>
-                            <th>Paczkomat</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-body"></tbody>
-                </table>
-            </div>
-        </div>
+            window.costSettings.extras = parseFloat(document.getElementById('cost-extras').value) || 0;
+            window.costSettings.pkg = parseFloat(document.getElementById('cost-pkg').value) || 0;
 
-        <div id="messages-tab" class="tab-content">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Nadawca</th>
-                            <th>Treść Wiadomości</th>
-                        </tr>
-                    </thead>
-                    <tbody id="messages-body"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            localStorage.setItem('hexalabs_costs', JSON.stringify(window.costSettings));
+            alert("Koszty zostały zapisane! Zysk w zamówieniach został automatycznie zaktualizowany.");
+            window.applyFilters();
+            
+            window.switchTab('orders-tab', document.querySelector('.tab-btn'));
+        };
 
-    <script>
+        // --- OBSŁUGA UI I KALKULACJI ---
         window.switchTab = function(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
-        }
+        };
 
         window.setDateFilter = function(filterType, btnElement) {
             window.currentDateFilter = filterType;
-            // Aktualizacja wyglądu przycisków
             document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-            
             window.applyFilters();
-        }
+        };
 
-        // Główna funkcja filtrująca i podliczająca przychód
         window.applyFilters = function() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
             const rows = document.querySelectorAll('#orders-body .order-row');
             
             let visibleCount = 0;
-            let visibleAmount = 0;
+            let totalRevenue = 0;
+            let totalCosts = 0;
             const now = new Date();
 
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 const rowDateStr = row.getAttribute('data-date');
-                const rowAmount = parseFloat(row.getAttribute('data-amount')) || 0;
+                
+                // Odczyt surowego JSON-a ukrytego w wierszu tabeli
+                const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
                 
                 let matchesSearch = text.includes(searchInput);
                 let matchesDate = true;
 
                 if (rowDateStr) {
                     const rowDate = new Date(rowDateStr);
-                    
-                    if (window.currentDateFilter === 'today') {
-                        matchesDate = rowDate.toDateString() === now.toDateString();
-                    } else if (window.currentDateFilter === 'week') {
-                        const diffTime = Math.abs(now - rowDate);
-                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
-                        matchesDate = diffDays <= 7;
-                    } else if (window.currentDateFilter === 'month') {
-                        const diffTime = Math.abs(now - rowDate);
-                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
-                        matchesDate = diffDays <= 30;
-                    }
+                    if (window.currentDateFilter === 'today') { matchesDate = rowDate.toDateString() === now.toDateString(); }
+                    else if (window.currentDateFilter === 'week') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 7; }
+                    else if (window.currentDateFilter === 'month') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 30; }
                 }
 
-                // Jeśli spełnia oba warunki (tekst + data), pokazujemy i dodajemy do podsumowania
                 if (matchesSearch && matchesDate) {
                     row.style.display = '';
                     visibleCount++;
-                    visibleAmount += rowAmount;
+                    
+                    const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
+                    const totalAmt = parseFloat(dataObj.total_amount) || 0;
+                    
+                    // Właściwy przychód z towarów to kwota całkowita odjęta od wybranego kosztu InPostu
+                    const itemsRevenue = Math.max(0, totalAmt - shippingFee);
+                    
+                    // Sumowanie dynamicznego kosztu zamówienia: Opakowanie (stałe 1x na całe zamówienie)
+                    let orderItemCost = window.costSettings.pkg;
+                    
+                    // Pętla dodająca koszt: Fiolka (konkretnego typu) + Dodatki za każdą sztukę sprzedaną
+                    for (let key in dataObj) {
+                        if (key.endsWith('_qty') && dataObj[key] > 0) {
+                            let prodId = key.replace('_qty', '');
+                            let qty = parseInt(dataObj[key]);
+                            let prodBaseCost = window.costSettings.products[prodId] || 0;
+                            orderItemCost += qty * (prodBaseCost + window.costSettings.extras);
+                        }
+                    }
+
+                    totalRevenue += itemsRevenue;
+                    totalCosts += orderItemCost;
                 } else {
                     row.style.display = 'none';
                 }
             });
 
-            // Aktualizacja kafelków podsumowania
+            const totalProfit = Math.round((totalRevenue - totalCosts) * 100) / 100;
+
             document.getElementById('sum-count').innerText = visibleCount;
-            document.getElementById('sum-amount').innerText = visibleAmount;
-        }
+            document.getElementById('sum-amount').innerText = totalRevenue;
+            document.getElementById('sum-costs').innerText = totalCosts;
+            document.getElementById('sum-profit').innerText = totalProfit;
+        };
     </script>
 </body>
 </html>
