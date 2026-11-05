@@ -75,8 +75,11 @@
         th { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; background: #0d0d0d; font-size: 0.8rem; }
         tr:hover { background: rgba(255, 255, 255, 0.02); }
         
-        button.logout-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+        button.logout-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; border-radius: 4px; }
         button.logout-btn:hover { background: var(--danger); color: #fff; }
+
+        button.delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 4px 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; border-radius: 4px; transition: 0.3s; }
+        button.delete-btn:hover { background: var(--danger); color: #fff; }
         
         .badge-qty { color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; display: inline-block; min-width: 20px; text-align: center; margin-left: 4px; }
         .badge-blik { color: #fff; background: #9c27b0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
@@ -96,7 +99,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC0AGUVIRudjS590eHayYQi8upP25z_8gI",
@@ -112,7 +115,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Zmienne systemowe
         window.currentDateFilter = 'all';
         window.knownProducts = new Set();
         window.costSettings = {
@@ -125,7 +127,7 @@
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                loadOrders(); // ładuje zamówienia, wyciąga produkty, ładuje koszty i filtruje
+                loadOrders(); 
                 loadMessages();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -144,9 +146,33 @@
 
         window.logoutCRM = function() { signOut(auth); };
 
+        // Usuwanie Zamówienia
+        window.deleteOrder = async function(docId) {
+            if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy? Tej operacji nie można cofnąć.")) {
+                try {
+                    await deleteDoc(doc(db, "orders", docId));
+                    loadOrders(); // Odświeża tabelę i zyski
+                } catch (error) {
+                    alert("Wystąpił błąd podczas usuwania: " + error.message);
+                }
+            }
+        };
+
+        // Usuwanie Wiadomości
+        window.deleteMessage = async function(docId) {
+            if (confirm("Czy na pewno chcesz usunąć tę wiadomość?")) {
+                try {
+                    await deleteDoc(doc(db, "messages", docId));
+                    loadMessages(); // Odświeża tabelę
+                } catch (error) {
+                    alert("Wystąpił błąd podczas usuwania: " + error.message);
+                }
+            }
+        };
+
         async function loadOrders() {
             const tbody = document.getElementById('orders-body');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Ładowanie danych...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Ładowanie danych...</td></tr>';
             window.knownProducts.clear();
             
             try {
@@ -155,32 +181,31 @@
                 tbody.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
                     window.loadCostSettings();
                     return;
                 }
 
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
+                snapshot.forEach((documentSnapshot) => {
+                    const data = documentSnapshot.data();
+                    const docId = documentSnapshot.id;
                     const dateObj = new Date(data.date);
                     const dateFormatted = dateObj.toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
                     
                     const paymentBadge = data.payment === 'blik' ? '<span class="badge-blik">BLIK (15zł)</span>' : '<span class="badge-pobranie">Pobranie (20zł)</span>';
                     const totalAmt = parseFloat(data.total_amount) || 0;
                     
-                    // Dynamiczne generowanie wyświetlania produktów na podstawie kluczy *_qty
                     let productsDisplay = '';
                     for (let key in data) {
                         if (key.endsWith('_qty') && data[key] > 0) {
                             let prodId = key.replace('_qty', '');
-                            window.knownProducts.add(prodId); // Dodaj do znanych produktów
+                            window.knownProducts.add(prodId); 
                             
                             let displayName = prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' ');
                             productsDisplay += `<div style="margin-bottom: 2px;">${displayName}: <span class="badge-qty">${data[key]}</span></div>`;
                         }
                     }
 
-                    // Bezpieczne zapisanie pełnego JSONa w wierszu do późniejszego filtrowania i matematyki
                     const rawDataStr = encodeURIComponent(JSON.stringify(data));
 
                     tbody.innerHTML += `
@@ -194,6 +219,9 @@
                             <td style="font-weight: bold; color: var(--gold);">${totalAmt} PLN</td>
                             <td>${paymentBadge}</td>
                             <td style="font-weight: bold; letter-spacing: 1px;">${data.paczkomat}</td>
+                            <td>
+                                <button class="delete-btn" onclick="deleteOrder('${docId}')">Usuń</button>
+                            </td>
                         </tr>
                     `;
                 });
@@ -201,33 +229,42 @@
                 window.loadCostSettings();
 
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
             }
         }
 
         async function loadMessages() {
             const tbody = document.getElementById('messages-body');
-            const q = query(collection(db, "messages"), orderBy("date", "desc"));
-            const snapshot = await getDocs(q);
-            tbody.innerHTML = '';
-            
-            if (snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
-                return;
-            }
+            try {
+                const q = query(collection(db, "messages"), orderBy("date", "desc"));
+                const snapshot = await getDocs(q);
+                tbody.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
+                    return;
+                }
 
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-                tbody.innerHTML += `<tr>
-                    <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
-                    <td style="width: 250px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
-                    <td style="line-height: 1.4;">${data.message}</td>
-                </tr>`;
-            });
+                snapshot.forEach((documentSnapshot) => {
+                    const data = documentSnapshot.data();
+                    const docId = documentSnapshot.id;
+                    const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+                    
+                    tbody.innerHTML += `<tr>
+                        <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
+                        <td style="width: 250px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
+                        <td style="line-height: 1.4;">${data.message}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteMessage('${docId}')">Usuń</button>
+                        </td>
+                    </tr>`;
+                });
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
+            }
         }
 
-        // --- ZARZĄDZANIE KOSZTAMI (DYNAMICZNE) ---
+        // --- ZARZĄDZANIE KOSZTAMI ---
         window.loadCostSettings = function() {
             const saved = localStorage.getItem('hexalabs_costs');
             if (saved) {
@@ -246,7 +283,6 @@
             const grid = document.getElementById('dynamic-costs-grid');
             grid.innerHTML = '';
             
-            // Połącz produkty domyślne z produktami wykrytymi w bazie (dynamicznie)
             const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
             
             allProducts.forEach(prod => {
@@ -279,7 +315,6 @@
             localStorage.setItem('hexalabs_costs', JSON.stringify(window.costSettings));
             alert("Koszty zostały zapisane! Zysk w zamówieniach został automatycznie zaktualizowany.");
             window.applyFilters();
-            
             window.switchTab('orders-tab', document.querySelector('.tab-btn'));
         };
 
@@ -311,7 +346,6 @@
                 const text = row.innerText.toLowerCase();
                 const rowDateStr = row.getAttribute('data-date');
                 
-                // Odczyt surowego JSON-a ukrytego w wierszu tabeli
                 const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
                 
                 let matchesSearch = text.includes(searchInput);
@@ -331,13 +365,9 @@
                     const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
                     const totalAmt = parseFloat(dataObj.total_amount) || 0;
                     
-                    // Właściwy przychód z towarów to kwota całkowita odjęta od wybranego kosztu InPostu
                     const itemsRevenue = Math.max(0, totalAmt - shippingFee);
-                    
-                    // Sumowanie dynamicznego kosztu zamówienia: Opakowanie (stałe 1x na całe zamówienie)
                     let orderItemCost = window.costSettings.pkg;
                     
-                    // Pętla dodająca koszt: Fiolka (konkretnego typu) + Dodatki za każdą sztukę sprzedaną
                     for (let key in dataObj) {
                         if (key.endsWith('_qty') && dataObj[key] > 0) {
                             let prodId = key.replace('_qty', '');
@@ -362,5 +392,124 @@
             document.getElementById('sum-profit').innerText = totalProfit;
         };
     </script>
+</head>
+<body>
+
+    <div id="login-screen">
+        <form class="login-box" onsubmit="window.loginCRM(event)">
+            <h2 style="color: var(--gold); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">HexaLabs CRM</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.85rem;">Autoryzowany dostęp</p>
+            <input type="email" id="email" placeholder="Adres E-mail" required>
+            <input type="password" id="password" placeholder="Hasło" required>
+            <button type="submit" id="login-btn">Zaloguj się</button>
+        </form>
+    </div>
+
+    <div id="dashboard">
+        <header>
+            <h1>HexaLabs Panel</h1>
+            <button class="logout-btn" onclick="window.logoutCRM()">Wyloguj</button>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('orders-tab', this)">📦 Zamówienia</button>
+            <button class="tab-btn" onclick="switchTab('costs-tab', this)">⚙️ Koszty Zakupu</button>
+            <button class="tab-btn" onclick="switchTab('messages-tab', this)">✉️ Wiadomości</button>
+        </div>
+
+        <!-- ZAKŁADKA 1: ZAMÓWIENIA -->
+        <div id="orders-tab" class="tab-content active">
+            
+            <div class="controls-wrapper">
+                <div class="filters-group">
+                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
+                    <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
+                    <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
+                    <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
+                    <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
+                </div>
+                
+                <div class="summary-panel">
+                    <div class="summary-card">
+                        <div class="summary-label">Zamówienia</div>
+                        <div class="summary-value" id="sum-count">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Przychód brutto</div>
+                        <div class="summary-value"><span id="sum-amount" style="color: #fff;">0</span> <span>PLN</span></div>
+                    </div>
+                    <div class="summary-card cost-card">
+                        <div class="summary-label">Koszty towaru</div>
+                        <div class="summary-value"><span id="sum-costs" style="color: #aaa;">0</span> <span>PLN</span></div>
+                    </div>
+                    <div class="summary-card profit-card">
+                        <div class="summary-label">Czysty Zysk</div>
+                        <div class="summary-value"><span id="sum-profit">0</span> <span>PLN</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Klient & Kontakt</th>
+                            <th>Produkty</th>
+                            <th>Kwota</th>
+                            <th>Dostawa / Płatność</th>
+                            <th>Paczkomat</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA 2: ZAKUP / KOSZTY -->
+        <div id="costs-tab" class="tab-content">
+            <div class="cost-box">
+                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Parametry kosztów zakupu</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Wprowadź swoje stawki bazowe. Zysk ze sprzedaży przeliczy się automatycznie w panelu zamówień.</p>
+
+                <div class="cost-grid" id="dynamic-costs-grid">
+                    <!-- Wygeneruje się dynamicznie przez JS na podstawie produktów z bazy -->
+                </div>
+
+                <div class="cost-grid" style="border-top: 1px solid #333; padding-top: 1.5rem;">
+                    <div class="cost-field">
+                        <label>Dodatki (do każdej 1 fiolki)</label>
+                        <input type="number" id="cost-extras" step="0.5" min="0">
+                        <div class="cost-desc">Woda + igły + strzykawki + gaziki (PLN)</div>
+                    </div>
+                    <div class="cost-field">
+                        <label>Opakowanie (do 1 zamówienia)</label>
+                        <input type="number" id="cost-pkg" step="0.5" min="0">
+                        <div class="cost-desc">Karton, folia, etykieta (PLN)</div>
+                    </div>
+                </div>
+
+                <button class="save-cost-btn" onclick="saveCostSettings()">Zapisz i Przelicz</button>
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA 3: WIADOMOŚCI -->
+        <div id="messages-tab" class="tab-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Nadawca</th>
+                            <th>Treść Wiadomości</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messages-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
