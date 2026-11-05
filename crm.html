@@ -117,6 +117,13 @@
 
         window.currentDateFilter = 'all';
         window.knownProducts = new Set();
+        
+        // Słownik dedykowanych nazw do wyświetlania w CRM
+        window.productDisplayNames = {
+            'retatrutyd': 'Retatrutyd 10mg',
+            'melanotan': 'Melanotan MT-2'
+        };
+
         window.costSettings = {
             products: { retatrutyd: 35, melanotan: 15 },
             extras: 5,
@@ -146,24 +153,22 @@
 
         window.logoutCRM = function() { signOut(auth); };
 
-        // Usuwanie Zamówienia
         window.deleteOrder = async function(docId) {
             if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy? Tej operacji nie można cofnąć.")) {
                 try {
                     await deleteDoc(doc(db, "orders", docId));
-                    loadOrders(); // Odświeża tabelę i zyski
+                    loadOrders(); 
                 } catch (error) {
                     alert("Wystąpił błąd podczas usuwania: " + error.message);
                 }
             }
         };
 
-        // Usuwanie Wiadomości
         window.deleteMessage = async function(docId) {
             if (confirm("Czy na pewno chcesz usunąć tę wiadomość?")) {
                 try {
                     await deleteDoc(doc(db, "messages", docId));
-                    loadMessages(); // Odświeża tabelę
+                    loadMessages(); 
                 } catch (error) {
                     alert("Wystąpił błąd podczas usuwania: " + error.message);
                 }
@@ -201,7 +206,9 @@
                             let prodId = key.replace('_qty', '');
                             window.knownProducts.add(prodId); 
                             
-                            let displayName = prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' ');
+                            // Pobranie własnej nazwy lub wygenerowanie domyślnej
+                            let displayName = window.productDisplayNames[prodId] || (prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' '));
+                            
                             productsDisplay += `<div style="margin-bottom: 2px;">${displayName}: <span class="badge-qty">${data[key]}</span></div>`;
                         }
                     }
@@ -287,7 +294,9 @@
             
             allProducts.forEach(prod => {
                 const val = window.costSettings.products[prod] || 0;
-                const displayName = prod.charAt(0).toUpperCase() + prod.slice(1).replace(/_/g, ' ');
+                
+                // Pobranie własnej nazwy z obiektu lub wygenerowanie domyślnej
+                const displayName = window.productDisplayNames[prod] || (prod.charAt(0).toUpperCase() + prod.slice(1).replace(/_/g, ' '));
                 
                 grid.innerHTML += `
                     <div class="cost-field">
