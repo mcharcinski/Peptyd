@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HexaLab - Premium Research Peptides</title>
+    <title>HexaLabs - Premium Research Peptides</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
@@ -13,7 +13,7 @@
             --text-muted: #888888;
             --gold: #D4AF37;
             --gold-glow: rgba(212, 175, 55, 0.2);
-            --gold-glow-strong: rgba(212, 175, 55, 0.4);
+            --gold-glow-strong: rgba(212, 175, 55, 0.5);
             --danger: #ff4444;
         }
 
@@ -55,23 +55,26 @@
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             cursor: pointer;
             text-align: left;
         }
 
-        .hexagon {
-            width: 32px;
-            height: 36px;
-            border: 2px solid var(--gold);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            box-shadow: 0 0 10px var(--gold-glow);
+        .logo-svg {
+            width: 45px;
+            height: 45px;
             flex-shrink: 0;
+            filter: drop-shadow(0 0 8px var(--gold-glow-strong));
+            transition: transform 0.3s ease;
+        }
+        
+        .header-brand:hover .logo-svg {
+            transform: scale(1.05);
         }
 
         h1 {
             color: var(--gold);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: 400;
@@ -100,6 +103,12 @@
             font-weight: bold;
             font-size: 0.85rem;
             letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: var(--gold);
+            color: #000;
         }
 
         .cart-badge {
@@ -109,6 +118,11 @@
             font-weight: bold;
             padding: 2px 7px;
             border-radius: 10px;
+        }
+        
+        .cart-btn:hover .cart-badge {
+            background-color: #000;
+            color: var(--gold);
         }
 
         main {
@@ -120,12 +134,8 @@
         }
 
         /* Widoki */
-        .view-section {
-            display: none;
-        }
-        #view-home {
-            display: block;
-        }
+        .view-section { display: none; }
+        #view-home { display: block; }
 
         /* Sekcja Gwarancji */
         .guarantee-grid {
@@ -281,10 +291,7 @@
             letter-spacing: 1px;
         }
 
-        .kit-box ul {
-            list-style: none;
-        }
-
+        .kit-box ul { list-style: none; }
         .kit-box li {
             position: relative;
             padding-left: 25px;
@@ -318,16 +325,8 @@
             border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
 
-        .cart-row-title {
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        .cart-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .cart-row-title { color: var(--gold); font-weight: bold; }
+        .cart-controls { display: flex; align-items: center; gap: 10px; }
 
         .qty-btn {
             background: var(--surface-light);
@@ -368,10 +367,8 @@
             border-radius: 4px;
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
+        .form-group { margin-bottom: 1.2rem; }
+        
         label {
             display: block;
             margin-bottom: 0.4rem;
@@ -393,9 +390,7 @@
             font-family: inherit;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--gold);
-        }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold); }
 
         /* Modal */
         .modal {
@@ -475,7 +470,7 @@
         }
     </style>
 
-    <!-- FIREBASE SDK - AKTYWOWANE -->
+    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -502,9 +497,27 @@
     <header>
         <div class="header-inner">
             <div class="header-brand" onclick="navigateTo('view-home')">
-                <div class="hexagon"></div>
+                <!-- NOWE ZAAWANSOWANE LOGO WEKTOROWE SVG -->
+                <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#F3E5AB" />
+                            <stop offset="50%" stop-color="#D4AF37" />
+                            <stop offset="100%" stop-color="#AA7C11" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Zewnętrzny heksagon -->
+                    <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linejoin="round"/>
+                    <!-- Wewnętrzny heksagon z połową przezroczystości (motyw molekuły) -->
+                    <polygon points="50,22 75,36 75,64 50,78 25,64 25,36" fill="none" stroke="url(#goldGradient)" stroke-width="2" stroke-linejoin="round" opacity="0.6"/>
+                    <!-- Rdzeń / Wiązanie peptydowe -->
+                    <circle cx="50" cy="50" r="7" fill="url(#goldGradient)"/>
+                    <line x1="50" y1="22" x2="50" y2="43" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                    <line x1="25" y1="64" x2="44" y2="53" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                    <line x1="75" y1="64" x2="56" y2="53" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                </svg>
                 <div>
-                    <h1>HexaLab</h1>
+                    <h1>HexaLabs</h1>
                     <div class="subtitle">Research & Optimization</div>
                 </div>
             </div>
@@ -829,45 +842,4 @@
             }
         }
 
-        // --- LOGIKA FORMULARZA KONTAKTOWEGO ---
-        async function handleContactSubmit(e) {
-            e.preventDefault();
-            var btn = document.getElementById('contact-submit-btn');
-            btn.innerText = 'WYSYŁANIE...';
-            btn.disabled = true;
-
-            const msgData = {
-                name: document.getElementById('contact-name').value,
-                email: document.getElementById('contact-email').value,
-                message: document.getElementById('contact-msg').value,
-                status: 'Nowa',
-                date: new Date().toISOString()
-            };
-
-            try {
-                if (window.db && window.addDoc) {
-                    await window.addDoc(window.collection(window.db, "messages"), msgData);
-                }
-
-                var modal = document.getElementById('modal-box');
-                document.getElementById('modal-title').innerText = 'Wiadomość wysłana';
-                document.getElementById('modal-desc').innerText = 'Dziękujemy za kontakt. Odpowiemy na Twój adres e-mail najszybciej jak to możliwe.';
-                document.getElementById('modal-blik').style.display = 'none';
-                modal.style.display = 'flex';
-
-                document.getElementById('contact-form').reset();
-            } catch (error) {
-                alert("Wystąpił błąd podczas wysyłania wiadomości.");
-            } finally {
-                btn.innerText = 'WYŚLIJ WIADOMOŚĆ';
-                btn.disabled = false;
-            }
-        }
-
-        function closeModalWindow() {
-            document.getElementById('modal-box').style.display = 'none';
-            navigateTo('view-home');
-        }
-    </script>
-</body>
-</html>
+        // --- LOGIKA FORMULARZA KONTAKTOW
