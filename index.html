@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HexaLab - Premium Peptides</title>
+    <title>HexaLab - Premium Research Peptides</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
             --surface-color: #141414;
+            --surface-light: #1e1e1e;
             --text-main: #f0f0f0;
             --text-muted: #888888;
             --gold: #D4AF37;
             --gold-glow: rgba(212, 175, 55, 0.2);
+            --gold-glow-strong: rgba(212, 175, 55, 0.4);
             --danger: #ff4444;
         }
 
@@ -26,13 +28,32 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* Widoki aplikacji */
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Nagłówek wspólny */
         header {
             text-align: center;
-            padding: 4rem 2rem 2rem;
+            padding: 3rem 2rem 2rem;
             background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo-container {
@@ -40,12 +61,13 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
         }
 
         .hexagon {
-            width: 40px;
-            height: 45px;
+            width: 35px;
+            height: 40px;
             background-color: transparent;
             border: 2px solid var(--gold);
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -57,124 +79,272 @@
 
         h1 {
             color: var(--gold);
-            font-size: 2.5rem;
-            letter-spacing: 2px;
+            font-size: 2.2rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 300;
         }
 
         .subtitle {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            letter-spacing: 4px;
+            font-size: 0.85rem;
+            letter-spacing: 5px;
             text-transform: uppercase;
         }
 
         main {
-            max-width: 600px;
-            margin: 2rem auto 3rem;
-            padding: 0 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
         }
 
-        /* Nowa sekcja opisowa */
-        .description-section {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(10,10,10,0.9) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 4px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .description-section p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .features-grid {
+        /* Sekcja Gwarancji (Home) */
+        .guarantee-section {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
-            padding-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
         }
 
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
+        .guarantee-card {
+            background: var(--surface-color);
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            border-radius: 4px;
+            transition: transform 0.3s;
         }
 
-        .feature-value {
+        .guarantee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--gold-glow);
+        }
+
+        .guarantee-icon {
+            font-size: 2rem;
             color: var(--gold);
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            margin-bottom: 1rem;
         }
 
-        .feature-label {
+        .guarantee-title {
+            font-size: 1.1rem;
             color: var(--text-main);
-            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        form {
-            background-color: var(--surface-color);
-            padding: 2.5rem;
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        .guarantee-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
-        h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+        /* Siatka produktów (Home) */
+        .section-title {
+            text-align: center;
             color: var(--gold);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding-bottom: 0.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .product-card {
-            background: rgba(0, 0, 0, 0.4);
+            background: linear-gradient(145deg, var(--surface-light) 0%, var(--surface-color) 100%);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 1rem;
-            text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .product-card:hover::before {
+            left: 150%;
         }
 
         .product-card:hover {
-            box-shadow: 0 0 15px var(--gold-glow);
+            box-shadow: 0 0 25px var(--gold-glow-strong);
             border-color: var(--gold);
+            transform: scale(1.02);
         }
 
-        .product-name {
-            font-weight: bold;
+        .product-card-inner {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
             margin-bottom: 1rem;
-            font-size: 1.1rem;
+            letter-spacing: 1px;
         }
 
-        .qty-controls {
-            display: flex;
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-view {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--gold);
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            pointer-events: none; /* Kliknięcie obsługuje cała karta */
+        }
+
+        /* Widok Produktu */
+        .back-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+        .back-btn:hover { color: var(--gold); }
+
+        .product-details-container {
+            background: var(--surface-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 3rem 2rem;
         }
 
+        .product-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .product-header h2 {
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .lab-badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            padding: 5px 15px;
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .description-box {
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            text-align: justify;
+        }
+
+        .kit-section {
+            background: var(--surface-light);
+            padding: 2rem;
+            border-left: 3px solid var(--gold);
+            margin-bottom: 3rem;
+        }
+
+        .kit-section h4 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kit-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .kit-list li {
+            position: relative;
+            padding-left: 30px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .kit-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .order-action-bar {
+            text-align: center;
+        }
+
+        button.btn-primary {
+            background: var(--gold);
+            color: var(--bg-color);
+            border: 1px solid var(--gold);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button.btn-primary:hover {
+            background: transparent;
+            color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        /* Widok Kasy (Checkout) */
+        .checkout-form {
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .order-summary {
+            background: var(--surface-light);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -184,18 +354,14 @@
             letter-spacing: 1px;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="number"],
-        select {
+        input, select {
             width: 100%;
             padding: 12px;
             background-color: rgba(0, 0, 0, 0.5);
             border: 1px solid #333;
             color: var(--text-main);
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s;
             outline: none;
         }
 
@@ -204,42 +370,37 @@
             box-shadow: 0 0 8px var(--gold-glow);
         }
 
-        button.submit-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
         }
 
-        button.submit-btn:hover {
-            background-color: var(--gold);
-            color: var(--bg-color);
-            box-shadow: 0 0 20px var(--gold-glow);
+        .qty-controls input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .qty-controls span {
+            color: var(--gold);
+            font-weight: bold;
+            letter-spacing: 1px;
         }
 
         /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
 
         .modal-content {
-            background-color: var(--surface-color);
+            background: var(--surface-color);
             padding: 3rem;
             max-width: 500px;
             width: 90%;
@@ -248,92 +409,126 @@
             box-shadow: 0 0 30px var(--gold-glow);
         }
 
-        .modal-icon {
-            font-size: 3rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
         .blik-box {
             background: #000;
             padding: 1.5rem;
             margin: 1.5rem 0;
             border: 1px dashed var(--gold);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            color: var(--gold);
         }
 
-        .close-btn {
-            margin-top: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-        }
-        
-        .close-btn:hover {
-            color: var(--text-main);
-        }
-
-        .error-msg {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
+        @media (min-width: 768px) {
+            .kit-list { grid-template-columns: 1fr 1fr; }
         }
     </style>
-    
-    <script type="module">
+
+    <!-- Baza danych produktów -->
+    <script>
+        const products = {
+            'retatrutyd': {
+                name: 'Retatrutyd 10mg',
+                desc: 'Jeden z najbardziej zaawansowanych peptydów badawczych dostępnych na rynku. Potrójny agonista receptorów, zaprojektowany z myślą o maksymalnej optymalizacji procesów metabolicznych w środowisku laboratoryjnym. Preparat charakteryzuje się wyjątkową stabilnością strukturalną i ekstremalną czystością, co czyni go idealnym wyborem do zaawansowanych badań in vitro.',
+            },
+            'melanotan': {
+                name: 'Melanotan MT-2',
+                desc: 'Wysokoskoncentrowany analog hormonu stymulującego alfa-melanocyty (α-MSH). Syntetyczny peptyd badawczy opracowany w celu analizy procesów melanogenezy. W badaniach laboratoryjnych wykazuje silne powinowactwo do receptorów melanokortynowych. Produkt poddawany wieloetapowej liofilizacji, gwarantującej pełną integralność łańcucha peptydowego.'
+            }
+        };
+
+        // Funkcje nawigacji
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToHome() {
+            showView('view-home');
+        }
+
+        function openProduct(productId) {
+            const prod = products[productId];
+            document.getElementById('detail-title').innerText = prod.name;
+            document.getElementById('detail-desc').innerText = prod.desc;
+            
+            // Konfiguracja przycisku Kup Teraz
+            const btn = document.getElementById('buy-now-btn');
+            btn.onclick = () => goToCheckout(productId);
+            
+            showView('view-product');
+        }
+
+        function goToCheckout(prefillProductId = null) {
+            // Resetuj ilości
+            document.getElementById('qty-retatrutyd').value = 0;
+            document.getElementById('qty-melanotan').value = 0;
+
+            // Ustaw 1 sztukę dla wybranego produktu
+            if(prefillProductId) {
+                document.getElementById('qty-' + prefillProductId).value = 1;
+            }
+            
+            showView('view-checkout');
+        }
+
+        // Logika formularza zamówienia
         window.submitOrder = async function(event) {
             event.preventDefault();
             
-            const retatrutydQty = parseInt(document.getElementById('qty-reta').value) || 0;
-            const melanotanQty = parseInt(document.getElementById('qty-mela').value) || 0;
-            const errorElement = document.getElementById('qty-error');
+            const retaQty = parseInt(document.getElementById('qty-retatrutyd').value) || 0;
+            const melaQty = parseInt(document.getElementById('qty-melanotan').value) || 0;
 
-            if (retatrutydQty === 0 && melanotanQty === 0) {
-                errorElement.style.display = 'block';
+            if (retaQty === 0 && melaQty === 0) {
+                alert("Proszę wybrać co najmniej 1 zestaw przed złożeniem zamówienia.");
                 return;
             }
-            errorElement.style.display = 'none';
 
-            const formData = {
-                retatrutyd_10mg: retatrutydQty,
-                melanotan_mt2: melanotanQty,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                shippingMethod: document.getElementById('shipping').value,
-                paczkomatCode: document.getElementById('paczkomat').value,
-                timestamp: new Date().toISOString()
-            };
-
-            const submitBtn = document.querySelector('.submit-btn');
+            const submitBtn = document.getElementById('submit-btn');
             const originalText = submitBtn.innerText;
             submitBtn.innerText = 'PRZETWARZANIE...';
             submitBtn.disabled = true;
 
             try {
+                // Tu w przyszłości podepniemy Firebase. Na razie symulujemy 1 sekundę ładowania.
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                showModal(formData.shippingMethod);
+                const shippingMethod = document.getElementById('shipping').value;
+                showModal(shippingMethod);
                 document.getElementById('orderForm').reset();
             } catch (error) {
-                console.error("Błąd podczas składania zamówienia: ", error);
                 alert("Wystąpił błąd. Spróbuj ponownie później.");
             } finally {
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
             }
         }
+
+        function showModal(shippingMethod) {
+            const modal = document.getElementById('successModal');
+            const blikSection = document.getElementById('blikInstructions');
+            const msg = document.getElementById('modalMessage');
+
+            if (shippingMethod === 'przedplata_blik') {
+                msg.innerText = "Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie.";
+                blikSection.style.display = 'block';
+            } else {
+                msg.innerText = "Zamówienie w realizacji. Zapłacisz kartą/BLIKiem w Paczkomacie.";
+                blikSection.style.display = 'none';
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            goToHome();
+        }
     </script>
 </head>
 <body>
 
-    <header>
+    <header onclick="goToHome()">
         <div class="logo-container">
             <div class="hexagon"></div>
             <h1>HexaLab</h1>
@@ -342,122 +537,115 @@
     </header>
 
     <main>
-        <!-- NOWA SEKCJA OPISOWA -->
-        <section class="description-section">
-            <h2 style="border: none; text-align: center; margin-bottom: 1rem;">Bezkompromisowa jakość</h2>
-            <p>
-                Dostarczamy odczynniki o najwyższym dostępnym stopniu standaryzacji. Nasze produkty przechodzą rygorystyczne testy laboratoryjne, gwarantując absolutną czystość strukturalną. Stworzone dla osób, które opierają swoje wyniki wyłącznie na sprawdzonych danych i niezawodnych rozwiązaniach.
-            </p>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <span class="feature-value">>99.9%</span>
-                    <span class="feature-label">Czystość HPLC</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-value">Lab</span>
-                    <span class="feature-label">Testowane</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-value">24h</span>
-                    <span class="feature-label">Wysyłka</span>
-                </div>
-            </div>
-        </section>
-
-        <form id="orderForm" onsubmit="window.submitOrder(event)">
-            <h2>Wybierz produkty</h2>
+        <!-- WIDOK 1: STRONA GŁÓWNA -->
+        <div id="view-home" class="view active">
             
+            <section class="guarantee-section">
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">⚗️</div>
+                    <div class="guarantee-title">Czystość >99.9%</div>
+                    <div class="guarantee-text">Każda partia przechodzi rygorystyczne badania HPLC gwarantujące absolutny brak zanieczyszczeń strukturalnych.</div>
+                </div>
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">🔬</div>
+                    <div class="guarantee-title">Pełne Zestawy</div>
+                    <div class="guarantee-text">Nie sprzedajemy półśrodków. Do każdego peptydu otrzymujesz kompletne zaplecze w postaci sprzętu i rozpuszczalników.</div>
+                </div>
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">⚡</div>
+                    <div class="guarantee-title">Dyskrecja i Czas</div>
+                    <div class="guarantee-text">Błyskawiczna i w pełni anonimowa wysyłka do Paczkomatów InPost. Towar odpowiednio zabezpieczony termicznie.</div>
+                </div>
+            </section>
+
+            <h2 class="section-title">Wybierz preparat badawczy</h2>
+
             <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-name">Retatrutyd 10mg</div>
-                    <div class="qty-controls">
-                        <label for="qty-reta">Ilość szt.</label>
-                        <input type="number" id="qty-reta" min="0" value="0" style="text-align: center;">
+                <!-- Karta Retatrutyd -->
+                <div class="product-card" onclick="openProduct('retatrutyd')">
+                    <div class="product-card-inner">
+                        <h3>Retatrutyd 10mg</h3>
+                        <p>Innowacyjny, potrójny agonista. Najwyższy stopień standaryzacji laboratoryjnej.</p>
+                        <button class="btn-view">Sprawdź szczegóły</button>
                     </div>
                 </div>
-                <div class="product-card">
-                    <div class="product-name">Melanotan MT-2</div>
-                    <div class="qty-controls">
-                        <label for="qty-mela">Ilość szt.</label>
-                        <input type="number" id="qty-mela" min="0" value="0" style="text-align: center;">
+                <!-- Karta Melanotan -->
+                <div class="product-card" onclick="openProduct('melanotan')">
+                    <div class="product-card-inner">
+                        <h3>Melanotan MT-2</h3>
+                        <p>Silny analog α-MSH. Kompletny zestaw przygotowany do zaawansowanych badań.</p>
+                        <button class="btn-view">Sprawdź szczegóły</button>
                     </div>
                 </div>
             </div>
-            <div id="qty-error" class="error-msg">Wybierz co najmniej jeden produkt, aby złożyć zamówienie.</div>
-
-            <h2 style="margin-top: 2rem;">Dane kontaktowe i wysyłka</h2>
-
-            <div class="form-group">
-                <label for="name">Imię i nazwisko</label>
-                <input type="text" id="name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Adres E-mail</label>
-                <input type="email" id="email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Numer telefonu</label>
-                <input type="tel" id="phone" required>
-            </div>
-
-            <div class="form-group">
-                <label for="paczkomat">Kod Paczkomatu InPost</label>
-                <input type="text" id="paczkomat" placeholder="np. WAW123A" required>
-            </div>
-
-            <div class="form-group">
-                <label for="shipping">Metoda Płatności / Wysyłki</label>
-                <select id="shipping" required>
-                    <option value="przedplata_blik">Paczkomat - Przedpłata (BLIK)</option>
-                    <option value="pobranie">Paczkomat - Płatność przy odbiorze (Pobranie)</option>
-                </select>
-            </div>
-
-            <button type="submit" class="submit-btn">Złóż Zamówienie</button>
-        </form>
-    </main>
-
-    <!-- Modal Po Zakupie -->
-    <div id="successModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-icon">✓</div>
-            <h2 style="border: none; margin-bottom: 0.5rem;" id="modalTitle">Zamówienie przyjęte</h2>
-            <p id="modalMessage" style="color: var(--text-muted); margin-bottom: 1.5rem;">Dziękujemy za zaufanie do HexaLab.</p>
-            
-            <div id="blikInstructions" style="display: none;">
-                <p>Prosimy o realizację przelewu na telefon BLIK na poniższy numer:</p>
-                <div class="blik-box">
-                    <strong>+48 123 456 789</strong>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">W tytule przelewu wpisz adres e-mail podany w zamówieniu.</p>
-            </div>
-
-            <button class="close-btn" onclick="closeModal()">Zamknij</button>
         </div>
-    </div>
 
-    <script>
-        function showModal(shippingMethod) {
-            const modal = document.getElementById('successModal');
-            const blikSection = document.getElementById('blikInstructions');
-            const modalMessage = document.getElementById('modalMessage');
+        <!-- WIDOK 2: SZCZEGÓŁY PRODUKTU -->
+        <div id="view-product" class="view">
+            <button class="back-btn" onclick="goToHome()">← Wróć do listy produktów</button>
+            
+            <div class="product-details-container">
+                <div class="product-header">
+                    <h2 id="detail-title">Nazwa Produktu</h2>
+                    <span class="lab-badge">POTWIERDZONE BADANIAMI HPLC</span>
+                </div>
 
-            if (shippingMethod === 'przedplata_blik') {
-                modalMessage.innerText = "Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie.";
-                blikSection.style.display = 'block';
-            } else {
-                modalMessage.innerText = "Twoje zamówienie zostało przekazane do realizacji. Zapłacisz kartą lub BLIKiem przy odbiorze z paczkomatu.";
-                blikSection.style.display = 'none';
-            }
+                <div class="description-box" id="detail-desc">
+                    Opis produktu...
+                </div>
 
-            modal.style.display = 'flex';
-        }
+                <div class="kit-section">
+                    <h4>Co wchodzi w skład każdego zestawu (Mega Pro Kit):</h4>
+                    <ul class="kit-list">
+                        <li>Fiolka z preparatem (liofilizat w proszku)</li>
+                        <li>Woda bakteriostatyczna (odpowiednia pojemność)</li>
+                        <li>Strzykawka do precyzyjnego nabierania wody</li>
+                        <li>Strzykawka insulinowa ze zintegrowaną igłą</li>
+                        <li>2 x sterylna igła 0.6 mm (do sporządzenia roztworu)</li>
+                        <li>Komplet gazików nasączonych alkoholem do dezynfekcji</li>
+                    </ul>
+                </div>
 
-        function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+                <div class="order-action-bar">
+                    <button id="buy-now-btn" class="btn-primary">Zamów ten zestaw</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WIDOK 3: KASA / FORMULARZ ZAMÓWIENIA -->
+        <div id="view-checkout" class="view">
+            <button class="back-btn" onclick="goToHome()">← Anuluj i wróć</button>
+
+            <form id="orderForm" class="checkout-form" onsubmit="window.submitOrder(event)">
+                <h2 style="color: var(--gold); margin-bottom: 1.5rem; text-transform: uppercase;">Finalizacja Zamówienia</h2>
+                
+                <div class="order-summary">
+                    <label style="color: var(--gold);">Wybierz ilość pełnych zestawów:</label>
+                    <div class="qty-controls">
+                        <span style="width: 140px;">Retatrutyd 10mg:</span>
+                        <input type="number" id="qty-retatrutyd" min="0" value="0">
+                        <span>szt.</span>
+                    </div>
+                    <div class="qty-controls">
+                        <span style="width: 140px;">Melanotan MT-2:</span>
+                        <input type="number" id="qty-melanotan" min="0" value="0">
+                        <span>szt.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Imię i nazwisko</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Adres E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Numer telefonu</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <div class="form-group">
