@@ -17,80 +17,474 @@
             --danger: #ff4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-        header { text-align: center; padding: 1.5rem 1rem; background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.2); position: sticky; top: 0; z-index: 100; }
-        .header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-        .header-brand { display: flex; align-items: center; gap: 15px; cursor: pointer; text-align: left; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Nagłówek */
+        header {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .logo-svg {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px var(--gold-glow-strong));
+            transition: transform 0.3s ease;
+        }
         
-        .logo-svg { width: 45px; height: 45px; flex-shrink: 0; filter: drop-shadow(0 0 8px var(--gold-glow-strong)); transition: transform 0.3s ease; }
-        .header-brand:hover .logo-svg { transform: scale(1.05); }
-        h1 { color: var(--gold); font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; margin: 0; }
-        .subtitle { color: var(--text-muted); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
+        .header-brand:hover .logo-svg {
+            transform: scale(1.05);
+        }
 
-        .cart-btn { position: relative; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 8px 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; }
-        .cart-btn:hover { background: var(--gold); color: #000; }
-        .cart-badge { background-color: var(--gold); color: #000; font-size: 0.75rem; font-weight: bold; padding: 2px 7px; border-radius: 10px; }
-        .cart-btn:hover .cart-badge { background-color: #000; color: var(--gold); }
+        h1 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin: 0;
+        }
 
-        main { flex: 1; max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 4rem; width: 100%; }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Przycisk Koszyka */
+        .cart-btn {
+            position: relative;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .cart-badge {
+            background-color: var(--gold);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
+        
+        .cart-btn:hover .cart-badge {
+            background-color: #000;
+            color: var(--gold);
+        }
+
+        main {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem 4rem;
+            width: 100%;
+        }
+
+        /* Widoki */
         .view-section { display: none; }
         #view-home { display: block; }
 
-        .guarantee-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
-        .guarantee-card { background: var(--surface-color); padding: 1.2rem; border: 1px solid rgba(212, 175, 55, 0.2); text-align: center; border-radius: 4px; }
-        .guarantee-icon { font-size: 1.8rem; color: var(--gold); margin-bottom: 0.5rem; }
-        .guarantee-title { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
-        .guarantee-text { font-size: 0.8rem; color: var(--text-muted); }
+        /* Sekcja Gwarancji */
+        .guarantee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
 
-        .section-title { text-align: center; color: var(--gold); font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
-        .product-card { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.25); padding: 2rem 1.5rem; text-align: center; border-radius: 4px; }
-        .product-card h3 { font-size: 1.3rem; color: var(--gold); margin-bottom: 0.4rem; }
-        .price-tag { color: #fff; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
-        .price-tag span { color: var(--gold); font-size: 0.9rem; }
-        .product-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; min-height: 45px; }
+        .guarantee-card {
+            background: var(--surface-color);
+            padding: 1.2rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            border-radius: 4px;
+        }
 
-        .btn-action { display: block; width: 100%; background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 12px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        .btn-action:hover:not(:disabled) { background: var(--gold); color: #000; }
-        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--text-muted); color: var(--text-muted); }
+        .guarantee-icon {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
 
-        .back-btn { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; display: inline-block; padding: 8px 0; }
-        .product-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 2rem 1.5rem; border-radius: 4px; }
-        .badge-hplc { display: inline-block; background: rgba(212, 175, 55, 0.15); color: var(--gold); padding: 4px 12px; border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 1rem; text-transform: uppercase; }
-        
-        .kit-box { background: var(--surface-light); padding: 1.5rem; border-left: 3px solid var(--gold); margin: 2rem 0; }
-        .kit-box h4 { color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px; }
+        .guarantee-title {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .guarantee-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Lista Produktów */
+        .section-title {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--surface-color);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .product-card h3 {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 0.4rem;
+        }
+
+        .price-tag {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .price-tag span {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            min-height: 45px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: block;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 12px 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-action:hover, .btn-action:active {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-solid {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-solid:hover, .btn-solid:active {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* Podstrona Produktu */
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            padding: 8px 0;
+        }
+
+        .product-box {
+            background: var(--surface-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 2rem 1.5rem;
+            border-radius: 4px;
+        }
+
+        .badge-hplc {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+            padding: 4px 12px;
+            border: 1px solid var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .kit-box {
+            background: var(--surface-light);
+            padding: 1.5rem;
+            border-left: 3px solid var(--gold);
+            margin: 2rem 0;
+        }
+
+        .kit-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
         .kit-box ul { list-style: none; }
-        .kit-box li { position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
-        .kit-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
+        .kit-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-        .cart-wrapper { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 1.5rem; border-radius: 4px; margin-bottom: 2rem; }
-        .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
+        .kit-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Koszyk i Kasa */
+        .cart-wrapper {
+            background: var(--surface-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
         .cart-row-title { color: var(--gold); font-weight: bold; }
         .cart-controls { display: flex; align-items: center; gap: 10px; }
-        .qty-btn { background: var(--surface-light); border: 1px solid var(--gold); color: var(--gold); width: 30px; height: 30px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .total-display { text-align: right; padding-top: 1.5rem; font-size: 1.2rem; color: var(--text-muted); }
-        .total-display strong { color: #fff; font-size: 1.6rem; margin-left: 8px; }
-        .total-display span { color: var(--gold); font-weight: bold; }
+        .qty-btn {
+            background: var(--surface-light);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            width: 30px;
+            height: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .form-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 1.5rem; border-radius: 4px; }
+        .total-display {
+            text-align: right;
+            padding-top: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .total-display strong {
+            color: #fff;
+            font-size: 1.6rem;
+            margin-left: 8px;
+        }
+
+        .total-display span {
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Formularz */
+        .form-box {
+            background: var(--surface-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
         .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; font-size: 1rem; border-radius: 0; outline: none; font-family: inherit; }
+        
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 1rem;
+            border-radius: 0;
+            outline: none;
+            font-family: inherit;
+        }
+
         input:focus, select:focus, textarea:focus { border-color: var(--gold); }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
-        .modal-body { background: var(--surface-color); border: 1px solid var(--gold); padding: 2rem; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 0 25px var(--gold-glow); }
-        .blik-card { background: #000; border: 1px dashed var(--gold); padding: 1rem; margin: 1.2rem 0; color: var(--gold); font-size: 1.4rem; letter-spacing: 2px; font-weight: bold; }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
 
-        .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; z-index: 600; }
+        .modal-body {
+            background: var(--surface-color);
+            border: 1px solid var(--gold);
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 25px var(--gold-glow);
+        }
 
-        footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid rgba(212, 175, 55, 0.1); background-color: var(--surface-color); }
-        .crm-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 6px 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 4px; transition: all 0.3s ease; }
-        .crm-btn:hover { color: var(--gold); border-color: var(--gold); }
+        .blik-card {
+            background: #000;
+            border: 1px dashed var(--gold);
+            padding: 1rem;
+            margin: 1.2rem 0;
+            color: var(--gold);
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        /* Toast */
+        .toast {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 600;
+        }
+
+        /* Stopka */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            background-color: var(--surface-color);
+        }
+
+        .crm-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 6px 15px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .crm-btn:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
     </style>
 
     <!-- FIREBASE SDK -->
@@ -112,6 +506,7 @@
         window.db = getFirestore(app);
         window.addDoc = addDoc;
         window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
     </script>
 </head>
 <body>
@@ -141,147 +536,198 @@
             </div>
             
             <button class="cart-btn" onclick="navigateTo('view-cart')">
-                KOSZYK <span class="cart-badge" id="badge-count">0</span>
+                KOSZYK
+                <span class="cart-badge" id="badge-count">0</span>
             </button>
         </div>
     </header>
 
     <main>
+        <!-- WIDOK 1: STRONA GŁÓWNA -->
         <section id="view-home" class="view-section">
             <div class="guarantee-grid">
                 <div class="guarantee-card">
                     <div class="guarantee-icon">⚗️</div>
                     <div class="guarantee-title">Czystość >99.9%</div>
-                    <div class="guarantee-text">Weryfikacja metodą HPLC.</div>
+                    <div class="guarantee-text">Każda partia weryfikowana metodą HPLC pod kątem czystości strukturalnej.</div>
                 </div>
                 <div class="guarantee-card">
                     <div class="guarantee-icon">🔬</div>
                     <div class="guarantee-title">Pełne Zestawy</div>
-                    <div class="guarantee-text">Preparat, woda, strzykawki, gaziki.</div>
+                    <div class="guarantee-text">Wszystko w komplecie: preparat, woda, sterylne strzykawki, igły oraz gaziki.</div>
                 </div>
                 <div class="guarantee-card">
                     <div class="guarantee-icon">⚡</div>
                     <div class="guarantee-title">Dyskretna Wysyłka</div>
-                    <div class="guarantee-text">Paczkomaty InPost w 24-48h.</div>
+                    <div class="guarantee-text">Paczkomaty InPost w 24-48h. Bezpieczne zabezpieczenie termiczne fiolki.</div>
                 </div>
             </div>
 
             <h2 class="section-title">Dostępne Preparaty</h2>
-            <div class="products-grid">
+
+            <div class="products-grid" style="margin-bottom: 4rem;">
                 <div class="product-card">
                     <h3>Retatrutyd 10mg</h3>
                     <div class="price-tag">350 <span>PLN</span></div>
-                    <p>Potrójny agonista receptorów do zaawansowanych badań.</p>
-                    <button class="btn-action" onclick="showProduct('retatrutyd')">Sprawdź szczegóły</button>
+                    <p>Innowacyjny, potrójny agonista receptorów do zaawansowanych badań in vitro.</p>
+                    <div class="card-actions">
+                        <button class="btn-action" onclick="showProduct('retatrutyd')">Szczegóły</button>
+                        <button class="btn-action btn-solid" onclick="quickAddToCart('retatrutyd')">Do koszyka</button>
+                    </div>
                 </div>
+
                 <div class="product-card">
                     <h3>Melanotan MT-2</h3>
                     <div class="price-tag">90 <span>PLN</span></div>
-                    <p>Syntetyczny analog α-MSH wysokiej czystości.</p>
-                    <button class="btn-action" onclick="showProduct('melanotan')">Sprawdź szczegóły</button>
+                    <p>Syntetyczny analog α-MSH poddany wieloetapowej liofilizacji laboratoryjnej.</p>
+                    <div class="card-actions">
+                        <button class="btn-action" onclick="showProduct('melanotan')">Szczegóły</button>
+                        <button class="btn-action btn-solid" onclick="quickAddToCart('melanotan')">Do koszyka</button>
+                    </div>
                 </div>
             </div>
 
+            <!-- SEKCJA KONTAKTOWA -->
             <h2 class="section-title" id="kontakt">Kontakt</h2>
             <div class="form-box">
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Masz pytania dotyczące odczynników lub zamówień hurtowych? Napisz do nas.</p>
                 <form id="contact-form" onsubmit="handleContactSubmit(event)">
-                    <div class="form-group"><label>Imię / Firma</label><input type="text" id="contact-name" required></div>
-                    <div class="form-group"><label>E-mail</label><input type="email" id="contact-email" required></div>
-                    <div class="form-group"><label>Wiadomość</label><textarea id="contact-msg" rows="4" required></textarea></div>
-                    <button type="submit" class="btn-action" id="contact-submit-btn">Wyślij wiadomość</button>
+                    <div class="form-group">
+                        <label>Imię i Nazwisko / Nazwa firmy</label>
+                        <input type="text" id="contact-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Adres E-mail</label>
+                        <input type="text" id="contact-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Treść wiadomości</label>
+                        <textarea id="contact-msg" rows="4" style="resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-action btn-solid" id="contact-submit-btn" style="width: 100%;">Wyślij wiadomość</button>
                 </form>
             </div>
         </section>
 
+        <!-- WIDOK 2: SZCZEGÓŁY PRODUKTU -->
         <section id="view-product" class="view-section">
-            <button class="back-btn" onclick="navigateTo('view-home')">← Oferta</button>
+            <button class="back-btn" onclick="navigateTo('view-home')">← Powrót do oferty</button>
+            
             <div class="product-box">
-                <span class="badge-hplc">Certyfikat HPLC</span>
+                <span class="badge-hplc">Certyfikat Badań HPLC</span>
                 <h2 id="prod-name" style="color: var(--gold); font-size: 1.8rem; margin-bottom: 0.5rem;"></h2>
                 <div class="price-tag" id="prod-price" style="margin-bottom: 1.5rem;"></div>
+
                 <p id="prod-desc" style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 1.5rem;"></p>
+
                 <div class="kit-box">
                     <h4>Skład każdego zestawu (Mega Pro Kit):</h4>
                     <ul>
-                        <li>Fiolka z czystym liofilizatem</li>
-                        <li>Woda bakteriostatyczna</li>
-                        <li>Strzykawka i 2 igły</li>
-                        <li>Zestaw gazików do dezynfekcji</li>
+                        <li>Fiolka z preparatem (czysty liofilizat w proszku)</li>
+                        <li>Woda bakteriostatyczna do sporządzenia roztworu</li>
+                        <li>Strzykawka do precyzyjnego nabierania wody</li>
+                        <li>Strzykawka insulinowa ze zintegrowaną igłą</li>
+                        <li>2 x sterylna igła 0.6 mm</li>
+                        <li>Zestaw gazików nasączonych alkoholem do dezynfekcji</li>
                     </ul>
                 </div>
-                <button class="btn-action" onclick="addCurrentToCart()">Dodaj do koszyka</button>
+
+                <button class="btn-action btn-solid" onclick="addCurrentToCart()" style="width: 100%;">Dodaj do koszyka</button>
             </div>
         </section>
 
+        <!-- WIDOK 3: KOSZYK I ZAMÓWIENIE -->
         <section id="view-cart" class="view-section">
             <button class="back-btn" onclick="navigateTo('view-home')">← Kontynuuj zakupy</button>
-            <h2 style="color: var(--gold); margin-bottom: 1.5rem; text-transform: uppercase;">Koszyk</h2>
+            
+            <h2 style="color: var(--gold); margin-bottom: 1.5rem; text-transform: uppercase;">Zawartość Koszyka</h2>
 
             <div class="cart-wrapper">
                 <div id="cart-content"></div>
                 <div class="total-display">
-                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px;">Produkty: <span id="cart-subtotal" style="color: #fff;">0</span> PLN</div>
-                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Dostawa: <span id="cart-shipping" style="color: #fff;">15</span> PLN</div>
-                    Razem: <strong id="cart-sum">0</strong> <span>PLN</span>
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px;">Wartość produktów: <span id="cart-subtotal" style="color: #fff; font-weight: normal;">0</span> PLN</div>
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Koszty dostawy: <span id="cart-shipping" style="color: #fff; font-weight: normal;">15</span> PLN</div>
+                    Razem do zapłaty: <strong id="cart-sum">0</strong> <span>PLN</span>
                 </div>
             </div>
 
             <div id="form-container" class="form-box" style="display: none;">
-                <h3 style="color: var(--gold); margin-bottom: 1.2rem; text-transform: uppercase;">Dane do wysyłki</h3>
+                <h3 style="color: var(--gold); margin-bottom: 1.2rem; text-transform: uppercase; font-size: 1.1rem;">Dane do wysyłki</h3>
+                
                 <form id="order-form" onsubmit="handleOrderSubmit(event)">
-                    <div class="form-group"><label>Imię i nazwisko</label><input type="text" id="order-name" required></div>
-                    <div class="form-group"><label>Adres E-mail</label><input type="email" id="order-email" required></div>
-                    <div class="form-group"><label>Telefon</label><input type="tel" id="order-phone" required></div>
-                    <div class="form-group"><label>Kod Paczkomatu (np. WAW123A)</label><input type="text" id="order-paczkomat" required></div>
                     <div class="form-group">
-                        <label>Płatność</label>
-                        <select id="order-payment" required onchange="updateCartUI()">
-                            <option value="blik">Przedpłata BLIK na telefon - 15 PLN</option>
-                            <option value="pobranie">Za pobraniem - 20 PLN</option>
+                        <label>Imię i nazwisko</label>
+                        <input type="text" id="order-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Adres E-mail</label>
+                        <input type="text" id="order-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Numer telefonu</label>
+                        <input type="text" id="order-phone" placeholder="np. 123456789">
+                    </div>
+                    <div class="form-group">
+                        <label>Paczkomat InPost (np. WAW123A)</label>
+                        <input type="text" id="order-paczkomat" placeholder="Wpisz kod paczkomatu">
+                    </div>
+                    <div class="form-group">
+                        <label>Forma Płatności / Dostawy</label>
+                        <select id="order-payment" onchange="updateCartUI()">
+                            <option value="blik">Paczkomat - Przedpłata (BLIK na telefon) - 15 PLN</option>
+                            <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-action" id="submit-btn" style="margin-top: 1.5rem;">Złóż zamówienie</button>
+                    <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 1.5rem; width: 100%;">Złóż zamówienie</button>
                 </form>
             </div>
         </section>
     </main>
 
-    <footer><button class="crm-btn" onclick="window.location.href='crm.html'">Panel CRM</button></footer>
+    <!-- Stopka z dyskretnym przyciskiem do logowania -->
+    <footer>
+        <button class="crm-btn" onclick="window.location.href='crm.html'">Panel CRM</button>
+    </footer>
 
-    <!-- Modal System -->
+    <!-- Modal Powiadomienia -->
     <div id="modal-box" class="modal">
         <div class="modal-body">
-            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;" id="modal-title">Sukces</h3>
+            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;" id="modal-title">Zamówienie Przyjęte</h3>
             <p id="modal-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;"></p>
+            
             <div id="modal-blik" style="display: none;">
-                <p style="color: #fff; font-size: 0.9rem;">Przelew na telefon BLIK:</p>
+                <p style="color: #fff; font-size: 0.9rem;">Wykonaj przelew na telefon BLIK na numer:</p>
                 <div class="blik-card">+48 123 456 789</div>
-                <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule podaj swój e-mail.</p>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule podaj swój adres e-mail podany w zamówieniu.</p>
             </div>
-            <button class="btn-action" onclick="closeModalWindow()" style="margin-top: 1.5rem;">Zamknij</button>
+
+            <button class="btn-action btn-solid" onclick="closeModalWindow()" style="margin-top: 1.5rem; width: 100%;">Zamknij</button>
         </div>
     </div>
+
     <div id="toast-notify" class="toast">Dodano do koszyka</div>
 
     <script>
-        const catalog = {
-            'retatrutyd': { name: 'Retatrutyd 10mg', price: 350, desc: 'Innowacyjny potrójny agonista receptorów do badań.' },
-            'melanotan': { name: 'Melanotan MT-2', price: 90, desc: 'Syntetyczny analog hormonu α-MSH.' }
+        var catalog = {
+            'retatrutyd': { name: 'Retatrutyd 10mg', price: 350, desc: 'Innowacyjny potrójny agonista receptorów przeznaczony do zaawansowanych badań laboratoryjnych nad optymalizacją procesów metabolicznych. Cechuje się najwyższą stabilnością liofilizatu.' },
+            'melanotan': { name: 'Melanotan MT-2', price: 90, desc: 'Syntetyczny analog hormonu α-MSH o wysokiej czystości, stosowany w badaniach nad mechanizmami melanogenezy. Odpowiednio zabezpieczony przed degradacją łańcucha.' }
         };
 
-        let userCart = { 'retatrutyd': 0, 'melanotan': 0 };
-        let activeProductId = null;
+        var userCart = { 'retatrutyd': 0, 'melanotan': 0 };
+        var activeProductId = null;
 
         function navigateTo(viewId) {
-            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
-            document.getElementById(viewId).style.display = 'block';
-            if (viewId === 'view-cart') updateCartUI();
+            var views = document.querySelectorAll('.view-section');
+            for (var i = 0; i < views.length; i++) { views[i].style.display = 'none'; }
+            var target = document.getElementById(viewId);
+            if (target) { target.style.display = 'block'; }
+            if (viewId === 'view-cart') { updateCartUI(); }
             window.scrollTo(0, 0);
         }
 
-        function showProduct(key) {
-            activeProductId = key;
-            const item = catalog[key];
+        function showProduct(prodKey) {
+            activeProductId = prodKey;
+            var item = catalog[prodKey];
             document.getElementById('prod-name').innerText = item.name;
             document.getElementById('prod-price').innerHTML = item.price + ' <span>PLN</span>';
             document.getElementById('prod-desc').innerText = item.desc;
@@ -291,133 +737,210 @@
         function addCurrentToCart() {
             if (activeProductId) {
                 userCart[activeProductId]++;
-                document.getElementById('badge-count').innerText = Object.values(userCart).reduce((a, b) => a + b, 0);
-                const toast = document.getElementById('toast-notify');
-                toast.style.display = 'block';
-                setTimeout(() => toast.style.display = 'none', 1500);
+                refreshBadge();
+                triggerToast();
             }
         }
 
-        function changeCartQty(key, step) {
-            if (userCart[key] + step >= 0) {
-                userCart[key] += step;
-                document.getElementById('badge-count').innerText = Object.values(userCart).reduce((a, b) => a + b, 0);
+        function quickAddToCart(prodKey) {
+            userCart[prodKey]++;
+            refreshBadge();
+            triggerToast();
+        }
+
+        function refreshBadge() {
+            var count = userCart.retatrutyd + userCart.melanotan;
+            document.getElementById('badge-count').innerText = count;
+        }
+
+        function triggerToast() {
+            var toast = document.getElementById('toast-notify');
+            toast.style.display = 'block';
+            setTimeout(function() { toast.style.display = 'none'; }, 1800);
+        }
+
+        function changeCartQty(prodKey, step) {
+            if (userCart[prodKey] + step >= 0) {
+                userCart[prodKey] += step;
+                refreshBadge();
                 updateCartUI();
             }
         }
 
         function updateCartUI() {
-            const container = document.getElementById('cart-content');
+            var container = document.getElementById('cart-content');
+            var formWrapper = document.getElementById('form-container');
+            var subtotalDisplay = document.getElementById('cart-subtotal');
+            var shippingDisplay = document.getElementById('cart-shipping');
+            var sumDisplay = document.getElementById('cart-sum');
+            
             container.innerHTML = '';
-            let subtotal = 0;
-            const totalQty = Object.values(userCart).reduce((a, b) => a + b, 0);
+            var subtotal = 0;
+            var totalQty = userCart.retatrutyd + userCart.melanotan;
 
             if (totalQty === 0) {
-                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:1.5rem 0;">Koszyk jest pusty.</p>';
-                document.getElementById('form-container').style.display = 'none';
-                document.getElementById('cart-subtotal').innerText = '0'; 
-                document.getElementById('cart-shipping').innerText = '0'; 
-                document.getElementById('cart-sum').innerText = '0';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 1.5rem 0;">Twój koszyk jest pusty.</p>';
+                formWrapper.style.display = 'none';
+                subtotalDisplay.innerText = '0'; shippingDisplay.innerText = '0'; sumDisplay.innerText = '0';
                 return;
             }
 
-            document.getElementById('form-container').style.display = 'block';
+            formWrapper.style.display = 'block';
 
-            for (let key in userCart) {
+            for (var key in userCart) {
                 if (userCart[key] > 0) {
-                    const itemTotal = userCart[key] * catalog[key].price;
-                    subtotal += itemTotal;
-                    container.innerHTML += `
-                        <div class="cart-row">
-                            <div><div class="cart-row-title">${catalog[key].name}</div></div>
-                            <div class="cart-controls">
-                                <button class="qty-btn" type="button" onclick="changeCartQty('${key}', -1)">-</button>
-                                <span style="font-weight:bold; width:20px; text-align:center;">${userCart[key]}</span>
-                                <button class="qty-btn" type="button" onclick="changeCartQty('${key}', 1)">+</button>
-                            </div>
-                            <div style="font-weight:bold;">${itemTotal} PLN</div>
-                        </div>`;
+                    var prod = catalog[key];
+                    var itemSubtotal = userCart[key] * prod.price;
+                    subtotal += itemSubtotal;
+
+                    var row = document.createElement('div');
+                    row.className = 'cart-row';
+                    row.innerHTML = 
+                        '<div><div class="cart-row-title">' + prod.name + '</div><div style="font-size:0.8rem; color:var(--text-muted);">' + prod.price + ' PLN / zestaw</div></div>' +
+                        '<div class="cart-controls"><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', -1)">-</button><span style="font-weight:bold; width:20px; text-align:center;">' + userCart[key] + '</span><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', 1)">+</button></div>' +
+                        '<div style="font-weight:bold;">' + itemSubtotal + ' PLN</div>';
+                    container.appendChild(row);
                 }
             }
 
-            const shipping = document.getElementById('order-payment').value === 'pobranie' ? 20 : 15;
-            document.getElementById('cart-subtotal').innerText = subtotal;
-            document.getElementById('cart-shipping').innerText = shipping;
-            document.getElementById('cart-sum').innerText = subtotal + shipping;
+            var paymentMethod = document.getElementById('order-payment').value;
+            var shippingCost = (paymentMethod === 'pobranie') ? 20 : 15;
+            var finalTotal = subtotal + shippingCost;
+
+            subtotalDisplay.innerText = subtotal;
+            shippingDisplay.innerText = shippingCost;
+            sumDisplay.innerText = finalTotal;
         }
 
+        // --- WALIDACJA POMOCNICZA ---
+        function isValidEmail(email) {
+            // Proste sprawdzenie: czy jest znak @, czy jest po nim kropka i czy nie ma spacji
+            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        function validatePhone(phoneStr) {
+            // Usuwa spacje, myślniki i plusy
+            var clean = phoneStr.replace(/[\s\-+]/g, '');
+            // Jeżeli ktoś wpisał prefiks 48 lub 0048, ucinamy go, aby sprawdzić 9 cyfr
+            if (clean.startsWith('48') && clean.length === 11) clean = clean.substring(2);
+            if (clean.startsWith('0048') && clean.length === 13) clean = clean.substring(4);
+            
+            var regex = /^\d{9}$/;
+            return regex.test(clean);
+        }
+
+        // --- LOGIKA FORMULARZA ZAMÓWIENIA ---
         async function handleOrderSubmit(e) {
             e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            btn.innerText = 'PRZETWARZANIE...'; btn.disabled = true;
+
+            // Pobieranie wartości
+            const name = document.getElementById('order-name').value.trim();
+            const email = document.getElementById('order-email').value.trim();
+            const phone = document.getElementById('order-phone').value.trim();
+            const paczkomat = document.getElementById('order-paczkomat').value.trim();
+
+            // Twarda walidacja JS
+            if (!name) { alert('Uzupełnij imię i nazwisko.'); return; }
+            if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
+            if (!validatePhone(phone)) { alert('Zły numer tel. Podaj 9-cyfrowy numer.'); return; }
+            if (!paczkomat) { alert('Uzupełnij nr paczkomatu.'); return; }
+
+            var btn = document.getElementById('submit-btn');
+            btn.innerText = 'WYSYŁANIE...';
+            btn.disabled = true;
 
             const orderData = {
                 retatrutyd_qty: userCart.retatrutyd,
                 melanotan_qty: userCart.melanotan,
                 total_amount: document.getElementById('cart-sum').innerText,
-                name: document.getElementById('order-name').value,
-                email: document.getElementById('order-email').value,
-                phone: document.getElementById('order-phone').value,
-                paczkomat: document.getElementById('order-paczkomat').value,
+                name: name,
+                email: email,
+                phone: phone,
+                paczkomat: paczkomat,
                 payment: document.getElementById('order-payment').value,
                 status: 'Nowe',
                 date: new Date().toISOString()
             };
 
             try {
-                await window.addDoc(window.collection(window.db, "orders"), orderData);
-                
-                document.getElementById('modal-title').innerText = 'Zamówienie Przyjęte';
-                const desc = document.getElementById('modal-desc');
-                const blikBox = document.getElementById('modal-blik');
+                if (window.db && window.addDoc) {
+                    await window.addDoc(window.collection(window.db, "orders"), orderData);
+                }
 
-                if (orderData.payment === 'blik') {
-                    desc.innerText = `Abyśmy mogli skompletować paczkę, opłać kwotę ${orderData.total_amount} PLN BLIKiem:`;
+                var payment = document.getElementById('order-payment').value;
+                var finalAmount = document.getElementById('cart-sum').innerText;
+                var modal = document.getElementById('modal-box');
+                document.getElementById('modal-title').innerText = 'Zamówienie Przyjęte';
+                var desc = document.getElementById('modal-desc');
+                var blikBox = document.getElementById('modal-blik');
+
+                if (payment === 'blik') {
+                    desc.innerText = 'Dziękujemy! Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie (kwota: ' + finalAmount + ' PLN) BLIKiem:';
                     blikBox.style.display = 'block';
                 } else {
-                    desc.innerText = `Zamówienie za pobraniem (kwota: ${orderData.total_amount} PLN) zostało przekazane do realizacji.`;
+                    desc.innerText = 'Dziękujemy! Twoje zamówienie za pobraniem (kwota: ' + finalAmount + ' PLN) zostało przyjęte do realizacji.';
                     blikBox.style.display = 'none';
                 }
 
-                document.getElementById('modal-box').style.display = 'flex';
+                modal.style.display = 'flex';
                 
-                // Czyszczenie po sukcesie
-                userCart = { 'retatrutyd': 0, 'melanotan': 0 };
-                document.getElementById('badge-count').innerText = '0';
+                userCart.retatrutyd = 0; userCart.melanotan = 0;
+                refreshBadge();
                 document.getElementById('order-form').reset();
                 updateCartUI();
                 
             } catch (error) {
-                alert("Błąd połączenia. Sprawdź reguły Firebase.");
+                alert("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie.");
             } finally {
-                btn.innerText = 'ZŁÓŻ ZAMÓWIENIE'; btn.disabled = false;
+                btn.innerText = 'ZŁÓŻ ZAMÓWIENIE';
+                btn.disabled = false;
             }
         }
 
+        // --- LOGIKA FORMULARZA KONTAKTOWEGO ---
         async function handleContactSubmit(e) {
             e.preventDefault();
-            const btn = document.getElementById('contact-submit-btn');
-            btn.innerText = 'WYSYŁANIE...'; btn.disabled = true;
+
+            // Pobieranie wartości
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const msg = document.getElementById('contact-msg').value.trim();
+
+            // Twarda walidacja JS
+            if (!name) { alert('Uzupełnij imię i nazwisko / nazwę firmy.'); return; }
+            if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
+            if (!msg) { alert('Uzupełnij treść wiadomości.'); return; }
+
+            var btn = document.getElementById('contact-submit-btn');
+            btn.innerText = 'WYSYŁANIE...';
+            btn.disabled = true;
 
             const msgData = {
-                name: document.getElementById('contact-name').value,
-                email: document.getElementById('contact-email').value,
-                message: document.getElementById('contact-msg').value,
+                name: name,
+                email: email,
+                message: msg,
                 status: 'Nowa',
                 date: new Date().toISOString()
             };
 
             try {
-                await window.addDoc(window.collection(window.db, "messages"), msgData);
-                document.getElementById('modal-title').innerText = 'Wysłano';
-                document.getElementById('modal-desc').innerText = 'Dziękujemy za kontakt. Odpowiemy niebawem.';
+                if (window.db && window.addDoc) {
+                    await window.addDoc(window.collection(window.db, "messages"), msgData);
+                }
+
+                var modal = document.getElementById('modal-box');
+                document.getElementById('modal-title').innerText = 'Wiadomość wysłana';
+                document.getElementById('modal-desc').innerText = 'Dziękujemy za kontakt. Odpowiemy na Twój adres e-mail najszybciej jak to możliwe.';
                 document.getElementById('modal-blik').style.display = 'none';
-                document.getElementById('modal-box').style.display = 'flex';
+                modal.style.display = 'flex';
+
                 document.getElementById('contact-form').reset();
             } catch (error) {
-                alert("Błąd połączenia z bazą.");
+                alert("Wystąpił błąd podczas wysyłania wiadomości.");
             } finally {
-                btn.innerText = 'WYŚLIJ WIADOMOŚĆ'; btn.disabled = false;
+                btn.innerText = 'WYŚLIJ WIADOMOŚĆ';
+                btn.disabled = false;
             }
         }
 
