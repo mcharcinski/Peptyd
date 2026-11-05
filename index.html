@@ -29,7 +29,6 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
         /* Widoki aplikacji */
@@ -155,7 +154,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 4rem;
         }
 
         .product-card {
@@ -165,9 +163,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
         .product-card::before {
@@ -191,7 +186,6 @@
         .product-card-inner {
             padding: 2.5rem 1.5rem;
             text-align: center;
-            flex-grow: 1;
         }
 
         .product-card h3 {
@@ -201,17 +195,18 @@
             letter-spacing: 1px;
         }
 
-        .product-price {
-            font-size: 1.8rem;
+        .price-tag {
+            color: #fff;
+            font-size: 1.6rem;
             font-weight: bold;
-            color: var(--text-main);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
-        
-        .product-price span {
+
+        .price-tag span {
+            color: var(--gold);
             font-size: 1rem;
-            color: var(--text-muted);
-            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .product-card p {
@@ -228,87 +223,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.85rem;
-            pointer-events: none; /* Kliknięcie obsługuje cała karta */
-            width: 100%;
-        }
-
-        /* Formularz na stronie głównej */
-        .checkout-form {
-            background: var(--surface-color);
-            padding: 2.5rem;
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .order-summary {
-            background: var(--surface-light);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px dashed rgba(212, 175, 55, 0.3);
-        }
-
-        .form-group { margin-bottom: 1.5rem; }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            color: var(--text-main);
-            font-size: 1rem;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 8px var(--gold-glow);
-        }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .qty-controls input {
-            width: 80px;
-            text-align: center;
-        }
-
-        .qty-controls span {
-            color: var(--gold);
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        button.btn-primary {
-            background: var(--gold);
-            color: var(--bg-color);
-            border: 1px solid var(--gold);
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        button.btn-primary:hover {
-            background: transparent;
-            color: var(--gold);
-            box-shadow: 0 0 20px var(--gold-glow);
+            pointer-events: none;
         }
 
         /* Widok Produktu */
@@ -346,12 +261,17 @@
             color: var(--gold);
             margin-bottom: 0.5rem;
         }
-        
+
         .product-header .detail-price {
             font-size: 2rem;
-            color: var(--text-main);
-            margin-bottom: 1rem;
             font-weight: bold;
+            color: #fff;
+            margin-bottom: 1.2rem;
+        }
+
+        .product-header .detail-price span {
+            color: var(--gold);
+            font-size: 1.2rem;
         }
 
         .lab-badge {
@@ -416,6 +336,104 @@
             text-align: center;
         }
 
+        button.btn-primary {
+            background: var(--gold);
+            color: var(--bg-color);
+            border: 1px solid var(--gold);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button.btn-primary:hover {
+            background: transparent;
+            color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        /* Widok Kasy (Checkout) */
+        .checkout-form {
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .order-summary {
+            background: var(--surface-light);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 8px var(--gold-glow);
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .qty-controls input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .qty-controls span {
+            color: var(--text-main);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .total-box {
+            text-align: right;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        .total-box strong {
+            color: #fff;
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+        .total-box span {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
         /* Modal */
         .modal-overlay {
             display: none;
@@ -457,12 +475,12 @@
         const products = {
             'retatrutyd': {
                 name: 'Retatrutyd 10mg',
-                price: '299 zł',
+                price: 350,
                 desc: 'Jeden z najbardziej zaawansowanych peptydów badawczych dostępnych na rynku. Potrójny agonista receptorów, zaprojektowany z myślą o maksymalnej optymalizacji procesów metabolicznych w środowisku laboratoryjnym. Preparat charakteryzuje się wyjątkową stabilnością strukturalną i ekstremalną czystością, co czyni go idealnym wyborem do zaawansowanych badań in vitro.',
             },
             'melanotan': {
                 name: 'Melanotan MT-2',
-                price: '149 zł',
+                price: 90,
                 desc: 'Wysokoskoncentrowany analog hormonu stymulującego alfa-melanocyty (α-MSH). Syntetyczny peptyd badawczy opracowany w celu analizy procesów melanogenezy. W badaniach laboratoryjnych wykazuje silne powinowactwo do receptorów melanokortynowych. Produkt poddawany wieloetapowej liofilizacji, gwarantującej pełną integralność łańcucha peptydowego.'
             }
         };
@@ -481,21 +499,17 @@
         function openProduct(productId) {
             const prod = products[productId];
             document.getElementById('detail-title').innerText = prod.name;
-            document.getElementById('detail-price').innerText = prod.price;
+            document.getElementById('detail-price').innerHTML = prod.price + ' <span>PLN</span>';
             document.getElementById('detail-desc').innerText = prod.desc;
             
             // Konfiguracja przycisku Kup Teraz
             const btn = document.getElementById('buy-now-btn');
-            btn.onclick = () => scrollToOrder(productId);
+            btn.onclick = () => goToCheckout(productId);
             
             showView('view-product');
         }
 
-        function scrollToOrder(prefillProductId = null) {
-            // Wróć na stronę główną
-            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-home').classList.add('active');
-
+        function goToCheckout(prefillProductId = null) {
             // Resetuj ilości
             document.getElementById('qty-retatrutyd').value = 0;
             document.getElementById('qty-melanotan').value = 0;
@@ -505,10 +519,16 @@
                 document.getElementById('qty-' + prefillProductId).value = 1;
             }
             
-            // Płynny zjazd do formularza zamówienia
-            setTimeout(() => {
-                document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            calculateTotal(); // Przelicz cenę startową
+            showView('view-checkout');
+        }
+        
+        function calculateTotal() {
+            const retaQty = parseInt(document.getElementById('qty-retatrutyd').value) || 0;
+            const melaQty = parseInt(document.getElementById('qty-melanotan').value) || 0;
+            
+            const total = (retaQty * products.retatrutyd.price) + (melaQty * products.melanotan.price);
+            document.getElementById('total-amount').innerText = total;
         }
 
         // Logika formularza zamówienia
@@ -529,7 +549,7 @@
             submitBtn.disabled = true;
 
             try {
-                // Symulacja ładowania
+                // Tu w przyszłości podepniemy Firebase. Na razie symulujemy 1 sekundę ładowania.
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
                 const shippingMethod = document.getElementById('shipping').value;
@@ -560,6 +580,7 @@
 
         function closeModal() {
             document.getElementById('successModal').style.display = 'none';
+            goToHome();
         }
     </script>
 </head>
@@ -574,7 +595,7 @@
     </header>
 
     <main>
-        <!-- WIDOK 1: STRONA GŁÓWNA (Ceny + Produkty + Formularz) -->
+        <!-- WIDOK 1: STRONA GŁÓWNA -->
         <div id="view-home" class="view active">
             
             <section class="guarantee-section">
@@ -602,13 +623,15 @@
                 <div class="product-card" onclick="openProduct('retatrutyd')">
                     <div class="product-card-inner">
                         <h3>Retatrutyd 10mg</h3>
-                        <div class="product-price">299 zł <span>/ zestaw</span></div>
+                        <div class="price-tag">350 <span>PLN</span></div>
                         <p>Innowacyjny, potrójny agonista. Najwyższy stopień standaryzacji laboratoryjnej.</p>
-                        <button class="btn-view">Sprawdź szczegóły zestawu</button>
+                        <button class="btn-view">Sprawdź szczegóły</button>
                     </div>
                 </div>
                 <!-- Karta Melanotan -->
                 <div class="product-card" onclick="openProduct('melanotan')">
                     <div class="product-card-inner">
                         <h3>Melanotan MT-2</h3>
-                        <div class="product-price">14
+                        <div class="price-tag">90 <span>PLN</span></div>
+                        <p>Silny analog α-MSH. Kompletny zestaw przygotowany do zaawansowanych badań.</p>
+                        <button class="btn-view">Sprawdź szczegóły</button>
