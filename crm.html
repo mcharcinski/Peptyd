@@ -43,6 +43,23 @@
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        
+        /* Panel Analityczny i Filtry */
+        .controls-wrapper { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; margin-bottom: 1.5rem; }
+        
+        .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .date-btn { background: #000; border: 1px solid #333; color: var(--text-muted); padding: 8px 15px; cursor: pointer; font-size: 0.85rem; border-radius: 4px; transition: 0.3s; }
+        .date-btn:hover { border-color: var(--gold); }
+        .date-btn.active { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: var(--gold); }
+
+        .search-input { width: 100%; max-width: 350px; padding: 10px 15px; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; outline: none; border-radius: 4px; }
+        .search-input:focus { border-color: var(--gold); }
+
+        .summary-panel { display: flex; gap: 1.5rem; }
+        .summary-card { background: var(--surface-color); border: 1px dashed var(--gold); padding: 15px 25px; border-radius: 4px; text-align: right; min-width: 150px; }
+        .summary-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .summary-value { color: #fff; font-size: 1.5rem; font-weight: bold; }
+        .summary-value span { color: var(--gold); font-size: 1rem; }
 
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; background: var(--surface-color); border: 1px solid #333; }
@@ -76,6 +93,8 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        window.currentDateFilter = 'all';
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -119,20 +138,25 @@
                 
                 if (snapshot.empty) {
                     tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
+                    window.applyFilters();
                     return;
                 }
 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+                    const dateObj = new Date(data.date);
+                    const dateFormatted = dateObj.toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
                     
                     const paymentBadge = data.payment === 'blik' 
                         ? '<span class="badge-blik">BLIK (15zł)</span>' 
                         : '<span class="badge-pobranie">Pobranie (20zł)</span>';
+                    
+                    // Zapisujemy oryginalną datę i kwotę jako atrybuty do późniejszego filtrowania i sumowania
+                    const totalAmt = parseFloat(data.total_amount) || 0;
 
                     tbody.innerHTML += `
-                        <tr>
-                            <td style="color: var(--text-muted); font-size: 0.85rem;">${date}</td>
+                        <tr class="order-row" data-date="${data.date}" data-amount="${totalAmt}">
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">${dateFormatted}</td>
                             <td>
                                 <strong style="color: #fff;">${data.name}</strong><br>
                                 <span style="color:var(--text-muted); font-size: 0.8rem;">${data.email} | ${data.phone}</span>
@@ -141,12 +165,16 @@
                                 Reta: <span class="badge-qty">${data.retatrutyd_qty}</span><br>
                                 Mela: <span class="badge-qty">${data.melanotan_qty}</span>
                             </td>
-                            <td style="font-weight: bold; color: var(--gold);">${data.total_amount} PLN</td>
+                            <td style="font-weight: bold; color: var(--gold);">${totalAmt} PLN</td>
                             <td>${paymentBadge}</td>
                             <td style="font-weight: bold; letter-spacing: 1px;">${data.paczkomat}</td>
                         </tr>
                     `;
                 });
+
+                // Uruchamiamy przeliczenie podsumowania po załadowaniu
+                window.applyFilters();
+
             } catch(e) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
             }
@@ -210,6 +238,28 @@
         </div>
 
         <div id="orders-tab" class="tab-content active">
+            
+            <div class="controls-wrapper">
+                <div class="filters-group">
+                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
+                    <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
+                    <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
+                    <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
+                    <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
+                </div>
+                
+                <div class="summary-panel">
+                    <div class="summary-card">
+                        <div class="summary-label">Zamówienia</div>
+                        <div class="summary-value" id="sum-count">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Przychód ze sprzedaży</div>
+                        <div class="summary-value"><span id="sum-amount">0</span> <span>PLN</span></div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="table-container">
                 <table>
                     <thead>
@@ -249,6 +299,63 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
+        }
+
+        window.setDateFilter = function(filterType, btnElement) {
+            window.currentDateFilter = filterType;
+            // Aktualizacja wyglądu przycisków
+            document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            window.applyFilters();
+        }
+
+        // Główna funkcja filtrująca i podliczająca przychód
+        window.applyFilters = function() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#orders-body .order-row');
+            
+            let visibleCount = 0;
+            let visibleAmount = 0;
+            const now = new Date();
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const rowDateStr = row.getAttribute('data-date');
+                const rowAmount = parseFloat(row.getAttribute('data-amount')) || 0;
+                
+                let matchesSearch = text.includes(searchInput);
+                let matchesDate = true;
+
+                if (rowDateStr) {
+                    const rowDate = new Date(rowDateStr);
+                    
+                    if (window.currentDateFilter === 'today') {
+                        matchesDate = rowDate.toDateString() === now.toDateString();
+                    } else if (window.currentDateFilter === 'week') {
+                        const diffTime = Math.abs(now - rowDate);
+                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                        matchesDate = diffDays <= 7;
+                    } else if (window.currentDateFilter === 'month') {
+                        const diffTime = Math.abs(now - rowDate);
+                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                        matchesDate = diffDays <= 30;
+                    }
+                }
+
+                // Jeśli spełnia oba warunki (tekst + data), pokazujemy i dodajemy do podsumowania
+                if (matchesSearch && matchesDate) {
+                    row.style.display = '';
+                    visibleCount++;
+                    visibleAmount += rowAmount;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Aktualizacja kafelków podsumowania
+            document.getElementById('sum-count').innerText = visibleCount;
+            document.getElementById('sum-amount').innerText = visibleAmount;
         }
     </script>
 </body>
