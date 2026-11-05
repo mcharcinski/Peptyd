@@ -14,6 +14,7 @@
             --text-muted: #888888;
             --danger: #ff4444;
             --success: #4CAF50;
+            --info: #2196F3;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         body { background: var(--bg-color); color: var(--text-main); }
@@ -35,7 +36,7 @@
         }
         .login-box button:hover { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
 
-        #dashboard { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        #dashboard { display: none; padding: 2rem; max-width: 1300px; margin: 0 auto; }
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 1rem; margin-bottom: 2rem; }
         h1 { color: var(--gold); font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
         
@@ -49,15 +50,16 @@
         /* Panel Analityczny i Filtry */
         .controls-wrapper { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; margin-bottom: 1.5rem; }
         
-        .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .date-btn { background: #000; border: 1px solid #333; color: var(--text-muted); padding: 8px 15px; cursor: pointer; font-size: 0.85rem; border-radius: 4px; transition: 0.3s; }
-        .date-btn:hover { border-color: var(--gold); }
-        .date-btn.active { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: var(--gold); }
+        .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--surface-color); padding: 8px 15px; border-radius: 4px; border: 1px solid #333; }
+        .filter-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-right: 5px; }
+        .date-btn, .status-btn { background: #000; border: 1px solid #333; color: var(--text-muted); padding: 6px 12px; cursor: pointer; font-size: 0.8rem; border-radius: 4px; transition: 0.3s; }
+        .date-btn:hover, .status-btn:hover { border-color: var(--gold); }
+        .date-btn.active, .status-btn.active { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: var(--gold); }
 
-        .search-input { width: 100%; max-width: 350px; padding: 10px 15px; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; outline: none; border-radius: 4px; }
+        .search-input { width: 100%; max-width: 300px; padding: 10px 15px; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; outline: none; border-radius: 4px; }
         .search-input:focus { border-color: var(--gold); }
 
-        .summary-panel { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .summary-panel { display: flex; flex-wrap: wrap; gap: 1rem; width: 100%; }
         .summary-card { background: var(--surface-color); border: 1px dashed var(--gold); padding: 15px 25px; border-radius: 4px; text-align: right; min-width: 150px; flex: 1; }
         .summary-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .summary-value { color: #fff; font-size: 1.4rem; font-weight: bold; }
@@ -75,6 +77,20 @@
         th { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; background: #0d0d0d; font-size: 0.8rem; }
         tr:hover { background: rgba(255, 255, 255, 0.02); }
         
+        /* Statusy i Checkboxy */
+        .status-group { display: flex; flex-direction: column; gap: 6px; }
+        .status-checkbox { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; }
+        .status-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        
+        .status-label.paid.active { color: var(--success); font-weight: bold; }
+        .status-label.sent.active { color: var(--info); font-weight: bold; }
+        .status-label.cancelled.active { color: var(--danger); font-weight: bold; }
+        
+        /* Klasa dla anulowanego wiersza */
+        .row-cancelled { opacity: 0.5; }
+        .row-cancelled td { text-decoration: line-through; color: #777 !important; }
+        .row-cancelled td .status-group, .row-cancelled td .delete-btn { text-decoration: none; opacity: 1; }
+
         button.logout-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; border-radius: 4px; }
         button.logout-btn:hover { background: var(--danger); color: #fff; }
 
@@ -99,7 +115,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC0AGUVIRudjS590eHayYQi8upP25z_8gI",
@@ -116,9 +132,9 @@
         const db = getFirestore(app);
 
         window.currentDateFilter = 'all';
+        window.currentStatusFilter = 'all';
         window.knownProducts = new Set();
         
-        // Słownik dedykowanych nazw do wyświetlania w CRM
         window.productDisplayNames = {
             'retatrutyd': 'Retatrutyd 10mg',
             'melanotan': 'Melanotan MT-2'
@@ -153,31 +169,56 @@
 
         window.logoutCRM = function() { signOut(auth); };
 
+        // Usuwanie rekordów
         window.deleteOrder = async function(docId) {
-            if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy? Tej operacji nie można cofnąć.")) {
-                try {
-                    await deleteDoc(doc(db, "orders", docId));
-                    loadOrders(); 
-                } catch (error) {
-                    alert("Wystąpił błąd podczas usuwania: " + error.message);
-                }
+            if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy?")) {
+                try { await deleteDoc(doc(db, "orders", docId)); loadOrders(); } 
+                catch (error) { alert("Błąd: " + error.message); }
             }
         };
 
         window.deleteMessage = async function(docId) {
             if (confirm("Czy na pewno chcesz usunąć tę wiadomość?")) {
-                try {
-                    await deleteDoc(doc(db, "messages", docId));
-                    loadMessages(); 
-                } catch (error) {
-                    alert("Wystąpił błąd podczas usuwania: " + error.message);
-                }
+                try { await deleteDoc(doc(db, "messages", docId)); loadMessages(); } 
+                catch (error) { alert("Błąd: " + error.message); }
             }
+        };
+
+        // Zmiana statusów Zamówień na żywo
+        window.toggleOrderStatus = async function(docId, field, isChecked) {
+            const row = document.getElementById(`order-row-${docId}`);
+            const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
+            
+            // Aktualizacja lokalnego obiektu i wiersza
+            dataObj[field] = isChecked;
+            row.setAttribute('data-raw', encodeURIComponent(JSON.stringify(dataObj)));
+            
+            // Aktualizacja wyglądu
+            const label = document.getElementById(`label-${field}-${docId}`);
+            if(isChecked) label.classList.add('active'); else label.classList.remove('active');
+            
+            if(field === 'cancelled') {
+                if(isChecked) row.classList.add('row-cancelled'); else row.classList.remove('row-cancelled');
+            }
+
+            window.applyFilters(); // Przelicz pieniądze od razu
+            
+            // Zapis w Firebase
+            try { await updateDoc(doc(db, "orders", docId), { [field]: isChecked }); } 
+            catch (error) { alert("Błąd zapisu w bazie: " + error.message); }
+        };
+
+        // Zmiana statusu Wiadomości
+        window.toggleMessageStatus = async function(docId, isChecked) {
+            const label = document.getElementById(`label-msg-${docId}`);
+            if(isChecked) label.classList.add('active'); else label.classList.remove('active');
+            try { await updateDoc(doc(db, "messages", docId), { replied: isChecked }); } 
+            catch (error) { alert("Błąd zapisu w bazie: " + error.message); }
         };
 
         async function loadOrders() {
             const tbody = document.getElementById('orders-body');
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Ładowanie danych...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Ładowanie danych...</td></tr>';
             window.knownProducts.clear();
             
             try {
@@ -186,7 +227,7 @@
                 tbody.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
                     window.loadCostSettings();
                     return;
                 }
@@ -205,18 +246,26 @@
                         if (key.endsWith('_qty') && data[key] > 0) {
                             let prodId = key.replace('_qty', '');
                             window.knownProducts.add(prodId); 
-                            
-                            // Pobranie własnej nazwy lub wygenerowanie domyślnej
                             let displayName = window.productDisplayNames[prodId] || (prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' '));
-                            
                             productsDisplay += `<div style="margin-bottom: 2px;">${displayName}: <span class="badge-qty">${data[key]}</span></div>`;
                         }
                     }
 
                     const rawDataStr = encodeURIComponent(JSON.stringify(data));
+                    
+                    // Odczyt statusów z bazy
+                    const isPaid = data.paid ? 'checked' : '';
+                    const classPaid = data.paid ? 'active' : '';
+                    
+                    const isSent = data.sent ? 'checked' : '';
+                    const classSent = data.sent ? 'active' : '';
+                    
+                    const isCancelled = data.cancelled ? 'checked' : '';
+                    const classCancelled = data.cancelled ? 'active' : '';
+                    const rowCancelledClass = data.cancelled ? 'row-cancelled' : '';
 
                     tbody.innerHTML += `
-                        <tr class="order-row" data-date="${data.date}" data-raw="${rawDataStr}">
+                        <tr class="order-row ${rowCancelledClass}" id="order-row-${docId}" data-date="${data.date}" data-raw="${rawDataStr}">
                             <td style="color: var(--text-muted); font-size: 0.85rem;">${dateFormatted}</td>
                             <td>
                                 <strong style="color: #fff;">${data.name}</strong><br>
@@ -227,6 +276,19 @@
                             <td>${paymentBadge}</td>
                             <td style="font-weight: bold; letter-spacing: 1px;">${data.paczkomat}</td>
                             <td>
+                                <div class="status-group">
+                                    <label class="status-label paid ${classPaid}" id="label-paid-${docId}">
+                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'paid', this.checked)" ${isPaid}> Opłacono
+                                    </label>
+                                    <label class="status-label sent ${classSent}" id="label-sent-${docId}">
+                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'sent', this.checked)" ${isSent}> Wysłano
+                                    </label>
+                                    <label class="status-label cancelled ${classCancelled}" id="label-cancelled-${docId}">
+                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'cancelled', this.checked)" ${isCancelled}> Anulowano
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
                                 <button class="delete-btn" onclick="deleteOrder('${docId}')">Usuń</button>
                             </td>
                         </tr>
@@ -236,7 +298,7 @@
                 window.loadCostSettings();
 
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
             }
         }
 
@@ -248,7 +310,7 @@
                 tbody.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
                     return;
                 }
 
@@ -257,17 +319,25 @@
                     const docId = documentSnapshot.id;
                     const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
                     
+                    const isReplied = data.replied ? 'checked' : '';
+                    const classReplied = data.replied ? 'active' : '';
+
                     tbody.innerHTML += `<tr>
                         <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
-                        <td style="width: 250px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
+                        <td style="width: 200px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
                         <td style="line-height: 1.4;">${data.message}</td>
-                        <td>
+                        <td style="width: 150px;">
+                            <label class="status-label paid ${classReplied}" id="label-msg-${docId}">
+                                <input type="checkbox" class="status-checkbox" onchange="toggleMessageStatus('${docId}', this.checked)" ${isReplied}> Odpowiedziano
+                            </label>
+                        </td>
+                        <td style="width: 100px;">
                             <button class="delete-btn" onclick="deleteMessage('${docId}')">Usuń</button>
                         </td>
                     </tr>`;
                 });
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
             }
         }
 
@@ -289,13 +359,10 @@
         window.renderCostSettings = function() {
             const grid = document.getElementById('dynamic-costs-grid');
             grid.innerHTML = '';
-            
             const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
             
             allProducts.forEach(prod => {
                 const val = window.costSettings.products[prod] || 0;
-                
-                // Pobranie własnej nazwy z obiektu lub wygenerowanie domyślnej
                 const displayName = window.productDisplayNames[prod] || (prod.charAt(0).toUpperCase() + prod.slice(1).replace(/_/g, ' '));
                 
                 grid.innerHTML += `
@@ -306,7 +373,6 @@
                     </div>
                 `;
             });
-
             document.getElementById('cost-extras').value = window.costSettings.extras;
             document.getElementById('cost-pkg').value = window.costSettings.pkg;
         };
@@ -317,12 +383,11 @@
                 const input = document.getElementById(`cost-prod-${prod}`);
                 if(input) { window.costSettings.products[prod] = parseFloat(input.value) || 0; }
             });
-            
             window.costSettings.extras = parseFloat(document.getElementById('cost-extras').value) || 0;
             window.costSettings.pkg = parseFloat(document.getElementById('cost-pkg').value) || 0;
-
             localStorage.setItem('hexalabs_costs', JSON.stringify(window.costSettings));
-            alert("Koszty zostały zapisane! Zysk w zamówieniach został automatycznie zaktualizowany.");
+            
+            alert("Koszty zapisane! Zysk został przeliczony.");
             window.applyFilters();
             window.switchTab('orders-tab', document.querySelector('.tab-btn'));
         };
@@ -342,6 +407,13 @@
             window.applyFilters();
         };
 
+        window.setStatusFilter = function(statusType, btnElement) {
+            window.currentStatusFilter = statusType;
+            document.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            window.applyFilters();
+        };
+
         window.applyFilters = function() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
             const rows = document.querySelectorAll('#orders-body .order-row');
@@ -354,12 +426,13 @@
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 const rowDateStr = row.getAttribute('data-date');
-                
                 const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
                 
                 let matchesSearch = text.includes(searchInput);
                 let matchesDate = true;
+                let matchesStatus = true;
 
+                // Filtr Daty
                 if (rowDateStr) {
                     const rowDate = new Date(rowDateStr);
                     if (window.currentDateFilter === 'today') { matchesDate = rowDate.toDateString() === now.toDateString(); }
@@ -367,27 +440,32 @@
                     else if (window.currentDateFilter === 'month') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 30; }
                 }
 
-                if (matchesSearch && matchesDate) {
+                // Filtr Statusu Zestawienia
+                if (window.currentStatusFilter === 'sent') { matchesStatus = dataObj.sent === true; }
+                if (window.currentStatusFilter === 'cancelled') { matchesStatus = dataObj.cancelled === true; }
+
+                if (matchesSearch && matchesDate && matchesStatus) {
                     row.style.display = '';
                     visibleCount++;
                     
-                    const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
-                    const totalAmt = parseFloat(dataObj.total_amount) || 0;
-                    
-                    const itemsRevenue = Math.max(0, totalAmt - shippingFee);
-                    let orderItemCost = window.costSettings.pkg;
-                    
-                    for (let key in dataObj) {
-                        if (key.endsWith('_qty') && dataObj[key] > 0) {
-                            let prodId = key.replace('_qty', '');
-                            let qty = parseInt(dataObj[key]);
-                            let prodBaseCost = window.costSettings.products[prodId] || 0;
-                            orderItemCost += qty * (prodBaseCost + window.costSettings.extras);
+                    // UWAGA: Anulowane zamówienia NIE wliczają się do zysku i statystyk finansowych
+                    if (dataObj.cancelled !== true) {
+                        const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
+                        const totalAmt = parseFloat(dataObj.total_amount) || 0;
+                        const itemsRevenue = Math.max(0, totalAmt - shippingFee);
+                        
+                        let orderItemCost = window.costSettings.pkg;
+                        for (let key in dataObj) {
+                            if (key.endsWith('_qty') && dataObj[key] > 0) {
+                                let prodId = key.replace('_qty', '');
+                                let qty = parseInt(dataObj[key]);
+                                let prodBaseCost = window.costSettings.products[prodId] || 0;
+                                orderItemCost += qty * (prodBaseCost + window.costSettings.extras);
+                            }
                         }
+                        totalRevenue += itemsRevenue;
+                        totalCosts += orderItemCost;
                     }
-
-                    totalRevenue += itemsRevenue;
-                    totalCosts += orderItemCost;
                 } else {
                     row.style.display = 'none';
                 }
@@ -430,14 +508,28 @@
         <div id="orders-tab" class="tab-content active">
             
             <div class="controls-wrapper">
-                <div class="filters-group">
+                
+                <!-- Pasek Filtrów -->
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
-                    <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
-                    <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
-                    <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
-                    <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
+                    
+                    <div class="filters-group">
+                        <span class="filter-label">Data:</span>
+                        <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
+                        <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
+                        <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
+                        <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
+                    </div>
+
+                    <div class="filters-group">
+                        <span class="filter-label">Zestawienie:</span>
+                        <button class="status-btn active" onclick="setStatusFilter('all', this)">Wszystkie</button>
+                        <button class="status-btn" onclick="setStatusFilter('sent', this)">Tylko Wysłane</button>
+                        <button class="status-btn" onclick="setStatusFilter('cancelled', this)">Tylko Anulowane</button>
+                    </div>
                 </div>
                 
+                <!-- Analityka -->
                 <div class="summary-panel">
                     <div class="summary-card">
                         <div class="summary-label">Zamówienia</div>
@@ -468,6 +560,7 @@
                             <th>Kwota</th>
                             <th>Dostawa / Płatność</th>
                             <th>Paczkomat</th>
+                            <th>Status</th>
                             <th>Akcje</th>
                         </tr>
                     </thead>
@@ -480,10 +573,10 @@
         <div id="costs-tab" class="tab-content">
             <div class="cost-box">
                 <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Parametry kosztów zakupu</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Wprowadź swoje stawki bazowe. Zysk ze sprzedaży przeliczy się automatycznie w panelu zamówień.</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Wprowadź swoje stawki bazowe. Zysk ze sprzedaży przeliczy się automatycznie.</p>
 
                 <div class="cost-grid" id="dynamic-costs-grid">
-                    <!-- Wygeneruje się dynamicznie przez JS na podstawie produktów z bazy -->
+                    <!-- Dynamiczne pola z JS -->
                 </div>
 
                 <div class="cost-grid" style="border-top: 1px solid #333; padding-top: 1.5rem;">
@@ -512,6 +605,7 @@
                             <th>Data</th>
                             <th>Nadawca</th>
                             <th>Treść Wiadomości</th>
+                            <th>Status</th>
                             <th>Akcje</th>
                         </tr>
                     </thead>
