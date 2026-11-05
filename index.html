@@ -48,38 +48,46 @@
         /* Nagłówek wspólny */
         header {
             text-align: center;
-            padding: 3rem 2rem 2rem;
+            padding: 2.5rem 2rem 1.5rem;
             background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%);
             border-bottom: 1px solid rgba(212, 175, 55, 0.15);
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
+            gap: 12px;
+            margin-bottom: 0.2rem;
         }
 
         .hexagon {
-            width: 35px;
-            height: 40px;
+            width: 30px;
+            height: 35px;
             background-color: transparent;
             border: 2px solid var(--gold);
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 15px var(--gold-glow);
+            box-shadow: 0 0 10px var(--gold-glow);
         }
 
         h1 {
             color: var(--gold);
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 300;
@@ -87,9 +95,47 @@
 
         .subtitle {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            letter-spacing: 5px;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
+        }
+
+        /* Koszyk Ikona w Headerze */
+        .cart-icon-btn {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gold);
+            cursor: pointer;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon-btn:hover {
+            filter: drop-shadow(0 0 8px var(--gold-glow-strong));
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--gold);
+            color: var(--bg-color);
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-color);
         }
 
         main {
@@ -159,33 +205,16 @@
         .product-card {
             background: linear-gradient(145deg, var(--surface-light) 0%, var(--surface-color) 100%);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .product-card:hover::before {
-            left: 150%;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
         }
 
         .product-card:hover {
             box-shadow: 0 0 25px var(--gold-glow-strong);
             border-color: var(--gold);
-            transform: scale(1.02);
-        }
-
-        .product-card-inner {
-            padding: 2.5rem 1.5rem;
-            text-align: center;
         }
 
         .product-card h3 {
@@ -223,7 +252,14 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.85rem;
-            pointer-events: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-view:hover {
+            background: var(--gold);
+            color: var(--bg-color);
         }
 
         /* Widok Produktu */
@@ -332,10 +368,6 @@
             font-weight: bold;
         }
 
-        .order-action-bar {
-            text-align: center;
-        }
-
         button.btn-primary {
             background: var(--gold);
             color: var(--bg-color);
@@ -347,6 +379,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
         }
         
         button.btn-primary:hover {
@@ -355,18 +388,81 @@
             box-shadow: 0 0 20px var(--gold-glow);
         }
 
-        /* Widok Kasy (Checkout) */
-        .checkout-form {
+        /* Widok Koszyka / Kasy */
+        .cart-container {
             background: var(--surface-color);
-            padding: 2.5rem;
+            padding: 2rem;
             border: 1px solid rgba(212, 175, 55, 0.15);
+            margin-bottom: 2rem;
         }
 
-        .order-summary {
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .cart-item-info strong {
+            display: block;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-info span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border: 1px solid #333;
+        }
+
+        .cart-item-qty button {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .cart-item-total {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .total-box {
+            text-align: right;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        .total-box strong {
+            color: #fff;
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+        
+        .total-box span {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .checkout-form {
             background: var(--surface-light);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px dashed rgba(212, 175, 55, 0.3);
+            padding: 2.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.15);
         }
 
         .form-group { margin-bottom: 1.5rem; }
@@ -396,42 +492,26 @@
             box-shadow: 0 0 8px var(--gold-glow);
         }
 
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .qty-controls input {
-            width: 80px;
-            text-align: center;
-        }
-
-        .qty-controls span {
-            color: var(--text-main);
+        /* Powiadomienie Toast */
+        .toast {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--bg-color);
+            padding: 12px 25px;
+            border-radius: 30px;
             font-weight: bold;
+            text-transform: uppercase;
             letter-spacing: 1px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px var(--gold-glow-strong);
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
         }
-        
-        .total-box {
-            text-align: right;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
-        
-        .total-box strong {
-            color: #fff;
-            font-size: 1.8rem;
-            margin-left: 10px;
-        }
-        .total-box span {
-            color: var(--gold);
-            font-size: 1.2rem;
-            font-weight: bold;
+        .toast.show {
+            bottom: 30px;
         }
 
         /* Modal */
@@ -440,7 +520,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
+            z-index: 3000;
             align-items: center;
             justify-content: center;
         }
@@ -467,10 +547,14 @@
 
         @media (min-width: 768px) {
             .kit-list { grid-template-columns: 1fr 1fr; }
+            .cart-item { flex-direction: row; }
+        }
+        @media (max-width: 767px) {
+            .cart-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .cart-item-total { align-self: flex-end; }
         }
     </style>
 
-    <!-- Baza danych produktów -->
     <script>
         const products = {
             'retatrutyd': {
@@ -485,7 +569,13 @@
             }
         };
 
-        // Funkcje nawigacji
+        // Stan koszyka
+        let cart = {
+            'retatrutyd': 0,
+            'melanotan': 0
+        };
+        let currentProductId = null;
+
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
@@ -497,141 +587,91 @@
         }
 
         function openProduct(productId) {
+            currentProductId = productId;
             const prod = products[productId];
             document.getElementById('detail-title').innerText = prod.name;
             document.getElementById('detail-price').innerHTML = prod.price + ' <span>PLN</span>';
             document.getElementById('detail-desc').innerText = prod.desc;
-            
-            // Konfiguracja przycisku Kup Teraz
-            const btn = document.getElementById('buy-now-btn');
-            btn.onclick = () => goToCheckout(productId);
-            
             showView('view-product');
         }
 
-        function goToCheckout(prefillProductId = null) {
-            // Resetuj ilości
-            document.getElementById('qty-retatrutyd').value = 0;
-            document.getElementById('qty-melanotan').value = 0;
-
-            // Ustaw 1 sztukę dla wybranego produktu
-            if(prefillProductId) {
-                document.getElementById('qty-' + prefillProductId).value = 1;
+        function addToCart() {
+            if (currentProductId) {
+                cart[currentProductId]++;
+                updateCartBadge();
+                showToast("Dodano do koszyka");
             }
-            
-            calculateTotal(); // Przelicz cenę startową
-            showView('view-checkout');
-        }
-        
-        function calculateTotal() {
-            const retaQty = parseInt(document.getElementById('qty-retatrutyd').value) || 0;
-            const melaQty = parseInt(document.getElementById('qty-melanotan').value) || 0;
-            
-            const total = (retaQty * products.retatrutyd.price) + (melaQty * products.melanotan.price);
-            document.getElementById('total-amount').innerText = total;
         }
 
-        // Logika formularza zamówienia
-        window.submitOrder = async function(event) {
-            event.preventDefault();
+        function updateCartBadge() {
+            const totalItems = cart.retatrutyd + cart.melanotan;
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = totalItems;
             
-            const retaQty = parseInt(document.getElementById('qty-retatrutyd').value) || 0;
-            const melaQty = parseInt(document.getElementById('qty-melanotan').value) || 0;
+            if(totalItems > 0) {
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
 
-            if (retaQty === 0 && melaQty === 0) {
-                alert("Proszę wybrać co najmniej 1 zestaw przed złożeniem zamówienia.");
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function openCart() {
+            renderCart();
+            showView('view-cart');
+        }
+
+        function updateQty(productId, delta) {
+            if (cart[productId] + delta >= 0) {
+                cart[productId] += delta;
+                updateCartBadge();
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const itemsContainer = document.getElementById('cart-items');
+            const checkoutForm = document.getElementById('checkout-form');
+            const totalAmountSpan = document.getElementById('cart-total-amount');
+            
+            itemsContainer.innerHTML = '';
+            let total = 0;
+            let totalItems = cart.retatrutyd + cart.melanotan;
+
+            if (totalItems === 0) {
+                itemsContainer.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin: 2rem 0;">Twój koszyk jest pusty.</p>';
+                checkoutForm.style.display = 'none';
+                totalAmountSpan.innerText = '0';
                 return;
             }
 
-            const submitBtn = document.getElementById('submit-btn');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = 'PRZETWARZANIE...';
-            submitBtn.disabled = true;
+            checkoutForm.style.display = 'block';
 
-            try {
-                // Tu w przyszłości podepniemy Firebase. Na razie symulujemy 1 sekundę ładowania.
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                const shippingMethod = document.getElementById('shipping').value;
-                showModal(shippingMethod);
-                document.getElementById('orderForm').reset();
-            } catch (error) {
-                alert("Wystąpił błąd. Spróbuj ponownie później.");
-            } finally {
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }
-        }
-
-        function showModal(shippingMethod) {
-            const modal = document.getElementById('successModal');
-            const blikSection = document.getElementById('blikInstructions');
-            const msg = document.getElementById('modalMessage');
-
-            if (shippingMethod === 'przedplata_blik') {
-                msg.innerText = "Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie.";
-                blikSection.style.display = 'block';
-            } else {
-                msg.innerText = "Zamówienie w realizacji. Zapłacisz kartą/BLIKiem w Paczkomacie.";
-                blikSection.style.display = 'none';
-            }
-            modal.style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
-            goToHome();
-        }
-    </script>
-</head>
-<body>
-
-    <header onclick="goToHome()">
-        <div class="logo-container">
-            <div class="hexagon"></div>
-            <h1>HexaLab</h1>
-        </div>
-        <div class="subtitle">Research & Optimization</div>
-    </header>
-
-    <main>
-        <!-- WIDOK 1: STRONA GŁÓWNA -->
-        <div id="view-home" class="view active">
-            
-            <section class="guarantee-section">
-                <div class="guarantee-card">
-                    <div class="guarantee-icon">⚗️</div>
-                    <div class="guarantee-title">Czystość >99.9%</div>
-                    <div class="guarantee-text">Każda partia przechodzi rygorystyczne badania HPLC gwarantujące absolutny brak zanieczyszczeń strukturalnych.</div>
-                </div>
-                <div class="guarantee-card">
-                    <div class="guarantee-icon">🔬</div>
-                    <div class="guarantee-title">Pełne Zestawy</div>
-                    <div class="guarantee-text">Nie sprzedajemy półśrodków. Do każdego peptydu otrzymujesz kompletne zaplecze w postaci sprzętu i rozpuszczalników.</div>
-                </div>
-                <div class="guarantee-card">
-                    <div class="guarantee-icon">⚡</div>
-                    <div class="guarantee-title">Dyskrecja i Czas</div>
-                    <div class="guarantee-text">Błyskawiczna i w pełni anonimowa wysyłka do Paczkomatów InPost. Towar odpowiednio zabezpieczony termicznie.</div>
-                </div>
-            </section>
-
-            <h2 class="section-title">Wybierz preparat badawczy</h2>
-
-            <div class="products-grid">
-                <!-- Karta Retatrutyd -->
-                <div class="product-card" onclick="openProduct('retatrutyd')">
-                    <div class="product-card-inner">
-                        <h3>Retatrutyd 10mg</h3>
-                        <div class="price-tag">350 <span>PLN</span></div>
-                        <p>Innowacyjny, potrójny agonista. Najwyższy stopień standaryzacji laboratoryjnej.</p>
-                        <button class="btn-view">Sprawdź szczegóły</button>
-                    </div>
-                </div>
-                <!-- Karta Melanotan -->
-                <div class="product-card" onclick="openProduct('melanotan')">
-                    <div class="product-card-inner">
-                        <h3>Melanotan MT-2</h3>
-                        <div class="price-tag">90 <span>PLN</span></div>
-                        <p>Silny analog α-MSH. Kompletny zestaw przygotowany do zaawansowanych badań.</p>
-                        <button class="btn-view">Sprawdź szczegóły</button>
+            for (let [id, qty] of Object.entries(cart)) {
+                if (qty > 0) {
+                    const prod = products[id];
+                    const itemTotal = qty * prod.price;
+                    total += itemTotal;
+                    
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <strong>${prod.name}</strong>
+                                <span>${prod.price} PLN / szt.</span>
+                            </div>
+                            <div class="cart-item-qty">
+                                <button type="button" onclick="updateQty('${id}', -1)">-</button>
+                                <span style="min-width: 20px; text-align: center;">${qty}</span>
+                                <button type="button" onclick="updateQty('${id}', 1)">+</button>
+                            </div>
+                            <div class="cart-item-total">${itemTotal} PLN</div>
+                        </div>
+                    
