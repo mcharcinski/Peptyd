@@ -377,7 +377,7 @@
             letter-spacing: 1px;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 12px;
             background: #000;
@@ -386,9 +386,10 @@
             font-size: 1rem;
             border-radius: 0;
             outline: none;
+            font-family: inherit;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             border-color: var(--gold);
         }
 
@@ -443,6 +444,29 @@
             z-index: 600;
         }
     </style>
+
+    <!-- FIREBASE SDK (Moduły) - Zostaw zakomentowane dopóki nie dodasz konfiguracji -->
+    <!--
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "TWÓJ_API_KEY",
+            authDomain: "TWÓJ_PROJEKT.firebaseapp.com",
+            projectId: "TWÓJ_PROJEKT",
+            storageBucket: "TWÓJ_PROJEKT.appspot.com",
+            messagingSenderId: "ID",
+            appId: "APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+    -->
 </head>
 <body>
 
@@ -486,8 +510,7 @@
 
             <h2 class="section-title">Dostępne Preparaty</h2>
 
-            <div class="products-grid">
-                <!-- Retatrutyd -->
+            <div class="products-grid" style="margin-bottom: 4rem;">
                 <div class="product-card">
                     <h3>Retatrutyd 10mg</h3>
                     <div class="price-tag">350 <span>PLN</span></div>
@@ -495,13 +518,33 @@
                     <button class="btn-action" onclick="showProduct('retatrutyd')">Sprawdź szczegóły</button>
                 </div>
 
-                <!-- Melanotan -->
                 <div class="product-card">
                     <h3>Melanotan MT-2</h3>
                     <div class="price-tag">90 <span>PLN</span></div>
                     <p>Syntetyczny analog α-MSH poddany wieloetapowej liofilizacji laboratoryjnej.</p>
                     <button class="btn-action" onclick="showProduct('melanotan')">Sprawdź szczegóły</button>
                 </div>
+            </div>
+
+            <!-- SEKCJA KONTAKTOWA -->
+            <h2 class="section-title" id="kontakt">Kontakt z Laboratorium</h2>
+            <div class="form-box">
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Masz pytania dotyczące odczynników lub zamówień hurtowych? Napisz do nas.</p>
+                <form id="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label>Imię i Nazwisko / Nazwa firmy</label>
+                        <input type="text" id="contact-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Adres E-mail</label>
+                        <input type="email" id="contact-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Treść wiadomości</label>
+                        <textarea id="contact-msg" rows="4" style="resize: vertical;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-action" id="contact-submit-btn">Wyślij wiadomość</button>
+                </form>
             </div>
         </section>
 
@@ -555,22 +598,18 @@
                         <label>Imię i nazwisko</label>
                         <input type="text" id="order-name" required>
                     </div>
-
                     <div class="form-group">
                         <label>Adres E-mail</label>
                         <input type="email" id="order-email" required>
                     </div>
-
                     <div class="form-group">
                         <label>Numer telefonu</label>
                         <input type="tel" id="order-phone" required>
                     </div>
-
                     <div class="form-group">
                         <label>Paczkomat InPost (np. WAW123A)</label>
                         <input type="text" id="order-paczkomat" placeholder="Wpisz kod paczkomatu" required>
                     </div>
-
                     <div class="form-group">
                         <label>Forma Płatności / Dostawy</label>
                         <select id="order-payment" required onchange="updateCartUI()">
@@ -578,7 +617,6 @@
                             <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
-
                     <button type="submit" class="btn-action" id="submit-btn" style="margin-top: 1.5rem;">Złóż zamówienie</button>
                 </form>
             </div>
@@ -588,7 +626,7 @@
     <!-- Modal Powiadomienia -->
     <div id="modal-box" class="modal">
         <div class="modal-body">
-            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;">Zamówienie Przyjęte</h3>
+            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;" id="modal-title">Zamówienie Przyjęte</h3>
             <p id="modal-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;"></p>
             
             <div id="modal-blik" style="display: none;">
@@ -603,40 +641,21 @@
 
     <div id="toast-notify" class="toast">Dodano do koszyka</div>
 
-    <!-- Logika aplikacji -->
     <script>
         var catalog = {
-            'retatrutyd': {
-                name: 'Retatrutyd 10mg',
-                price: 350,
-                desc: 'Innowacyjny potrójny agonista receptorów przeznaczony do zaawansowanych badań laboratoryjnych nad optymalizacją procesów metabolicznych. Cechuje się najwyższą stabilnością liofilizatu.'
-            },
-            'melanotan': {
-                name: 'Melanotan MT-2',
-                price: 90,
-                desc: 'Syntetyczny analog hormonu α-MSH o wysokiej czystości, stosowany w badaniach nad mechanizmami melanogenezy. Odpowiednio zabezpieczony przed degradacją łańcucha.'
-            }
+            'retatrutyd': { name: 'Retatrutyd 10mg', price: 350, desc: 'Innowacyjny potrójny agonista receptorów przeznaczony do zaawansowanych badań laboratoryjnych nad optymalizacją procesów metabolicznych. Cechuje się najwyższą stabilnością liofilizatu.' },
+            'melanotan': { name: 'Melanotan MT-2', price: 90, desc: 'Syntetyczny analog hormonu α-MSH o wysokiej czystości, stosowany w badaniach nad mechanizmami melanogenezy. Odpowiednio zabezpieczony przed degradacją łańcucha.' }
         };
 
-        var userCart = {
-            'retatrutyd': 0,
-            'melanotan': 0
-        };
-
+        var userCart = { 'retatrutyd': 0, 'melanotan': 0 };
         var activeProductId = null;
 
         function navigateTo(viewId) {
             var views = document.querySelectorAll('.view-section');
-            for (var i = 0; i < views.length; i++) {
-                views[i].style.display = 'none';
-            }
+            for (var i = 0; i < views.length; i++) { views[i].style.display = 'none'; }
             var target = document.getElementById(viewId);
-            if (target) {
-                target.style.display = 'block';
-            }
-            if (viewId === 'view-cart') {
-                updateCartUI();
-            }
+            if (target) { target.style.display = 'block'; }
+            if (viewId === 'view-cart') { updateCartUI(); }
             window.scrollTo(0, 0);
         }
 
@@ -665,9 +684,7 @@
         function triggerToast() {
             var toast = document.getElementById('toast-notify');
             toast.style.display = 'block';
-            setTimeout(function() {
-                toast.style.display = 'none';
-            }, 1800);
+            setTimeout(function() { toast.style.display = 'none'; }, 1800);
         }
 
         function changeCartQty(prodKey, step) {
@@ -681,7 +698,6 @@
         function updateCartUI() {
             var container = document.getElementById('cart-content');
             var formWrapper = document.getElementById('form-container');
-            
             var subtotalDisplay = document.getElementById('cart-subtotal');
             var shippingDisplay = document.getElementById('cart-shipping');
             var sumDisplay = document.getElementById('cart-sum');
@@ -693,9 +709,7 @@
             if (totalQty === 0) {
                 container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 1.5rem 0;">Twój koszyk jest pusty.</p>';
                 formWrapper.style.display = 'none';
-                subtotalDisplay.innerText = '0';
-                shippingDisplay.innerText = '0';
-                sumDisplay.innerText = '0';
+                subtotalDisplay.innerText = '0'; shippingDisplay.innerText = '0'; sumDisplay.innerText = '0';
                 return;
             }
 
@@ -710,15 +724,8 @@
                     var row = document.createElement('div');
                     row.className = 'cart-row';
                     row.innerHTML = 
-                        '<div>' +
-                            '<div class="cart-row-title">' + prod.name + '</div>' +
-                            '<div style="font-size:0.8rem; color:var(--text-muted);">' + prod.price + ' PLN / zestaw</div>' +
-                        '</div>' +
-                        '<div class="cart-controls">' +
-                            '<button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', -1)">-</button>' +
-                            '<span style="font-weight:bold; width:20px; text-align:center;">' + userCart[key] + '</span>' +
-                            '<button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', 1)">+</button>' +
-                        '</div>' +
+                        '<div><div class="cart-row-title">' + prod.name + '</div><div style="font-size:0.8rem; color:var(--text-muted);">' + prod.price + ' PLN / zestaw</div></div>' +
+                        '<div class="cart-controls"><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', -1)">-</button><span style="font-weight:bold; width:20px; text-align:center;">' + userCart[key] + '</span><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', 1)">+</button></div>' +
                         '<div style="font-weight:bold;">' + itemSubtotal + ' PLN</div>';
                     container.appendChild(row);
                 }
@@ -733,18 +740,39 @@
             sumDisplay.innerText = finalTotal;
         }
 
-        function handleOrderSubmit(e) {
+        // --- LOGIKA FORMULARZA ZAMÓWIENIA ---
+        async function handleOrderSubmit(e) {
             e.preventDefault();
-            
             var btn = document.getElementById('submit-btn');
             btn.innerText = 'WYSYŁANIE...';
             btn.disabled = true;
 
-            setTimeout(function() {
+            const orderData = {
+                retatrutyd_qty: userCart.retatrutyd,
+                melanotan_qty: userCart.melanotan,
+                total_amount: document.getElementById('cart-sum').innerText,
+                name: document.getElementById('order-name').value,
+                email: document.getElementById('order-email').value,
+                phone: document.getElementById('order-phone').value,
+                paczkomat: document.getElementById('order-paczkomat').value,
+                payment: document.getElementById('order-payment').value,
+                status: 'Nowe',
+                date: new Date().toISOString()
+            };
+
+            try {
+                // Jeśli Firebase jest odkomentowane i skonfigurowane:
+                if (window.db && window.addDoc) {
+                    await window.addDoc(window.collection(window.db, "orders"), orderData);
+                } else {
+                    // Symulacja jeśli Firebase nie jest podpięte
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                }
+
                 var payment = document.getElementById('order-payment').value;
                 var finalAmount = document.getElementById('cart-sum').innerText;
-                
                 var modal = document.getElementById('modal-box');
+                document.getElementById('modal-title').innerText = 'Zamówienie Przyjęte';
                 var desc = document.getElementById('modal-desc');
                 var blikBox = document.getElementById('modal-blik');
 
@@ -758,23 +786,35 @@
 
                 modal.style.display = 'flex';
                 
-                // Reset po zamówieniu
-                userCart.retatrutyd = 0;
-                userCart.melanotan = 0;
+                userCart.retatrutyd = 0; userCart.melanotan = 0;
                 refreshBadge();
                 document.getElementById('order-form').reset();
-                updateCartUI(); // Zerowanie wyświetlania po wysyłce
+                updateCartUI();
                 
+            } catch (error) {
+                alert("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie.");
+            } finally {
                 btn.innerText = 'ZŁÓŻ ZAMÓWIENIE';
                 btn.disabled = false;
-            }, 800);
+            }
         }
 
-        function closeModalWindow() {
-            document.getElementById('modal-box').style.display = 'none';
-            navigateTo('view-home');
-        }
-    </script>
-</body>
-</html>
+        // --- LOGIKA FORMULARZA KONTAKTOWEGO ---
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            var btn = document.getElementById('contact-submit-btn');
+            btn.innerText = 'WYSYŁANIE...';
+            btn.disabled = true;
 
+            const msgData = {
+                name: document.getElementById('contact-name').value,
+                email: document.getElementById('contact-email').value,
+                message: document.getElementById('contact-msg').value,
+                status: 'Nowa',
+                date: new Date().toISOString()
+            };
+
+            try {
+                // Jeśli Firebase jest odkomentowane i skonfigurowane:
+                if (window.db && window.addDoc) {
+                    await window
