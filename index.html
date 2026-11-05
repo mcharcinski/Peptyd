@@ -72,8 +72,55 @@
 
         main {
             max-width: 600px;
-            margin: 3rem auto;
+            margin: 2rem auto 3rem;
             padding: 0 2rem;
+        }
+
+        /* Nowa sekcja opisowa */
+        .description-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(10,10,10,0.9) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .description-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            padding-top: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-value {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .feature-label {
+            color: var(--text-main);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         form {
@@ -295,6 +342,28 @@
     </header>
 
     <main>
+        <!-- NOWA SEKCJA OPISOWA -->
+        <section class="description-section">
+            <h2 style="border: none; text-align: center; margin-bottom: 1rem;">Bezkompromisowa jakość</h2>
+            <p>
+                Dostarczamy odczynniki o najwyższym dostępnym stopniu standaryzacji. Nasze produkty przechodzą rygorystyczne testy laboratoryjne, gwarantując absolutną czystość strukturalną. Stworzone dla osób, które opierają swoje wyniki wyłącznie na sprawdzonych danych i niezawodnych rozwiązaniach.
+            </p>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="feature-value">>99.9%</span>
+                    <span class="feature-label">Czystość HPLC</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-value">Lab</span>
+                    <span class="feature-label">Testowane</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-value">24h</span>
+                    <span class="feature-label">Wysyłka</span>
+                </div>
+            </div>
+        </section>
+
         <form id="orderForm" onsubmit="window.submitOrder(event)">
             <h2>Wybierz produkty</h2>
             
