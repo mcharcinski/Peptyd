@@ -300,16 +300,18 @@
                             <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
+                    
                     <div class="form-group" style="margin-top: 1.2rem;">
-                        <label>Numer NIP (opcjonalnie - do faktury)</label>
+                        <label>Numer NIP</label>
                         <input type="text" id="order-nip" placeholder="np. 1234567890">
                     </div>
+                    
                     <div class="form-group" style="margin-top: 1.2rem;">
                         <label>Uwagi do zamówienia (opcjonalnie)</label>
                         <textarea id="order-customer-note" rows="2" style="resize: vertical;" placeholder="Dodatkowe informacje dla sklepu..."></textarea>
                     </div>
                     
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie oświadczasz, że zapoznałeś się i akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a> oraz że produkty zostaną użyte wyłącznie do celów badawczych.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie oświadczasz, że zapoznałeś się i akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a> oraz że produkty zostaną użyte wyłącznie zgodnie z ich przeznaczeniem (in vitro).</p>
                     <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 15px; width: 100%;">Złóż zamówienie</button>
                 </form>
             </div>
@@ -555,7 +557,7 @@
             const customerNote = document.getElementById('order-customer-note').value.trim();
             const nip = document.getElementById('order-nip').value.trim();
 
-            if (!name) { alert('Uzupełnij imię i nazwisko.'); return; }
+            if (!name) { alert('Uzupełnij imię i nazwisko / nazwę firmy.'); return; }
             if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
             if (!validatePhone(phone)) { alert('Zły numer tel. Podaj 9-cyfrowy numer bez spacji.'); return; }
             if (!paczkomat) { alert('Uzupełnij nr paczkomatu.'); return; }
