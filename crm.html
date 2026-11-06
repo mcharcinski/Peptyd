@@ -98,7 +98,6 @@
         .note-input:focus { border-bottom-color: var(--gold); color: #fff; }
         .note-input::placeholder { color: #555; }
         
-        /* Złota ramka na uwagę od klienta */
         .customer-note-box { margin-top: 8px; padding: 6px 10px; background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--gold); font-size: 0.8rem; color: #eee; border-radius: 2px; }
         .customer-note-box strong { color: var(--gold); display: block; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 1px; }
 
@@ -299,6 +298,7 @@
                     
                     const orderNote = data.note || '';
                     const customerNoteHtml = data.customer_note ? `<div class="customer-note-box"><strong>Uwagi od klienta:</strong>${data.customer_note}</div>` : '';
+                    const nipHtml = data.nip ? `<br><span style="color:var(--gold); font-size: 0.75rem; letter-spacing: 1px;">NIP: ${data.nip}</span>` : '';
 
                     const emailClean = data.email ? data.email.toLowerCase().trim() : '';
                     const isVIP = emailCounts[emailClean] > 1;
@@ -314,6 +314,7 @@
                             <td>
                                 <strong style="color: #fff;">${data.name}</strong> ${vipBadgeHtml}<br>
                                 <span style="color:var(--text-muted); font-size: 0.8rem;">${data.email} | ${data.phone}</span>
+                                ${nipHtml}
                                 ${customerNoteHtml}
                                 <input type="text" class="note-input" value="${orderNote}" placeholder="Dodaj własną prywatną notatkę..." onchange="saveOrderNote('${docId}', this.value)">
                             </td>
