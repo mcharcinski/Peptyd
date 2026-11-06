@@ -19,21 +19,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         body { background: var(--bg-color); color: var(--text-main); }
         
-        #login-screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;
-        }
-        .login-box {
-            background: var(--surface-color); padding: 3rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px; text-align: center; width: 100%; max-width: 400px;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
-        }
-        .login-box input {
-            width: 100%; padding: 12px; margin-bottom: 1.2rem; background: #000; border: 1px solid #333; color: #fff; outline: none;
-        }
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .login-box { background: var(--surface-color); padding: 3rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 1.2rem; background: #000; border: 1px solid #333; color: #fff; outline: none; }
         .login-box input:focus { border-color: var(--gold); }
-        
-        .login-box button {
-            width: 100%; padding: 14px; background: var(--gold); color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-        }
+        .login-box button { width: 100%; padding: 14px; background: var(--gold); color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         .login-box button:hover { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
 
         #dashboard { display: none; padding: 2rem; max-width: 1300px; margin: 0 auto; }
@@ -47,7 +37,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        /* Panel Analityczny i Filtry */
         .controls-wrapper { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; margin-bottom: 1.5rem; }
         
         .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--surface-color); padding: 8px 15px; border-radius: 4px; border: 1px solid #333; }
@@ -64,7 +53,6 @@
         .summary-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .summary-value { color: #fff; font-size: 1.4rem; font-weight: bold; }
         .summary-value span { color: var(--gold); font-size: 1rem; }
-
         .summary-card.cost-card { border-color: #555; }
         .summary-card.profit-card { border-color: var(--success); background: rgba(76, 175, 80, 0.05); }
         .summary-card.profit-card .summary-label { color: var(--success); }
@@ -77,16 +65,13 @@
         th { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; background: #0d0d0d; font-size: 0.8rem; }
         tr:hover { background: rgba(255, 255, 255, 0.02); }
         
-        /* Statusy i Checkboxy */
         .status-group { display: flex; flex-direction: column; gap: 6px; }
         .status-checkbox { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; }
         .status-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        
         .status-label.paid.active { color: var(--success); font-weight: bold; }
         .status-label.sent.active { color: var(--info); font-weight: bold; }
         .status-label.cancelled.active { color: var(--danger); font-weight: bold; }
         
-        /* Klasa dla anulowanego wiersza */
         .row-cancelled { opacity: 0.5; }
         .row-cancelled td { text-decoration: line-through; color: #777 !important; }
         .row-cancelled td .status-group, .row-cancelled td .delete-btn { text-decoration: none; opacity: 1; }
@@ -96,12 +81,13 @@
 
         button.delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 4px 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; border-radius: 4px; transition: 0.3s; }
         button.delete-btn:hover { background: var(--danger); color: #fff; }
+        button.save-btn-small { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 6px 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; border-radius: 4px; transition: 0.3s; }
+        button.save-btn-small:hover { background: var(--gold); color: #000; }
         
         .badge-qty { color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; display: inline-block; min-width: 20px; text-align: center; margin-left: 4px; }
         .badge-blik { color: #fff; background: #9c27b0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
         .badge-pobranie { color: #000; background: var(--gold); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
 
-        /* Formularz Kosztów Zakupu */
         .cost-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2rem; max-width: 700px; border-radius: 4px; margin-bottom: 2rem; }
         .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
         .cost-field label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
@@ -110,12 +96,15 @@
         .cost-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
         .save-cost-btn { background: var(--gold); color: #000; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
         .save-cost-btn:hover { background: #b8972e; }
+
+        .stock-input { width: 80px; padding: 6px; background: #000; border: 1px solid #333; color: #fff; outline: none; text-align: center; }
+        .stock-input:focus { border-color: var(--gold); }
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC0AGUVIRudjS590eHayYQi8upP25z_8gI",
@@ -150,6 +139,7 @@
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                loadInventory(); // Ładuje bazę magazynu jako pierwsze (inicjalizacja)
                 loadOrders(); 
                 loadMessages();
             } else {
@@ -169,7 +159,86 @@
 
         window.logoutCRM = function() { signOut(auth); };
 
-        // Usuwanie rekordów
+        // ============================================
+        // MODUŁ MAGAZYNU (INVENTORY)
+        // ============================================
+        async function loadInventory() {
+            const tbody = document.getElementById('inventory-body');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ładowanie magazynu...</td></tr>';
+            
+            try {
+                const snapshot = await getDocs(query(collection(db, "products")));
+                
+                // Autoinstalator bazy produktów (jeśli baza jest pusta)
+                if (snapshot.empty) {
+                    await setDoc(doc(db, "products", "retatrutyd"), { 
+                        name: 'Retatrutyd 10mg', 
+                        price: 350, 
+                        desc: 'Innowacyjny, potrójny agonista receptorów do zaawansowanych badań in vitro.', 
+                        stock: 10, 
+                        active: true 
+                    });
+                    await setDoc(doc(db, "products", "melanotan"), { 
+                        name: 'Melanotan MT-2', 
+                        price: 90, 
+                        desc: 'Syntetyczny analog α-MSH poddany wieloetapowej liofilizacji laboratoryjnej.', 
+                        stock: 10, 
+                        active: true 
+                    });
+                    loadInventory(); // odśwież po inicjalizacji
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const pId = docSnap.id;
+                    const isChecked = data.active ? 'checked' : '';
+                    const colorState = data.stock <= 5 ? 'var(--danger)' : 'var(--gold)';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong style="color: #fff;">${data.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted)">ID: ${pId}</span></td>
+                            <td style="color: var(--gold);">${data.price} PLN</td>
+                            <td>
+                                <input type="number" id="stock-${pId}" class="stock-input" value="${data.stock}" style="border-color: ${colorState}">
+                                <span style="font-size:0.8rem; color:var(--text-muted); margin-left: 8px;">szt.</span>
+                            </td>
+                            <td>
+                                <label class="status-label">
+                                    <input type="checkbox" id="active-${pId}" class="status-checkbox" ${isChecked}> Pokazuj w sklepie
+                                </label>
+                            </td>
+                            <td>
+                                <button class="save-btn-small" onclick="saveProductState('${pId}')">Aktualizuj</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Błąd magazynu.</td></tr>';
+            }
+        }
+
+        window.saveProductState = async function(pId) {
+            const newStock = parseInt(document.getElementById(`stock-${pId}`).value) || 0;
+            const newActive = document.getElementById(`active-${pId}`).checked;
+
+            try {
+                await updateDoc(doc(db, "products", pId), {
+                    stock: newStock,
+                    active: newActive
+                });
+                alert("Zaktualizowano w magazynie.");
+                loadInventory(); // Odśwież widok
+            } catch(e) {
+                alert("Błąd: " + e.message);
+            }
+        };
+
+        // ============================================
+        // MODUŁ ZAMÓWIEŃ I WIADOMOŚCI
+        // ============================================
         window.deleteOrder = async function(docId) {
             if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy?")) {
                 try { await deleteDoc(doc(db, "orders", docId)); loadOrders(); } 
@@ -184,36 +253,26 @@
             }
         };
 
-        // Zmiana statusów Zamówień na żywo
         window.toggleOrderStatus = async function(docId, field, isChecked) {
             const row = document.getElementById(`order-row-${docId}`);
             const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
-            
-            // Aktualizacja lokalnego obiektu i wiersza
             dataObj[field] = isChecked;
             row.setAttribute('data-raw', encodeURIComponent(JSON.stringify(dataObj)));
-            
-            // Aktualizacja wyglądu
             const label = document.getElementById(`label-${field}-${docId}`);
             if(isChecked) label.classList.add('active'); else label.classList.remove('active');
-            
             if(field === 'cancelled') {
                 if(isChecked) row.classList.add('row-cancelled'); else row.classList.remove('row-cancelled');
             }
-
-            window.applyFilters(); // Przelicz pieniądze od razu
-            
-            // Zapis w Firebase
+            window.applyFilters();
             try { await updateDoc(doc(db, "orders", docId), { [field]: isChecked }); } 
             catch (error) { alert("Błąd zapisu w bazie: " + error.message); }
         };
 
-        // Zmiana statusu Wiadomości
         window.toggleMessageStatus = async function(docId, isChecked) {
             const label = document.getElementById(`label-msg-${docId}`);
             if(isChecked) label.classList.add('active'); else label.classList.remove('active');
             try { await updateDoc(doc(db, "messages", docId), { replied: isChecked }); } 
-            catch (error) { alert("Błąd zapisu w bazie: " + error.message); }
+            catch (error) { alert("Błąd: " + error.message); }
         };
 
         async function loadOrders() {
@@ -252,14 +311,10 @@
                     }
 
                     const rawDataStr = encodeURIComponent(JSON.stringify(data));
-                    
-                    // Odczyt statusów z bazy
                     const isPaid = data.paid ? 'checked' : '';
                     const classPaid = data.paid ? 'active' : '';
-                    
                     const isSent = data.sent ? 'checked' : '';
                     const classSent = data.sent ? 'active' : '';
-                    
                     const isCancelled = data.cancelled ? 'checked' : '';
                     const classCancelled = data.cancelled ? 'active' : '';
                     const rowCancelledClass = data.cancelled ? 'row-cancelled' : '';
@@ -341,7 +396,7 @@
             }
         }
 
-        // --- ZARZĄDZANIE KOSZTAMI ---
+        // --- ZARZĄDZANIE KOSZTAMI ZAKUPU ---
         window.loadCostSettings = function() {
             const saved = localStorage.getItem('hexalabs_costs');
             if (saved) {
@@ -398,6 +453,9 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
+            if(tabId === 'inventory-tab') {
+                loadInventory();
+            }
         };
 
         window.setDateFilter = function(filterType, btnElement) {
@@ -432,7 +490,6 @@
                 let matchesDate = true;
                 let matchesStatus = true;
 
-                // Filtr Daty
                 if (rowDateStr) {
                     const rowDate = new Date(rowDateStr);
                     if (window.currentDateFilter === 'today') { matchesDate = rowDate.toDateString() === now.toDateString(); }
@@ -440,7 +497,6 @@
                     else if (window.currentDateFilter === 'month') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 30; }
                 }
 
-                // Filtr Statusu Zestawienia
                 if (window.currentStatusFilter === 'sent') { matchesStatus = dataObj.sent === true; }
                 if (window.currentStatusFilter === 'cancelled') { matchesStatus = dataObj.cancelled === true; }
 
@@ -448,7 +504,6 @@
                     row.style.display = '';
                     visibleCount++;
                     
-                    // UWAGA: Anulowane zamówienia NIE wliczają się do zysku i statystyk finansowych
                     if (dataObj.cancelled !== true) {
                         const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
                         const totalAmt = parseFloat(dataObj.total_amount) || 0;
@@ -500,19 +555,16 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('orders-tab', this)">📦 Zamówienia</button>
+            <button class="tab-btn" onclick="switchTab('inventory-tab', this)">📦 Magazyn</button>
             <button class="tab-btn" onclick="switchTab('costs-tab', this)">⚙️ Koszty Zakupu</button>
             <button class="tab-btn" onclick="switchTab('messages-tab', this)">✉️ Wiadomości</button>
         </div>
 
         <!-- ZAKŁADKA 1: ZAMÓWIENIA -->
         <div id="orders-tab" class="tab-content active">
-            
             <div class="controls-wrapper">
-                
-                <!-- Pasek Filtrów -->
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
-                    
                     <div class="filters-group">
                         <span class="filter-label">Data:</span>
                         <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
@@ -520,7 +572,6 @@
                         <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
                         <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
                     </div>
-
                     <div class="filters-group">
                         <span class="filter-label">Zestawienie:</span>
                         <button class="status-btn active" onclick="setStatusFilter('all', this)">Wszystkie</button>
@@ -529,7 +580,6 @@
                     </div>
                 </div>
                 
-                <!-- Analityka -->
                 <div class="summary-panel">
                     <div class="summary-card">
                         <div class="summary-label">Zamówienia</div>
@@ -569,15 +619,34 @@
             </div>
         </div>
 
-        <!-- ZAKŁADKA 2: ZAKUP / KOSZTY -->
+        <!-- ZAKŁADKA 2: MAGAZYN (NOWA) -->
+        <div id="inventory-tab" class="tab-content">
+            <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Zarządzanie Ofertą i Stanem</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Zarządzaj widocznością produktów w sklepie i ich ilością. Stany aktualizują się automatycznie po zakupie.</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produkt</th>
+                            <th>Cena Sprzedaży</th>
+                            <th>Ilość na stanie</th>
+                            <th>Status Widoczności</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA 3: ZAKUP / KOSZTY -->
         <div id="costs-tab" class="tab-content">
             <div class="cost-box">
                 <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Parametry kosztów zakupu</h2>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Wprowadź swoje stawki bazowe. Zysk ze sprzedaży przeliczy się automatycznie.</p>
 
-                <div class="cost-grid" id="dynamic-costs-grid">
-                    <!-- Dynamiczne pola z JS -->
-                </div>
+                <div class="cost-grid" id="dynamic-costs-grid"></div>
 
                 <div class="cost-grid" style="border-top: 1px solid #333; padding-top: 1.5rem;">
                     <div class="cost-field">
@@ -591,12 +660,11 @@
                         <div class="cost-desc">Karton, folia, etykieta (PLN)</div>
                     </div>
                 </div>
-
                 <button class="save-cost-btn" onclick="saveCostSettings()">Zapisz i Przelicz</button>
             </div>
         </div>
 
-        <!-- ZAKŁADKA 3: WIADOMOŚCI -->
+        <!-- ZAKŁADKA 4: WIADOMOŚCI -->
         <div id="messages-tab" class="tab-content">
             <div class="table-container">
                 <table>
