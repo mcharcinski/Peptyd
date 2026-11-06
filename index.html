@@ -20,6 +20,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
 
+        .top-bar { background: var(--gold); color: #000; text-align: center; padding: 6px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+
         header { text-align: center; padding: 1.5rem 1rem; background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.2); position: sticky; top: 0; z-index: 100; }
         .header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
         .header-brand { display: flex; align-items: center; gap: 15px; cursor: pointer; text-align: left; }
@@ -43,13 +45,13 @@
         .guarantee-title { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
         .guarantee-text { font-size: 0.8rem; color: var(--text-muted); }
 
-        .section-title { text-align: center; color: var(--gold); font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
+        .section-title { text-align: center; color: var(--gold); font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; margin-top: 2rem; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
         .product-card { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.25); padding: 2rem 1.5rem; text-align: center; border-radius: 4px; display: flex; flex-direction: column; }
         .product-card h3 { font-size: 1.3rem; color: var(--gold); margin-bottom: 0.4rem; }
         .price-tag { color: #fff; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; }
         .price-tag span { color: var(--gold); font-size: 0.9rem; }
-        .stock-info { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .stock-info { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; font-weight: bold; }
         .stock-info.in-stock { color: var(--gold); }
         .stock-info.out-stock { color: var(--danger); }
         .product-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; flex-grow: 1; }
@@ -63,7 +65,7 @@
 
         .back-btn { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; display: inline-block; padding: 8px 0; }
         .product-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 2rem 1.5rem; border-radius: 4px; }
-        .badge-hplc { display: inline-block; background: rgba(212, 175, 55, 0.15); color: var(--gold); padding: 4px 12px; border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 1rem; text-transform: uppercase; }
+        .badge-hplc { display: inline-block; background: rgba(212, 175, 55, 0.15); color: var(--gold); padding: 4px 12px; border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 1rem; text-transform: uppercase; cursor: help; }
         .kit-box { background: var(--surface-light); padding: 1.5rem; border-left: 3px solid var(--gold); margin: 2rem 0; }
         .kit-box h4 { color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px; }
         .kit-box ul { list-style: none; }
@@ -84,18 +86,32 @@
         label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; font-size: 1rem; border-radius: 0; outline: none; font-family: inherit; }
         input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+        
+        .faq-container { margin-bottom: 2rem; }
+        details { background: var(--surface-color); border: 1px solid rgba(212,175,55,0.2); margin-bottom: 10px; border-radius: 4px; padding: 12px 15px; transition: 0.3s; }
+        details[open] { border-color: var(--gold); }
+        summary { color: var(--gold); font-weight: bold; cursor: pointer; padding: 5px 0; list-style: none; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; outline: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; color: var(--gold); font-size: 1.2rem; }
+        details[open] summary::after { content: '−'; }
+        details p { margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid #333; padding-top: 10px; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
-        .modal-body { background: var(--surface-color); border: 1px solid var(--gold); padding: 2rem; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 0 25px var(--gold-glow); }
-        .blik-card { background: #000; border: 1px dashed var(--gold); padding: 1rem; margin: 1.2rem 0; color: var(--gold); font-size: 1.4rem; letter-spacing: 2px; font-weight: bold; }
+        .modal-body { background: var(--surface-color); border: 1px solid var(--gold); padding: 2rem; max-width: 600px; width: 100%; text-align: left; box-shadow: 0 0 25px var(--gold-glow); max-height: 90vh; overflow-y: auto; }
+        .modal-body.center-text { text-align: center; }
+        .blik-card { background: #000; border: 1px dashed var(--gold); padding: 1rem; margin: 1.2rem 0; color: var(--gold); font-size: 1.4rem; letter-spacing: 2px; font-weight: bold; text-align: center; }
 
         .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; z-index: 600; }
         
         footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid rgba(212, 175, 55, 0.1); background-color: var(--surface-color); }
+        .footer-links { margin-bottom: 1.5rem; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
         .crm-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 6px 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 4px; transition: all 0.3s ease; }
         .crm-btn:hover { color: var(--gold); border-color: var(--gold); }
     </style>
 
+    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -119,14 +135,13 @@
         window.doc = doc;
         window.increment = increment;
 
-        // Auto-ładowanie produktów po starcie
         window.onload = function() {
             window.loadProductsFromDB();
         };
     </script>
 </head>
 <body>
-
+    <div class="top-bar">Dyskretna wysyłka Paczkomat 24H | Zabezpieczenie termiczne paczek | Czystość >99%</div>
     <header>
         <div class="header-inner">
             <div class="header-brand" onclick="navigateTo('view-home')">
@@ -178,10 +193,28 @@
             </div>
 
             <h2 class="section-title">Dostępne Preparaty</h2>
-
-            <!-- Kontener na dynamiczne produkty z Firebase -->
-            <div class="products-grid" id="dynamic-products-grid" style="margin-bottom: 4rem;">
+            <div class="products-grid" id="dynamic-products-grid" style="margin-bottom: 3rem;">
                 <p style="text-align:center; width:100%; color:var(--text-muted);">Ładowanie oferty z magazynu...</p>
+            </div>
+
+            <h2 class="section-title">FAQ - Najczęstsze pytania</h2>
+            <div class="faq-container">
+                <details>
+                    <summary>Czy produkty są przeznaczone do spożycia?</summary>
+                    <p>Nie. Wszystkie preparaty oferowane w sklepie HexaLabs są odczynnikami chemicznymi przeznaczonymi wyłącznie do profesjonalnych badań laboratoryjnych in vitro. Nie są to leki, suplementy diety ani środki spożywcze.</p>
+                </details>
+                <details>
+                    <summary>Jak przechowywać liofilizat?</summary>
+                    <p>Przed sporządzeniem roztworu (w formie proszku), preparat należy przechowywać w suchym i chłodnym miejscu (najlepiej w lodówce w temp. 2-8°C), z dala od światła słonecznego. Po rozrobieniu z wodą bakteriostatyczną, roztwór bezwzględnie musi być przechowywany w lodówce i zużyty w ciągu kilkunastu dni.</p>
+                </details>
+                <details>
+                    <summary>Czy paczki są odpowiednio zabezpieczone?</summary>
+                    <p>Tak. Wykorzystujemy dedykowane opakowania. W okresach wysokich temperatur przesyłki zabezpieczane są termicznie (wkłady chłodzące, folia termoizolacyjna), aby zagwarantować integralność peptydów w trakcie transportu.</p>
+                </details>
+                <details>
+                    <summary>Jak długa jest realizacja zamówienia?</summary>
+                    <p>Zamówienia opłacone do godziny 13:00 zazwyczaj nadajemy tego samego dnia roboczego. Korzystamy z usług InPost Paczkomaty, co gwarantuje dostawę z reguły w 24-48 godzin od momentu nadania.</p>
+                </details>
             </div>
 
             <h2 class="section-title" id="kontakt">Kontakt</h2>
@@ -209,7 +242,7 @@
             <button class="back-btn" onclick="navigateTo('view-home')">← Powrót do oferty</button>
             
             <div class="product-box">
-                <span class="badge-hplc">Certyfikat Badań HPLC</span>
+                <span class="badge-hplc" title="Skan certyfikatu wkrótce dostępny na stronie">Certyfikat Badań HPLC</span>
                 <h2 id="prod-name" style="color: var(--gold); font-size: 1.8rem; margin-bottom: 0.5rem;"></h2>
                 <div class="price-tag" id="prod-price" style="margin-bottom: 0.5rem;"></div>
                 <div id="prod-stock-info" class="stock-info"></div>
@@ -269,18 +302,32 @@
                             <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 1.5rem; width: 100%;">Złóż zamówienie</button>
+                    <!-- NOWE POLE: UWAGI DO ZAMÓWIENIA -->
+                    <div class="form-group" style="margin-top: 1.2rem;">
+                        <label>Uwagi do zamówienia (opcjonalnie)</label>
+                        <textarea id="order-customer-note" rows="2" style="resize: vertical;" placeholder="Dodatkowe informacje dla kuriera lub sklepu..."></textarea>
+                    </div>
+                    
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie, akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a>.</p>
+                    <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 15px; width: 100%;">Złóż zamówienie</button>
                 </form>
             </div>
         </section>
     </main>
 
     <footer>
+        <div class="footer-links">
+            <a href="#" onclick="openLegal('regulamin'); return false;">Regulamin</a>
+            <a href="#" onclick="openLegal('privacy'); return false;">Polityka Prywatności</a>
+            <a href="#" onclick="openLegal('returns'); return false;">Zwroty i Reklamacje</a>
+        </div>
+        <p style="font-size: 0.7rem; color: #555; margin-bottom: 1rem;">Produkty przeznaczone wyłącznie do celów badawczych.</p>
         <button class="crm-btn" onclick="window.location.href='crm.html'">Panel CRM</button>
     </footer>
 
+    <!-- Modal Powiadomienia (Zamówienie) -->
     <div id="modal-box" class="modal">
-        <div class="modal-body">
+        <div class="modal-body center-text">
             <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;" id="modal-title">Zamówienie Przyjęte</h3>
             <p id="modal-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;"></p>
             <div id="modal-blik" style="display: none;">
@@ -288,7 +335,16 @@
                 <div class="blik-card">+48 123 456 789</div>
                 <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule podaj swój adres e-mail podany w zamówieniu.</p>
             </div>
-            <button class="btn-action btn-solid" onclick="closeModalWindow()" style="margin-top: 1.5rem; width: 100%;">Zamknij</button>
+            <button class="btn-action btn-solid" onclick="closeModalWindow('modal-box')" style="margin-top: 1.5rem; width: 100%;">Zamknij</button>
+        </div>
+    </div>
+
+    <!-- Modal Prawny (Regulaminy) -->
+    <div id="modal-legal" class="modal">
+        <div class="modal-body">
+            <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 1rem; text-transform: uppercase;" id="legal-title">Regulamin</h3>
+            <div id="legal-content" style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.5rem;"></div>
+            <button class="btn-action btn-solid" onclick="closeModalWindow('modal-legal')" style="width: 100%;">Zamknij okno</button>
         </div>
     </div>
 
@@ -299,7 +355,23 @@
         var userCart = {};
         var activeProductId = null;
 
-        // Dynamiczne pobieranie produktów
+        const legalTexts = {
+            'regulamin': "Sklep HexaLabs prowadzi sprzedaż odczynników chemicznych. Wszystkie produkty prezentowane na stronie przeznaczone są wyłącznie do badań laboratoryjnych in vitro. Kupujący oświadcza, że posiada odpowiednią wiedzę i zaplecze do pracy z tego typu preparatami. Zabrania się stosowania produktów na ludziach i zwierzętach. Sprzedawca nie ponosi odpowiedzialności za niewłaściwe użycie odczynników.",
+            'privacy': "Administratorem danych jest HexaLabs. Dane osobowe (imię, nazwisko, e-mail, telefon) przetwarzane są wyłącznie w celu realizacji zamówienia i wysyłki poprzez system InPost. Dane nie są profilowane ani udostępniane podmiotom trzecim (z wyjątkiem firmy kurierskiej). Klient ma prawo do żądania dostępu do swoich danych oraz ich usunięcia (prawo do bycia zapomnianym).",
+            'returns': "Zgodnie z przepisami prawa, z uwagi na specyfikę oferowanych produktów (odczynniki chemiczne wymagające specyficznych warunków temperaturowych - liofilizaty), zwroty pełnowartościowego, rozpieczętowanego towaru nie są możliwe. Reklamacje z tytułu uszkodzenia w transporcie rozpatrywane są w terminie 14 dni roboczych na podstawie protokołu szkody."
+        };
+
+        window.openLegal = function(type) {
+            document.getElementById('legal-title').innerText = type === 'regulamin' ? 'Regulamin Sklepu' : (type === 'privacy' ? 'Polityka Prywatności' : 'Zwroty i Reklamacje');
+            document.getElementById('legal-content').innerText = legalTexts[type];
+            document.getElementById('modal-legal').style.display = 'flex';
+        }
+
+        window.closeModalWindow = function(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            if (modalId === 'modal-box') navigateTo('view-home');
+        }
+
         window.loadProductsFromDB = async function() {
             try {
                 const snapshot = await window.getDocs(window.collection(window.db, "products"));
@@ -310,14 +382,13 @@
 
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
-                    // Pokazuj tylko te włączone w CRM
                     if (data.active === true) {
                         hasActiveProducts = true;
                         catalog[docSnap.id] = data;
                         if (userCart[docSnap.id] === undefined) userCart[docSnap.id] = 0;
 
                         const isOutOfStock = data.stock <= 0;
-                        const stockText = isOutOfStock ? 'Brak w magazynie' : `Dostępne: ${data.stock} szt.`;
+                        const stockText = isOutOfStock ? 'Brak w magazynie' : 'Dostępny w magazynie';
                         const stockClass = isOutOfStock ? 'out-stock' : 'in-stock';
                         
                         const btnState = isOutOfStock ? 'disabled' : '';
@@ -337,11 +408,7 @@
                         `;
                     }
                 });
-
-                if (!hasActiveProducts) {
-                    grid.innerHTML = '<p style="text-align:center; width:100%; color:var(--text-muted);">Aktualnie brak produktów w ofercie.</p>';
-                }
-
+                if (!hasActiveProducts) grid.innerHTML = '<p style="text-align:center; width:100%; color:var(--text-muted);">Aktualnie brak produktów w ofercie.</p>';
             } catch (error) {
                 document.getElementById('dynamic-products-grid').innerHTML = '<p style="text-align:center; color:var(--danger);">Błąd połączenia z magazynem.</p>';
             }
@@ -367,17 +434,12 @@
             const stockInfo = document.getElementById('prod-stock-info');
             
             if (item.stock <= 0) {
-                btn.disabled = true;
-                btn.innerText = 'Brak w magazynie';
-                stockInfo.innerText = 'Niedostępne';
-                stockInfo.className = 'stock-info out-stock';
+                btn.disabled = true; btn.innerText = 'Brak w magazynie';
+                stockInfo.innerText = 'Brak w magazynie'; stockInfo.className = 'stock-info out-stock';
             } else {
-                btn.disabled = false;
-                btn.innerText = 'Dodaj do koszyka';
-                stockInfo.innerText = `Dostępne na stanie: ${item.stock} szt.`;
-                stockInfo.className = 'stock-info in-stock';
+                btn.disabled = false; btn.innerText = 'Dodaj do koszyka';
+                stockInfo.innerText = 'Dostępny w magazynie'; stockInfo.className = 'stock-info in-stock';
             }
-
             navigateTo('view-product');
         }
 
@@ -385,7 +447,7 @@
             if (activeProductId) {
                 var item = catalog[activeProductId];
                 if (userCart[activeProductId] + 1 > item.stock) {
-                    alert(`Możesz zamówić maksymalnie ${item.stock} sztuk. Tyle mamy obecnie na stanie.`);
+                    alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
                     return;
                 }
                 userCart[activeProductId]++;
@@ -397,7 +459,7 @@
         function quickAddToCart(prodKey) {
             var item = catalog[prodKey];
             if (userCart[prodKey] + 1 > item.stock) {
-                alert(`Możesz zamówić maksymalnie ${item.stock} sztuk. Tyle mamy obecnie na stanie.`);
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
                 return;
             }
             userCart[prodKey]++;
@@ -422,7 +484,7 @@
             var currentQty = userCart[prodKey];
             
             if (step > 0 && currentQty + step > item.stock) {
-                alert(`Możesz zamówić maksymalnie ${item.stock} sztuk. Tyle mamy obecnie na stanie.`);
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
                 return;
             }
             if (currentQty + step >= 0) {
@@ -440,8 +502,7 @@
             var sumDisplay = document.getElementById('cart-sum');
             
             container.innerHTML = '';
-            var subtotal = 0;
-            var totalQty = 0;
+            var subtotal = 0; var totalQty = 0;
 
             for (var key in userCart) {
                 if (userCart[key] > 0) {
@@ -472,32 +533,25 @@
             var shippingCost = (paymentMethod === 'pobranie') ? 20 : 15;
             var finalTotal = subtotal + shippingCost;
 
-            subtotalDisplay.innerText = subtotal;
-            shippingDisplay.innerText = shippingCost;
-            sumDisplay.innerText = finalTotal;
+            subtotalDisplay.innerText = subtotal; shippingDisplay.innerText = shippingCost; sumDisplay.innerText = finalTotal;
         }
 
-        function isValidEmail(email) {
-            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        }
+        function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
         function validatePhone(phoneStr) {
             var clean = phoneStr.replace(/[\s\-+]/g, '');
             if (clean.startsWith('48') && clean.length === 11) clean = clean.substring(2);
             if (clean.startsWith('0048') && clean.length === 13) clean = clean.substring(4);
-            var regex = /^\d{9}$/;
-            return regex.test(clean);
+            return /^\d{9}$/.test(clean);
         }
 
-        // --- ZAMÓWIENIE I ZDJĘCIE Z MAGAZYNU ---
         async function handleOrderSubmit(e) {
             e.preventDefault();
-
             const name = document.getElementById('order-name').value.trim();
             const email = document.getElementById('order-email').value.trim();
             const phone = document.getElementById('order-phone').value.trim();
             const paczkomat = document.getElementById('order-paczkomat').value.trim();
+            const customerNote = document.getElementById('order-customer-note').value.trim();
 
             if (!name) { alert('Uzupełnij imię i nazwisko.'); return; }
             if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
@@ -505,39 +559,26 @@
             if (!paczkomat) { alert('Uzupełnij nr paczkomatu.'); return; }
 
             var btn = document.getElementById('submit-btn');
-            btn.innerText = 'WYSYŁANIE...';
-            btn.disabled = true;
+            btn.innerText = 'WYSYŁANIE...'; btn.disabled = true;
 
             const orderData = {
                 total_amount: document.getElementById('cart-sum').innerText,
-                name: name,
-                email: email,
-                phone: phone,
-                paczkomat: paczkomat,
+                name: name, email: email, phone: phone, paczkomat: paczkomat,
+                customer_note: customerNote,
                 payment: document.getElementById('order-payment').value,
-                status: 'Nowe',
-                date: new Date().toISOString()
+                status: 'Nowe', date: new Date().toISOString(),
+                paid: false, sent: false, cancelled: false
             };
 
-            // Dodanie ilości produktów do zamówienia dynamicznie
-            for (var key in userCart) {
-                if (userCart[key] > 0) {
-                    orderData[key + '_qty'] = userCart[key];
-                }
-            }
+            for (var key in userCart) { if (userCart[key] > 0) orderData[key + '_qty'] = userCart[key]; }
 
             try {
-                // 1. Zapisz zamówienie
                 if (window.db && window.addDoc) {
                     await window.addDoc(window.collection(window.db, "orders"), orderData);
-                    
-                    // 2. Odejmij produkty z bazy magazynowej Firebase
                     for (var k in userCart) {
                         if (userCart[k] > 0) {
                             const prodRef = window.doc(window.db, "products", k);
-                            await window.updateDoc(prodRef, {
-                                stock: window.increment(-userCart[k])
-                            });
+                            await window.updateDoc(prodRef, { stock: window.increment(-userCart[k]) });
                         }
                     }
                 }
@@ -558,27 +599,16 @@
                 }
 
                 modal.style.display = 'flex';
-                
-                // Reset po zamówieniu
                 for (var r in userCart) { userCart[r] = 0; }
-                refreshBadge();
-                document.getElementById('order-form').reset();
-                updateCartUI();
-                
-                // Ponowne wczytanie oferty (aby odświeżyć zmiejszone stany magazynowe)
+                refreshBadge(); document.getElementById('order-form').reset(); updateCartUI();
                 window.loadProductsFromDB();
                 
-            } catch (error) {
-                alert("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie.");
-            } finally {
-                btn.innerText = 'ZŁÓŻ ZAMÓWIENIE';
-                btn.disabled = false;
-            }
+            } catch (error) { alert("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie.");
+            } finally { btn.innerText = 'ZŁÓŻ ZAMÓWIENIE'; btn.disabled = false; }
         }
 
         async function handleContactSubmit(e) {
             e.preventDefault();
-
             const name = document.getElementById('contact-name').value.trim();
             const email = document.getElementById('contact-email').value.trim();
             const msg = document.getElementById('contact-msg').value.trim();
@@ -588,30 +618,20 @@
             if (!msg) { alert('Uzupełnij treść wiadomości.'); return; }
 
             var btn = document.getElementById('contact-submit-btn');
-            btn.innerText = 'WYSYŁANIE...';
-            btn.disabled = true;
+            btn.innerText = 'WYSYŁANIE...'; btn.disabled = true;
 
-            const msgData = { name: name, email: email, message: msg, status: 'Nowa', date: new Date().toISOString() };
+            const msgData = { name: name, email: email, message: msg, status: 'Nowa', date: new Date().toISOString(), replied: false };
 
             try {
-                if (window.db && window.addDoc) { await window.addDoc(window.collection(window.db, "messages"), msgData); }
+                if (window.db && window.addDoc) await window.addDoc(window.collection(window.db, "messages"), msgData);
                 var modal = document.getElementById('modal-box');
                 document.getElementById('modal-title').innerText = 'Wiadomość wysłana';
                 document.getElementById('modal-desc').innerText = 'Dziękujemy za kontakt. Odpowiemy na Twój adres e-mail najszybciej jak to możliwe.';
                 document.getElementById('modal-blik').style.display = 'none';
                 modal.style.display = 'flex';
                 document.getElementById('contact-form').reset();
-            } catch (error) {
-                alert("Wystąpił błąd podczas wysyłania wiadomości.");
-            } finally {
-                btn.innerText = 'WYŚLIJ WIADOMOŚĆ';
-                btn.disabled = false;
-            }
-        }
-
-        function closeModalWindow() {
-            document.getElementById('modal-box').style.display = 'none';
-            navigateTo('view-home');
+            } catch (error) { alert("Wystąpił błąd podczas wysyłania wiadomości.");
+            } finally { btn.innerText = 'WYŚLIJ WIADOMOŚĆ'; btn.disabled = false; }
         }
     </script>
 </body>
