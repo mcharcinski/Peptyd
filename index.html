@@ -182,8 +182,8 @@
                 </div>
                 <div class="guarantee-card">
                     <div class="guarantee-icon">🔬</div>
-                    <div class="guarantee-title">Pełne Zestawy</div>
-                    <div class="guarantee-text">Wszystko w komplecie: preparat, woda, sterylne strzykawki, igły oraz gaziki.</div>
+                    <div class="guarantee-title">Pełen zestaw do badań</div>
+                    <div class="guarantee-text">Kompletne wyposażenie: preparat, sterylny rozpuszczalnik oraz niezbędne akcesoria laboratoryjne.</div>
                 </div>
                 <div class="guarantee-card">
                     <div class="guarantee-icon">⚡</div>
@@ -205,11 +205,11 @@
                 </details>
                 <details>
                     <summary>Jak przechowywać liofilizat?</summary>
-                    <p>Przed sporządzeniem roztworu (w formie proszku), preparat należy przechowywać w suchym i chłodnym miejscu (najlepiej w lodówce w temp. 2-8°C), z dala od światła słonecznego. Po rozrobieniu z wodą bakteriostatyczną, roztwór bezwzględnie musi być przechowywany w lodówce i zużyty w ciągu kilkunastu dni.</p>
+                    <p>Substancję w formie proszku należy przechowywać w suchym i chłodnym miejscu, z dala od światła słonecznego. Po zastosowaniu rozpuszczalnika, powstały roztwór bezwzględnie musi być przechowywany w lodówce w odpowiedniej temperaturze badawczej.</p>
                 </details>
                 <details>
                     <summary>Czy paczki są odpowiednio zabezpieczone?</summary>
-                    <p>Tak. Wykorzystujemy dedykowane opakowania. W okresach wysokich temperatur przesyłki zabezpieczane są termicznie (wkłady chłodzące, folia termoizolacyjna), aby zagwarantować integralność peptydów w trakcie transportu.</p>
+                    <p>Tak. Wykorzystujemy dedykowane opakowania. W okresach wysokich temperatur przesyłki zabezpieczane są termicznie (wkłady chłodzące, folia termoizolacyjna), aby zagwarantować integralność struktury w trakcie transportu.</p>
                 </details>
                 <details>
                     <summary>Jak długa jest realizacja zamówienia?</summary>
@@ -219,10 +219,10 @@
 
             <h2 class="section-title" id="kontakt">Kontakt</h2>
             <div class="form-box">
-                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Masz pytania dotyczące odczynników lub zamówień hurtowych? Napisz do nas.</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Masz pytania? Napisz do nas.</p>
                 <form id="contact-form" onsubmit="handleContactSubmit(event)">
                     <div class="form-group">
-                        <label>Imię i Nazwisko / Nazwa firmy</label>
+                        <label>Imię i Nazwisko</label>
                         <input type="text" id="contact-name">
                     </div>
                     <div class="form-group">
@@ -250,14 +250,12 @@
                 <p id="prod-desc" style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 1.5rem;"></p>
 
                 <div class="kit-box">
-                    <h4>Skład każdego zestawu (Mega Pro Kit):</h4>
+                    <h4>Pełen zestaw do badań:</h4>
                     <ul>
-                        <li>Fiolka z preparatem (czysty liofilizat w proszku)</li>
-                        <li>Woda bakteriostatyczna do sporządzenia roztworu</li>
-                        <li>Strzykawka do precyzyjnego nabierania wody</li>
-                        <li>Strzykawka insulinowa ze zintegrowaną igłą</li>
-                        <li>2 x sterylna igła 0.6 mm</li>
-                        <li>Zestaw gazików nasączonych alkoholem do dezynfekcji</li>
+                        <li>Fiolka z preparatem (czystość laboratoryjna)</li>
+                        <li>Woda bakteriostatyczna do przygotowania roztworu</li>
+                        <li>Narzędzia do precyzyjnego odmierzania i transferu cieczy</li>
+                        <li>Zestaw do sterylnego przygotowania próbki</li>
                     </ul>
                 </div>
 
@@ -302,13 +300,16 @@
                             <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
                         </select>
                     </div>
-                    <!-- NOWE POLE: UWAGI DO ZAMÓWIENIA -->
+                    <div class="form-group" style="margin-top: 1.2rem;">
+                        <label>Numer NIP (opcjonalnie - do faktury)</label>
+                        <input type="text" id="order-nip" placeholder="np. 1234567890">
+                    </div>
                     <div class="form-group" style="margin-top: 1.2rem;">
                         <label>Uwagi do zamówienia (opcjonalnie)</label>
-                        <textarea id="order-customer-note" rows="2" style="resize: vertical;" placeholder="Dodatkowe informacje dla kuriera lub sklepu..."></textarea>
+                        <textarea id="order-customer-note" rows="2" style="resize: vertical;" placeholder="Dodatkowe informacje dla sklepu..."></textarea>
                     </div>
                     
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie, akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a>.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie oświadczasz, że zapoznałeś się i akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a> oraz że produkty zostaną użyte wyłącznie do celów badawczych.</p>
                     <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 15px; width: 100%;">Złóż zamówienie</button>
                 </form>
             </div>
@@ -321,7 +322,7 @@
             <a href="#" onclick="openLegal('privacy'); return false;">Polityka Prywatności</a>
             <a href="#" onclick="openLegal('returns'); return false;">Zwroty i Reklamacje</a>
         </div>
-        <p style="font-size: 0.7rem; color: #555; margin-bottom: 1rem;">Produkty przeznaczone wyłącznie do celów badawczych.</p>
+        <p style="font-size: 0.7rem; color: #555; margin-bottom: 1rem;">Produkty przeznaczone wyłącznie do celów badawczych i laboratoryjnych.</p>
         <button class="crm-btn" onclick="window.location.href='crm.html'">Panel CRM</button>
     </footer>
 
@@ -358,7 +359,7 @@
         const legalTexts = {
             'regulamin': "Sklep HexaLabs prowadzi sprzedaż odczynników chemicznych. Wszystkie produkty prezentowane na stronie przeznaczone są wyłącznie do badań laboratoryjnych in vitro. Kupujący oświadcza, że posiada odpowiednią wiedzę i zaplecze do pracy z tego typu preparatami. Zabrania się stosowania produktów na ludziach i zwierzętach. Sprzedawca nie ponosi odpowiedzialności za niewłaściwe użycie odczynników.",
             'privacy': "Administratorem danych jest HexaLabs. Dane osobowe (imię, nazwisko, e-mail, telefon) przetwarzane są wyłącznie w celu realizacji zamówienia i wysyłki poprzez system InPost. Dane nie są profilowane ani udostępniane podmiotom trzecim (z wyjątkiem firmy kurierskiej). Klient ma prawo do żądania dostępu do swoich danych oraz ich usunięcia (prawo do bycia zapomnianym).",
-            'returns': "Zgodnie z przepisami prawa, z uwagi na specyfikę oferowanych produktów (odczynniki chemiczne wymagające specyficznych warunków temperaturowych - liofilizaty), zwroty pełnowartościowego, rozpieczętowanego towaru nie są możliwe. Reklamacje z tytułu uszkodzenia w transporcie rozpatrywane są w terminie 14 dni roboczych na podstawie protokołu szkody."
+            'returns': "Zgodnie z przepisami prawa, z uwagi na specyfikę oferowanych produktów (odczynniki chemiczne wymagające specyficznych warunków temperaturowych), zwroty pełnowartościowego, rozpieczętowanego towaru nie są możliwe. Reklamacje z tytułu uszkodzenia w transporcie rozpatrywane są w terminie 14 dni roboczych na podstawie protokołu szkody."
         };
 
         window.openLegal = function(type) {
@@ -447,7 +448,7 @@
             if (activeProductId) {
                 var item = catalog[activeProductId];
                 if (userCart[activeProductId] + 1 > item.stock) {
-                    alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                    alert(`Niestety, nie mamy już więcej tego produktu na stanie.`);
                     return;
                 }
                 userCart[activeProductId]++;
@@ -459,7 +460,7 @@
         function quickAddToCart(prodKey) {
             var item = catalog[prodKey];
             if (userCart[prodKey] + 1 > item.stock) {
-                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie.`);
                 return;
             }
             userCart[prodKey]++;
@@ -484,7 +485,7 @@
             var currentQty = userCart[prodKey];
             
             if (step > 0 && currentQty + step > item.stock) {
-                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie.`);
                 return;
             }
             if (currentQty + step >= 0) {
@@ -552,6 +553,7 @@
             const phone = document.getElementById('order-phone').value.trim();
             const paczkomat = document.getElementById('order-paczkomat').value.trim();
             const customerNote = document.getElementById('order-customer-note').value.trim();
+            const nip = document.getElementById('order-nip').value.trim();
 
             if (!name) { alert('Uzupełnij imię i nazwisko.'); return; }
             if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
@@ -564,6 +566,7 @@
             const orderData = {
                 total_amount: document.getElementById('cart-sum').innerText,
                 name: name, email: email, phone: phone, paczkomat: paczkomat,
+                nip: nip,
                 customer_note: customerNote,
                 payment: document.getElementById('order-payment').value,
                 status: 'Nowe', date: new Date().toISOString(),
@@ -591,7 +594,7 @@
                 var blikBox = document.getElementById('modal-blik');
 
                 if (payment === 'blik') {
-                    desc.innerText = 'Dziękujemy! Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie (kwota: ' + finalAmount + ' PLN) BLIKiem:';
+                    desc.innerText = 'Dziękujemy! Zamówienie zostało zarejestrowane. Abyśmy mogli przejść do wysyłki, opłać kwotę ' + finalAmount + ' PLN BLIKiem:';
                     blikBox.style.display = 'block';
                 } else {
                     desc.innerText = 'Dziękujemy! Twoje zamówienie za pobraniem (kwota: ' + finalAmount + ' PLN) zostało przyjęte do realizacji.';
