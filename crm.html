@@ -3,108 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HexaLabs - Panel CRM</title>
+    <title>HexaLabs - Premium Research Peptides</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
             --surface-color: #141414;
             --surface-light: #1e1e1e;
-            --gold: #D4AF37;
             --text-main: #f0f0f0;
             --text-muted: #888888;
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.2);
+            --gold-glow-strong: rgba(212, 175, 55, 0.5);
             --danger: #ff4444;
-            --success: #4CAF50;
-            --info: #2196F3;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        body { background: var(--bg-color); color: var(--text-main); }
-        
-        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .login-box { background: var(--surface-color); padding: 3rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 1.2rem; background: #000; border: 1px solid #333; color: #fff; outline: none; }
-        .login-box input:focus { border-color: var(--gold); }
-        .login-box button { width: 100%; padding: 14px; background: var(--gold); color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        .login-box button:hover { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
 
-        #dashboard { display: none; padding: 2rem; max-width: 1300px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 1rem; margin-bottom: 2rem; }
-        h1 { color: var(--gold); font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
-        
-        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 1rem; flex-wrap: wrap; }
-        .tab-btn { background: transparent; color: var(--text-muted); border: 1px solid #333; padding: 10px 20px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .tab-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        .controls-wrapper { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; margin-bottom: 1.5rem; }
-        
-        .filters-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--surface-color); padding: 8px 15px; border-radius: 4px; border: 1px solid #333; }
-        .filter-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-right: 5px; }
-        .date-btn, .status-btn { background: #000; border: 1px solid #333; color: var(--text-muted); padding: 6px 12px; cursor: pointer; font-size: 0.8rem; border-radius: 4px; transition: 0.3s; }
-        .date-btn:hover, .status-btn:hover { border-color: var(--gold); }
-        .date-btn.active, .status-btn.active { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: var(--gold); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
 
-        .search-input { width: 100%; max-width: 300px; padding: 10px 15px; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; outline: none; border-radius: 4px; }
-        .search-input:focus { border-color: var(--gold); }
+        .top-bar { background: var(--gold); color: #000; text-align: center; padding: 6px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
-        .summary-panel { display: flex; flex-wrap: wrap; gap: 1rem; width: 100%; }
-        .summary-card { background: var(--surface-color); border: 1px dashed var(--gold); padding: 15px 25px; border-radius: 4px; text-align: right; min-width: 150px; flex: 1; }
-        .summary-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .summary-value { color: #fff; font-size: 1.4rem; font-weight: bold; }
-        .summary-value span { color: var(--gold); font-size: 1rem; }
-        .summary-card.cost-card { border-color: #555; }
-        .summary-card.profit-card { border-color: var(--success); background: rgba(76, 175, 80, 0.05); }
-        .summary-card.profit-card .summary-label { color: var(--success); }
-        .summary-card.profit-card .summary-value { color: var(--success); }
-        .summary-card.profit-card .summary-value span { color: var(--success); }
+        header { text-align: center; padding: 1.5rem 1rem; background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.2); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .header-brand { display: flex; align-items: center; gap: 15px; cursor: pointer; text-align: left; }
+        .logo-svg { width: 45px; height: 45px; flex-shrink: 0; filter: drop-shadow(0 0 8px var(--gold-glow-strong)); transition: transform 0.3s ease; }
+        .header-brand:hover .logo-svg { transform: scale(1.05); }
+        h1 { color: var(--gold); font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; margin: 0; }
+        .subtitle { color: var(--text-muted); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
 
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; background: var(--surface-color); border: 1px solid #333; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #222; font-size: 0.9rem; }
-        th { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; background: #0d0d0d; font-size: 0.8rem; }
-        tr:hover { background: rgba(255, 255, 255, 0.02); }
+        .cart-btn { position: relative; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 8px 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; }
+        .cart-btn:hover { background: var(--gold); color: #000; }
+        .cart-badge { background-color: var(--gold); color: #000; font-size: 0.75rem; font-weight: bold; padding: 2px 7px; border-radius: 10px; }
+        .cart-btn:hover .cart-badge { background-color: #000; color: var(--gold); }
+
+        main { flex: 1; max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 4rem; width: 100%; }
+        .view-section { display: none; }
+        #view-home { display: block; }
+
+        .guarantee-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+        .guarantee-card { background: var(--surface-color); padding: 1.2rem; border: 1px solid rgba(212, 175, 55, 0.2); text-align: center; border-radius: 4px; }
+        .guarantee-icon { font-size: 1.8rem; color: var(--gold); margin-bottom: 0.5rem; }
+        .guarantee-title { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+        .guarantee-text { font-size: 0.8rem; color: var(--text-muted); }
+
+        .section-title { text-align: center; color: var(--gold); font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; margin-top: 2rem; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .product-card { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.25); padding: 2rem 1.5rem; text-align: center; border-radius: 4px; display: flex; flex-direction: column; }
+        .product-card h3 { font-size: 1.3rem; color: var(--gold); margin-bottom: 0.4rem; }
+        .price-tag { color: #fff; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .price-tag span { color: var(--gold); font-size: 0.9rem; }
+        .stock-info { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; font-weight: bold; }
+        .stock-info.in-stock { color: var(--gold); }
+        .stock-info.out-stock { color: var(--danger); }
+        .product-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; flex-grow: 1; }
+
+        .card-actions { display: flex; gap: 10px; width: 100%; }
+        .btn-action { flex: 1; display: block; background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 12px 5px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .btn-action:hover:not(:disabled) { background: var(--gold); color: #000; }
+        .btn-solid { background: var(--gold); color: #000; }
+        .btn-solid:hover:not(:disabled) { background: transparent; color: var(--gold); }
+        .btn-action:disabled { border-color: #333; color: #555; background: transparent; cursor: not-allowed; }
+
+        .back-btn { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; display: inline-block; padding: 8px 0; }
+        .product-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 2rem 1.5rem; border-radius: 4px; }
+        .badge-hplc { display: inline-block; background: rgba(212, 175, 55, 0.15); color: var(--gold); padding: 4px 12px; border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 1rem; text-transform: uppercase; cursor: help; }
+        .kit-box { background: var(--surface-light); padding: 1.5rem; border-left: 3px solid var(--gold); margin: 2rem 0; }
+        .kit-box h4 { color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px; }
+        .kit-box ul { list-style: none; }
+        .kit-box li { position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        .kit-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
+
+        .cart-wrapper { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 1.5rem; border-radius: 4px; margin-bottom: 2rem; }
+        .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
+        .cart-row-title { color: var(--gold); font-weight: bold; }
+        .cart-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { background: var(--surface-light); border: 1px solid var(--gold); color: var(--gold); width: 30px; height: 30px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .total-display { text-align: right; padding-top: 1.5rem; font-size: 1.2rem; color: var(--text-muted); }
+        .total-display strong { color: #fff; font-size: 1.6rem; margin-left: 8px; }
+        .total-display span { color: var(--gold); font-weight: bold; }
+
+        .form-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.2); padding: 1.5rem; border-radius: 4px; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; font-size: 1rem; border-radius: 0; outline: none; font-family: inherit; }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold); }
         
-        .status-group { display: flex; flex-direction: column; gap: 6px; }
-        .status-checkbox { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; }
-        .status-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        .status-label.paid.active { color: var(--success); font-weight: bold; }
-        .status-label.sent.active { color: var(--info); font-weight: bold; }
-        .status-label.cancelled.active { color: var(--danger); font-weight: bold; }
+        .faq-container { margin-bottom: 2rem; }
+        details { background: var(--surface-color); border: 1px solid rgba(212,175,55,0.2); margin-bottom: 10px; border-radius: 4px; padding: 12px 15px; transition: 0.3s; }
+        details[open] { border-color: var(--gold); }
+        summary { color: var(--gold); font-weight: bold; cursor: pointer; padding: 5px 0; list-style: none; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; outline: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; color: var(--gold); font-size: 1.2rem; }
+        details[open] summary::after { content: '−'; }
+        details p { margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid #333; padding-top: 10px; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-body { background: var(--surface-color); border: 1px solid var(--gold); padding: 2rem; max-width: 600px; width: 100%; text-align: left; box-shadow: 0 0 25px var(--gold-glow); max-height: 90vh; overflow-y: auto; }
+        .modal-body.center-text { text-align: center; }
+        .blik-card { background: #000; border: 1px dashed var(--gold); padding: 1rem; margin: 1.2rem 0; color: var(--gold); font-size: 1.4rem; letter-spacing: 2px; font-weight: bold; text-align: center; }
+
+        .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; z-index: 600; }
         
-        .row-cancelled { opacity: 0.5; }
-        .row-cancelled td { text-decoration: line-through; color: #777 !important; }
-        .row-cancelled td .status-group, .row-cancelled td .delete-btn { text-decoration: none; opacity: 1; }
-
-        button.logout-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; border-radius: 4px; }
-        button.logout-btn:hover { background: var(--danger); color: #fff; }
-
-        button.delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 4px 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; border-radius: 4px; transition: 0.3s; }
-        button.delete-btn:hover { background: var(--danger); color: #fff; }
-        button.save-btn-small { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 6px 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; border-radius: 4px; transition: 0.3s; }
-        button.save-btn-small:hover { background: var(--gold); color: #000; }
-        
-        .badge-qty { color: #fff; background: #333; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; display: inline-block; min-width: 20px; text-align: center; margin-left: 4px; }
-        .badge-blik { color: #fff; background: #9c27b0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
-        .badge-pobranie { color: #000; background: var(--gold); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
-
-        .cost-box { background: var(--surface-color); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2rem; max-width: 700px; border-radius: 4px; margin-bottom: 2rem; }
-        .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-        .cost-field label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
-        .cost-field input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; font-size: 1rem; outline: none; }
-        .cost-field input:focus { border-color: var(--gold); }
-        .cost-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
-        .save-cost-btn { background: var(--gold); color: #000; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
-        .save-cost-btn:hover { background: #b8972e; }
-
-        .stock-input { width: 80px; padding: 6px; background: #000; border: 1px solid #333; color: #fff; outline: none; text-align: center; }
-        .stock-input:focus { border-color: var(--gold); }
+        footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid rgba(212, 175, 55, 0.1); background-color: var(--surface-color); }
+        .footer-links { margin-bottom: 1.5rem; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .crm-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 6px 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 4px; transition: all 0.3s ease; }
+        .crm-btn:hover { color: var(--gold); border-color: var(--gold); }
     </style>
 
+    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC0AGUVIRudjS590eHayYQi8upP25z_8gI",
@@ -117,570 +127,512 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        window.db = getFirestore(app);
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.updateDoc = updateDoc;
+        window.doc = doc;
+        window.increment = increment;
 
-        window.currentDateFilter = 'all';
-        window.currentStatusFilter = 'all';
-        window.knownProducts = new Set();
-        
-        window.productDisplayNames = {
-            'retatrutyd': 'Retatrutyd 10mg',
-            'melanotan': 'Melanotan MT-2'
-        };
-
-        window.costSettings = {
-            products: { retatrutyd: 35, melanotan: 15 },
-            extras: 5,
-            pkg: 3
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                loadInventory(); // Ładuje bazę magazynu jako pierwsze (inicjalizacja)
-                loadOrders(); 
-                loadMessages();
-            } else {
-                document.getElementById('login-screen').style.display = 'flex';
-                document.getElementById('dashboard').style.display = 'none';
-            }
-        });
-
-        window.loginCRM = function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('login-btn');
-            btn.innerText = 'Logowanie...';
-            signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
-                .then(() => { btn.innerText = 'ZALOGUJ SIĘ'; })
-                .catch(err => { alert("Błąd logowania."); btn.innerText = 'ZALOGUJ SIĘ'; });
-        };
-
-        window.logoutCRM = function() { signOut(auth); };
-
-        // ============================================
-        // MODUŁ MAGAZYNU (INVENTORY)
-        // ============================================
-        async function loadInventory() {
-            const tbody = document.getElementById('inventory-body');
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ładowanie magazynu...</td></tr>';
-            
-            try {
-                const snapshot = await getDocs(query(collection(db, "products")));
-                
-                // Autoinstalator bazy produktów (jeśli baza jest pusta)
-                if (snapshot.empty) {
-                    await setDoc(doc(db, "products", "retatrutyd"), { 
-                        name: 'Retatrutyd 10mg', 
-                        price: 350, 
-                        desc: 'Innowacyjny, potrójny agonista receptorów do zaawansowanych badań in vitro.', 
-                        stock: 10, 
-                        active: true 
-                    });
-                    await setDoc(doc(db, "products", "melanotan"), { 
-                        name: 'Melanotan MT-2', 
-                        price: 90, 
-                        desc: 'Syntetyczny analog α-MSH poddany wieloetapowej liofilizacji laboratoryjnej.', 
-                        stock: 10, 
-                        active: true 
-                    });
-                    loadInventory(); // odśwież po inicjalizacji
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const pId = docSnap.id;
-                    const isChecked = data.active ? 'checked' : '';
-                    const colorState = data.stock <= 5 ? 'var(--danger)' : 'var(--gold)';
-
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><strong style="color: #fff;">${data.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted)">ID: ${pId}</span></td>
-                            <td style="color: var(--gold);">${data.price} PLN</td>
-                            <td>
-                                <input type="number" id="stock-${pId}" class="stock-input" value="${data.stock}" style="border-color: ${colorState}">
-                                <span style="font-size:0.8rem; color:var(--text-muted); margin-left: 8px;">szt.</span>
-                            </td>
-                            <td>
-                                <label class="status-label">
-                                    <input type="checkbox" id="active-${pId}" class="status-checkbox" ${isChecked}> Pokazuj w sklepie
-                                </label>
-                            </td>
-                            <td>
-                                <button class="save-btn-small" onclick="saveProductState('${pId}')">Aktualizuj</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Błąd magazynu.</td></tr>';
-            }
-        }
-
-        window.saveProductState = async function(pId) {
-            const newStock = parseInt(document.getElementById(`stock-${pId}`).value) || 0;
-            const newActive = document.getElementById(`active-${pId}`).checked;
-
-            try {
-                await updateDoc(doc(db, "products", pId), {
-                    stock: newStock,
-                    active: newActive
-                });
-                alert("Zaktualizowano w magazynie.");
-                loadInventory(); // Odśwież widok
-            } catch(e) {
-                alert("Błąd: " + e.message);
-            }
-        };
-
-        // ============================================
-        // MODUŁ ZAMÓWIEŃ I WIADOMOŚCI
-        // ============================================
-        window.deleteOrder = async function(docId) {
-            if (confirm("Czy na pewno chcesz usunąć to zamówienie z bazy?")) {
-                try { await deleteDoc(doc(db, "orders", docId)); loadOrders(); } 
-                catch (error) { alert("Błąd: " + error.message); }
-            }
-        };
-
-        window.deleteMessage = async function(docId) {
-            if (confirm("Czy na pewno chcesz usunąć tę wiadomość?")) {
-                try { await deleteDoc(doc(db, "messages", docId)); loadMessages(); } 
-                catch (error) { alert("Błąd: " + error.message); }
-            }
-        };
-
-        window.toggleOrderStatus = async function(docId, field, isChecked) {
-            const row = document.getElementById(`order-row-${docId}`);
-            const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
-            dataObj[field] = isChecked;
-            row.setAttribute('data-raw', encodeURIComponent(JSON.stringify(dataObj)));
-            const label = document.getElementById(`label-${field}-${docId}`);
-            if(isChecked) label.classList.add('active'); else label.classList.remove('active');
-            if(field === 'cancelled') {
-                if(isChecked) row.classList.add('row-cancelled'); else row.classList.remove('row-cancelled');
-            }
-            window.applyFilters();
-            try { await updateDoc(doc(db, "orders", docId), { [field]: isChecked }); } 
-            catch (error) { alert("Błąd zapisu w bazie: " + error.message); }
-        };
-
-        window.toggleMessageStatus = async function(docId, isChecked) {
-            const label = document.getElementById(`label-msg-${docId}`);
-            if(isChecked) label.classList.add('active'); else label.classList.remove('active');
-            try { await updateDoc(doc(db, "messages", docId), { replied: isChecked }); } 
-            catch (error) { alert("Błąd: " + error.message); }
-        };
-
-        async function loadOrders() {
-            const tbody = document.getElementById('orders-body');
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Ładowanie danych...</td></tr>';
-            window.knownProducts.clear();
-            
-            try {
-                const q = query(collection(db, "orders"), orderBy("date", "desc"));
-                const snapshot = await getDocs(q);
-                tbody.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Brak zamówień.</td></tr>';
-                    window.loadCostSettings();
-                    return;
-                }
-
-                snapshot.forEach((documentSnapshot) => {
-                    const data = documentSnapshot.data();
-                    const docId = documentSnapshot.id;
-                    const dateObj = new Date(data.date);
-                    const dateFormatted = dateObj.toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-                    
-                    const paymentBadge = data.payment === 'blik' ? '<span class="badge-blik">BLIK (15zł)</span>' : '<span class="badge-pobranie">Pobranie (20zł)</span>';
-                    const totalAmt = parseFloat(data.total_amount) || 0;
-                    
-                    let productsDisplay = '';
-                    for (let key in data) {
-                        if (key.endsWith('_qty') && data[key] > 0) {
-                            let prodId = key.replace('_qty', '');
-                            window.knownProducts.add(prodId); 
-                            let displayName = window.productDisplayNames[prodId] || (prodId.charAt(0).toUpperCase() + prodId.slice(1).replace(/_/g, ' '));
-                            productsDisplay += `<div style="margin-bottom: 2px;">${displayName}: <span class="badge-qty">${data[key]}</span></div>`;
-                        }
-                    }
-
-                    const rawDataStr = encodeURIComponent(JSON.stringify(data));
-                    const isPaid = data.paid ? 'checked' : '';
-                    const classPaid = data.paid ? 'active' : '';
-                    const isSent = data.sent ? 'checked' : '';
-                    const classSent = data.sent ? 'active' : '';
-                    const isCancelled = data.cancelled ? 'checked' : '';
-                    const classCancelled = data.cancelled ? 'active' : '';
-                    const rowCancelledClass = data.cancelled ? 'row-cancelled' : '';
-
-                    tbody.innerHTML += `
-                        <tr class="order-row ${rowCancelledClass}" id="order-row-${docId}" data-date="${data.date}" data-raw="${rawDataStr}">
-                            <td style="color: var(--text-muted); font-size: 0.85rem;">${dateFormatted}</td>
-                            <td>
-                                <strong style="color: #fff;">${data.name}</strong><br>
-                                <span style="color:var(--text-muted); font-size: 0.8rem;">${data.email} | ${data.phone}</span>
-                            </td>
-                            <td>${productsDisplay || '-'}</td>
-                            <td style="font-weight: bold; color: var(--gold);">${totalAmt} PLN</td>
-                            <td>${paymentBadge}</td>
-                            <td style="font-weight: bold; letter-spacing: 1px;">${data.paczkomat}</td>
-                            <td>
-                                <div class="status-group">
-                                    <label class="status-label paid ${classPaid}" id="label-paid-${docId}">
-                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'paid', this.checked)" ${isPaid}> Opłacono
-                                    </label>
-                                    <label class="status-label sent ${classSent}" id="label-sent-${docId}">
-                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'sent', this.checked)" ${isSent}> Wysłano
-                                    </label>
-                                    <label class="status-label cancelled ${classCancelled}" id="label-cancelled-${docId}">
-                                        <input type="checkbox" class="status-checkbox" onchange="toggleOrderStatus('${docId}', 'cancelled', this.checked)" ${isCancelled}> Anulowano
-                                    </label>
-                                </div>
-                            </td>
-                            <td>
-                                <button class="delete-btn" onclick="deleteOrder('${docId}')">Usuń</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-
-                window.loadCostSettings();
-
-            } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
-            }
-        }
-
-        async function loadMessages() {
-            const tbody = document.getElementById('messages-body');
-            try {
-                const q = query(collection(db, "messages"), orderBy("date", "desc"));
-                const snapshot = await getDocs(q);
-                tbody.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Brak wiadomości.</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach((documentSnapshot) => {
-                    const data = documentSnapshot.data();
-                    const docId = documentSnapshot.id;
-                    const date = new Date(data.date).toLocaleString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-                    
-                    const isReplied = data.replied ? 'checked' : '';
-                    const classReplied = data.replied ? 'active' : '';
-
-                    tbody.innerHTML += `<tr>
-                        <td style="width: 150px; color: var(--text-muted); font-size: 0.85rem;">${date}</td>
-                        <td style="width: 200px;"><strong style="color: #fff;">${data.name}</strong><br><span style="color:var(--gold); font-size: 0.85rem;">${data.email}</span></td>
-                        <td style="line-height: 1.4;">${data.message}</td>
-                        <td style="width: 150px;">
-                            <label class="status-label paid ${classReplied}" id="label-msg-${docId}">
-                                <input type="checkbox" class="status-checkbox" onchange="toggleMessageStatus('${docId}', this.checked)" ${isReplied}> Odpowiedziano
-                            </label>
-                        </td>
-                        <td style="width: 100px;">
-                            <button class="delete-btn" onclick="deleteMessage('${docId}')">Usuń</button>
-                        </td>
-                    </tr>`;
-                });
-            } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Błąd ładowania danych.</td></tr>';
-            }
-        }
-
-        // --- ZARZĄDZANIE KOSZTAMI ZAKUPU ---
-        window.loadCostSettings = function() {
-            const saved = localStorage.getItem('hexalabs_costs');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.products) window.costSettings.products = { ...window.costSettings.products, ...parsed.products };
-                    if (parsed.extras !== undefined) window.costSettings.extras = parsed.extras;
-                    if (parsed.pkg !== undefined) window.costSettings.pkg = parsed.pkg;
-                } catch(e) {}
-            }
-            window.renderCostSettings();
-            window.applyFilters();
-        };
-
-        window.renderCostSettings = function() {
-            const grid = document.getElementById('dynamic-costs-grid');
-            grid.innerHTML = '';
-            const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
-            
-            allProducts.forEach(prod => {
-                const val = window.costSettings.products[prod] || 0;
-                const displayName = window.productDisplayNames[prod] || (prod.charAt(0).toUpperCase() + prod.slice(1).replace(/_/g, ' '));
-                
-                grid.innerHTML += `
-                    <div class="cost-field">
-                        <label>${displayName} (fiolka)</label>
-                        <input type="number" id="cost-prod-${prod}" value="${val}" step="0.5" min="0">
-                        <div class="cost-desc">Cena zakupu samej fiolki (PLN)</div>
-                    </div>
-                `;
-            });
-            document.getElementById('cost-extras').value = window.costSettings.extras;
-            document.getElementById('cost-pkg').value = window.costSettings.pkg;
-        };
-
-        window.saveCostSettings = function() {
-            const allProducts = new Set([...Array.from(window.knownProducts), ...Object.keys(window.costSettings.products)]);
-            allProducts.forEach(prod => {
-                const input = document.getElementById(`cost-prod-${prod}`);
-                if(input) { window.costSettings.products[prod] = parseFloat(input.value) || 0; }
-            });
-            window.costSettings.extras = parseFloat(document.getElementById('cost-extras').value) || 0;
-            window.costSettings.pkg = parseFloat(document.getElementById('cost-pkg').value) || 0;
-            localStorage.setItem('hexalabs_costs', JSON.stringify(window.costSettings));
-            
-            alert("Koszty zapisane! Zysk został przeliczony.");
-            window.applyFilters();
-            window.switchTab('orders-tab', document.querySelector('.tab-btn'));
-        };
-
-        // --- OBSŁUGA UI I KALKULACJI ---
-        window.switchTab = function(tabId, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-            if(tabId === 'inventory-tab') {
-                loadInventory();
-            }
-        };
-
-        window.setDateFilter = function(filterType, btnElement) {
-            window.currentDateFilter = filterType;
-            document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            window.applyFilters();
-        };
-
-        window.setStatusFilter = function(statusType, btnElement) {
-            window.currentStatusFilter = statusType;
-            document.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            window.applyFilters();
-        };
-
-        window.applyFilters = function() {
-            const searchInput = document.getElementById('search-input').value.toLowerCase();
-            const rows = document.querySelectorAll('#orders-body .order-row');
-            
-            let visibleCount = 0;
-            let totalRevenue = 0;
-            let totalCosts = 0;
-            const now = new Date();
-
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                const rowDateStr = row.getAttribute('data-date');
-                const dataObj = JSON.parse(decodeURIComponent(row.getAttribute('data-raw')));
-                
-                let matchesSearch = text.includes(searchInput);
-                let matchesDate = true;
-                let matchesStatus = true;
-
-                if (rowDateStr) {
-                    const rowDate = new Date(rowDateStr);
-                    if (window.currentDateFilter === 'today') { matchesDate = rowDate.toDateString() === now.toDateString(); }
-                    else if (window.currentDateFilter === 'week') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 7; }
-                    else if (window.currentDateFilter === 'month') { matchesDate = (Math.abs(now - rowDate) / 86400000) <= 30; }
-                }
-
-                if (window.currentStatusFilter === 'sent') { matchesStatus = dataObj.sent === true; }
-                if (window.currentStatusFilter === 'cancelled') { matchesStatus = dataObj.cancelled === true; }
-
-                if (matchesSearch && matchesDate && matchesStatus) {
-                    row.style.display = '';
-                    visibleCount++;
-                    
-                    if (dataObj.cancelled !== true) {
-                        const shippingFee = (dataObj.payment === 'pobranie') ? 20 : 15;
-                        const totalAmt = parseFloat(dataObj.total_amount) || 0;
-                        const itemsRevenue = Math.max(0, totalAmt - shippingFee);
-                        
-                        let orderItemCost = window.costSettings.pkg;
-                        for (let key in dataObj) {
-                            if (key.endsWith('_qty') && dataObj[key] > 0) {
-                                let prodId = key.replace('_qty', '');
-                                let qty = parseInt(dataObj[key]);
-                                let prodBaseCost = window.costSettings.products[prodId] || 0;
-                                orderItemCost += qty * (prodBaseCost + window.costSettings.extras);
-                            }
-                        }
-                        totalRevenue += itemsRevenue;
-                        totalCosts += orderItemCost;
-                    }
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            const totalProfit = Math.round((totalRevenue - totalCosts) * 100) / 100;
-
-            document.getElementById('sum-count').innerText = visibleCount;
-            document.getElementById('sum-amount').innerText = totalRevenue;
-            document.getElementById('sum-costs').innerText = totalCosts;
-            document.getElementById('sum-profit').innerText = totalProfit;
+        window.onload = function() {
+            window.loadProductsFromDB();
         };
     </script>
 </head>
 <body>
+    <div class="top-bar">Dyskretna wysyłka Paczkomat 24H | Zabezpieczenie termiczne paczek | Czystość >99%</div>
+    <header>
+        <div class="header-inner">
+            <div class="header-brand" onclick="navigateTo('view-home')">
+                <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#F3E5AB" />
+                            <stop offset="50%" stop-color="#D4AF37" />
+                            <stop offset="100%" stop-color="#AA7C11" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linejoin="round"/>
+                    <polygon points="50,22 75,36 75,64 50,78 25,64 25,36" fill="none" stroke="url(#goldGradient)" stroke-width="2" stroke-linejoin="round" opacity="0.6"/>
+                    <circle cx="50" cy="50" r="7" fill="url(#goldGradient)"/>
+                    <line x1="50" y1="22" x2="50" y2="43" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                    <line x1="25" y1="64" x2="44" y2="53" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                    <line x1="75" y1="64" x2="56" y2="53" stroke="url(#goldGradient)" stroke-width="3" opacity="0.9"/>
+                </svg>
+                <div>
+                    <h1>HexaLabs</h1>
+                    <div class="subtitle">Research & Optimization</div>
+                </div>
+            </div>
+            <button class="cart-btn" onclick="navigateTo('view-cart')">
+                KOSZYK
+                <span class="cart-badge" id="badge-count">0</span>
+            </button>
+        </div>
+    </header>
 
-    <div id="login-screen">
-        <form class="login-box" onsubmit="window.loginCRM(event)">
-            <h2 style="color: var(--gold); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">HexaLabs CRM</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.85rem;">Autoryzowany dostęp</p>
-            <input type="email" id="email" placeholder="Adres E-mail" required>
-            <input type="password" id="password" placeholder="Hasło" required>
-            <button type="submit" id="login-btn">Zaloguj się</button>
-        </form>
+    <main>
+        <section id="view-home" class="view-section">
+            <div class="guarantee-grid">
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">⚗️</div>
+                    <div class="guarantee-title">Czystość >99.9%</div>
+                    <div class="guarantee-text">Każda partia weryfikowana metodą HPLC pod kątem czystości strukturalnej.</div>
+                </div>
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">🔬</div>
+                    <div class="guarantee-title">Pełne Zestawy</div>
+                    <div class="guarantee-text">Wszystko w komplecie: preparat, woda, sterylne strzykawki, igły oraz gaziki.</div>
+                </div>
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">⚡</div>
+                    <div class="guarantee-title">Dyskretna Wysyłka</div>
+                    <div class="guarantee-text">Paczkomaty InPost w 24-48h. Bezpieczne zabezpieczenie termiczne fiolki.</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Dostępne Preparaty</h2>
+            <div class="products-grid" id="dynamic-products-grid" style="margin-bottom: 3rem;">
+                <p style="text-align:center; width:100%; color:var(--text-muted);">Ładowanie oferty z magazynu...</p>
+            </div>
+
+            <h2 class="section-title">FAQ - Najczęstsze pytania</h2>
+            <div class="faq-container">
+                <details>
+                    <summary>Czy produkty są przeznaczone do spożycia?</summary>
+                    <p>Nie. Wszystkie preparaty oferowane w sklepie HexaLabs są odczynnikami chemicznymi przeznaczonymi wyłącznie do profesjonalnych badań laboratoryjnych in vitro. Nie są to leki, suplementy diety ani środki spożywcze.</p>
+                </details>
+                <details>
+                    <summary>Jak przechowywać liofilizat?</summary>
+                    <p>Przed sporządzeniem roztworu (w formie proszku), preparat należy przechowywać w suchym i chłodnym miejscu (najlepiej w lodówce w temp. 2-8°C), z dala od światła słonecznego. Po rozrobieniu z wodą bakteriostatyczną, roztwór bezwzględnie musi być przechowywany w lodówce i zużyty w ciągu kilkunastu dni.</p>
+                </details>
+                <details>
+                    <summary>Czy paczki są odpowiednio zabezpieczone?</summary>
+                    <p>Tak. Wykorzystujemy dedykowane opakowania. W okresach wysokich temperatur przesyłki zabezpieczane są termicznie (wkłady chłodzące, folia termoizolacyjna), aby zagwarantować integralność peptydów w trakcie transportu.</p>
+                </details>
+                <details>
+                    <summary>Jak długa jest realizacja zamówienia?</summary>
+                    <p>Zamówienia opłacone do godziny 13:00 zazwyczaj nadajemy tego samego dnia roboczego. Korzystamy z usług InPost Paczkomaty, co gwarantuje dostawę z reguły w 24-48 godzin od momentu nadania.</p>
+                </details>
+            </div>
+
+            <h2 class="section-title" id="kontakt">Kontakt</h2>
+            <div class="form-box">
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Masz pytania dotyczące odczynników lub zamówień hurtowych? Napisz do nas.</p>
+                <form id="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label>Imię i Nazwisko / Nazwa firmy</label>
+                        <input type="text" id="contact-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Adres E-mail</label>
+                        <input type="text" id="contact-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Treść wiadomości</label>
+                        <textarea id="contact-msg" rows="4" style="resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-action btn-solid" id="contact-submit-btn" style="width: 100%;">Wyślij wiadomość</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="view-product" class="view-section">
+            <button class="back-btn" onclick="navigateTo('view-home')">← Powrót do oferty</button>
+            
+            <div class="product-box">
+                <span class="badge-hplc" title="Skan certyfikatu wkrótce dostępny na stronie">Certyfikat Badań HPLC</span>
+                <h2 id="prod-name" style="color: var(--gold); font-size: 1.8rem; margin-bottom: 0.5rem;"></h2>
+                <div class="price-tag" id="prod-price" style="margin-bottom: 0.5rem;"></div>
+                <div id="prod-stock-info" class="stock-info"></div>
+
+                <p id="prod-desc" style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 1.5rem;"></p>
+
+                <div class="kit-box">
+                    <h4>Skład każdego zestawu (Mega Pro Kit):</h4>
+                    <ul>
+                        <li>Fiolka z preparatem (czysty liofilizat w proszku)</li>
+                        <li>Woda bakteriostatyczna do sporządzenia roztworu</li>
+                        <li>Strzykawka do precyzyjnego nabierania wody</li>
+                        <li>Strzykawka insulinowa ze zintegrowaną igłą</li>
+                        <li>2 x sterylna igła 0.6 mm</li>
+                        <li>Zestaw gazików nasączonych alkoholem do dezynfekcji</li>
+                    </ul>
+                </div>
+
+                <button class="btn-action btn-solid" id="prod-add-btn" onclick="addCurrentToCart()" style="width: 100%;">Dodaj do koszyka</button>
+            </div>
+        </section>
+
+        <section id="view-cart" class="view-section">
+            <button class="back-btn" onclick="navigateTo('view-home')">← Kontynuuj zakupy</button>
+            <h2 style="color: var(--gold); margin-bottom: 1.5rem; text-transform: uppercase;">Zawartość Koszyka</h2>
+            <div class="cart-wrapper">
+                <div id="cart-content"></div>
+                <div class="total-display">
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px;">Wartość produktów: <span id="cart-subtotal" style="color: #fff; font-weight: normal;">0</span> PLN</div>
+                    <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Koszty dostawy: <span id="cart-shipping" style="color: #fff; font-weight: normal;">15</span> PLN</div>
+                    Razem do zapłaty: <strong id="cart-sum">0</strong> <span>PLN</span>
+                </div>
+            </div>
+            <div id="form-container" class="form-box" style="display: none;">
+                <h3 style="color: var(--gold); margin-bottom: 1.2rem; text-transform: uppercase; font-size: 1.1rem;">Dane do wysyłki</h3>
+                <form id="order-form" onsubmit="handleOrderSubmit(event)">
+                    <div class="form-group">
+                        <label>Imię i nazwisko</label>
+                        <input type="text" id="order-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Adres E-mail</label>
+                        <input type="text" id="order-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Numer telefonu</label>
+                        <input type="text" id="order-phone" placeholder="np. 123456789">
+                    </div>
+                    <div class="form-group">
+                        <label>Paczkomat InPost (np. WAW123A)</label>
+                        <input type="text" id="order-paczkomat" placeholder="Wpisz kod paczkomatu">
+                    </div>
+                    <div class="form-group">
+                        <label>Forma Płatności / Dostawy</label>
+                        <select id="order-payment" onchange="updateCartUI()">
+                            <option value="blik">Paczkomat - Przedpłata (BLIK na telefon) - 15 PLN</option>
+                            <option value="pobranie">Paczkomat - Za pobraniem (Płatność przy odbiorze) - 20 PLN</option>
+                        </select>
+                    </div>
+                    <!-- NOWE POLE: UWAGI DO ZAMÓWIENIA -->
+                    <div class="form-group" style="margin-top: 1.2rem;">
+                        <label>Uwagi do zamówienia (opcjonalnie)</label>
+                        <textarea id="order-customer-note" rows="2" style="resize: vertical;" placeholder="Dodatkowe informacje dla kuriera lub sklepu..."></textarea>
+                    </div>
+                    
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Składając zamówienie, akceptujesz <a href="#" onclick="openLegal('regulamin')" style="color: var(--gold);">Regulamin Sklepu</a>.</p>
+                    <button type="submit" class="btn-action btn-solid" id="submit-btn" style="margin-top: 15px; width: 100%;">Złóż zamówienie</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#" onclick="openLegal('regulamin'); return false;">Regulamin</a>
+            <a href="#" onclick="openLegal('privacy'); return false;">Polityka Prywatności</a>
+            <a href="#" onclick="openLegal('returns'); return false;">Zwroty i Reklamacje</a>
+        </div>
+        <p style="font-size: 0.7rem; color: #555; margin-bottom: 1rem;">Produkty przeznaczone wyłącznie do celów badawczych.</p>
+        <button class="crm-btn" onclick="window.location.href='crm.html'">Panel CRM</button>
+    </footer>
+
+    <!-- Modal Powiadomienia (Zamówienie) -->
+    <div id="modal-box" class="modal">
+        <div class="modal-body center-text">
+            <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem;" id="modal-title">Zamówienie Przyjęte</h3>
+            <p id="modal-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;"></p>
+            <div id="modal-blik" style="display: none;">
+                <p style="color: #fff; font-size: 0.9rem;">Wykonaj przelew na telefon BLIK na numer:</p>
+                <div class="blik-card">+48 123 456 789</div>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">W tytule podaj swój adres e-mail podany w zamówieniu.</p>
+            </div>
+            <button class="btn-action btn-solid" onclick="closeModalWindow('modal-box')" style="margin-top: 1.5rem; width: 100%;">Zamknij</button>
+        </div>
     </div>
 
-    <div id="dashboard">
-        <header>
-            <h1>HexaLabs Panel</h1>
-            <button class="logout-btn" onclick="window.logoutCRM()">Wyloguj</button>
-        </header>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('orders-tab', this)">📦 Zamówienia</button>
-            <button class="tab-btn" onclick="switchTab('inventory-tab', this)">📦 Magazyn</button>
-            <button class="tab-btn" onclick="switchTab('costs-tab', this)">⚙️ Koszty Zakupu</button>
-            <button class="tab-btn" onclick="switchTab('messages-tab', this)">✉️ Wiadomości</button>
+    <!-- Modal Prawny (Regulaminy) -->
+    <div id="modal-legal" class="modal">
+        <div class="modal-body">
+            <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 1rem; text-transform: uppercase;" id="legal-title">Regulamin</h3>
+            <div id="legal-content" style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.5rem;"></div>
+            <button class="btn-action btn-solid" onclick="closeModalWindow('modal-legal')" style="width: 100%;">Zamknij okno</button>
         </div>
+    </div>
 
-        <!-- ZAKŁADKA 1: ZAMÓWIENIA -->
-        <div id="orders-tab" class="tab-content active">
-            <div class="controls-wrapper">
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Szukaj klienta, paczkomatu..." onkeyup="applyFilters()">
-                    <div class="filters-group">
-                        <span class="filter-label">Data:</span>
-                        <button class="date-btn" onclick="setDateFilter('today', this)">Dzisiaj</button>
-                        <button class="date-btn" onclick="setDateFilter('week', this)">7 dni</button>
-                        <button class="date-btn" onclick="setDateFilter('month', this)">30 dni</button>
-                        <button class="date-btn active" onclick="setDateFilter('all', this)">Wszystkie</button>
-                    </div>
-                    <div class="filters-group">
-                        <span class="filter-label">Zestawienie:</span>
-                        <button class="status-btn active" onclick="setStatusFilter('all', this)">Wszystkie</button>
-                        <button class="status-btn" onclick="setStatusFilter('sent', this)">Tylko Wysłane</button>
-                        <button class="status-btn" onclick="setStatusFilter('cancelled', this)">Tylko Anulowane</button>
-                    </div>
-                </div>
+    <div id="toast-notify" class="toast">Dodano do koszyka</div>
+
+    <script>
+        var catalog = {};
+        var userCart = {};
+        var activeProductId = null;
+
+        const legalTexts = {
+            'regulamin': "Sklep HexaLabs prowadzi sprzedaż odczynników chemicznych. Wszystkie produkty prezentowane na stronie przeznaczone są wyłącznie do badań laboratoryjnych in vitro. Kupujący oświadcza, że posiada odpowiednią wiedzę i zaplecze do pracy z tego typu preparatami. Zabrania się stosowania produktów na ludziach i zwierzętach. Sprzedawca nie ponosi odpowiedzialności za niewłaściwe użycie odczynników.",
+            'privacy': "Administratorem danych jest HexaLabs. Dane osobowe (imię, nazwisko, e-mail, telefon) przetwarzane są wyłącznie w celu realizacji zamówienia i wysyłki poprzez system InPost. Dane nie są profilowane ani udostępniane podmiotom trzecim (z wyjątkiem firmy kurierskiej). Klient ma prawo do żądania dostępu do swoich danych oraz ich usunięcia (prawo do bycia zapomnianym).",
+            'returns': "Zgodnie z przepisami prawa, z uwagi na specyfikę oferowanych produktów (odczynniki chemiczne wymagające specyficznych warunków temperaturowych - liofilizaty), zwroty pełnowartościowego, rozpieczętowanego towaru nie są możliwe. Reklamacje z tytułu uszkodzenia w transporcie rozpatrywane są w terminie 14 dni roboczych na podstawie protokołu szkody."
+        };
+
+        window.openLegal = function(type) {
+            document.getElementById('legal-title').innerText = type === 'regulamin' ? 'Regulamin Sklepu' : (type === 'privacy' ? 'Polityka Prywatności' : 'Zwroty i Reklamacje');
+            document.getElementById('legal-content').innerText = legalTexts[type];
+            document.getElementById('modal-legal').style.display = 'flex';
+        }
+
+        window.closeModalWindow = function(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            if (modalId === 'modal-box') navigateTo('view-home');
+        }
+
+        window.loadProductsFromDB = async function() {
+            try {
+                const snapshot = await window.getDocs(window.collection(window.db, "products"));
+                const grid = document.getElementById('dynamic-products-grid');
+                grid.innerHTML = '';
                 
-                <div class="summary-panel">
-                    <div class="summary-card">
-                        <div class="summary-label">Zamówienia</div>
-                        <div class="summary-value" id="sum-count">0</div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="summary-label">Przychód brutto</div>
-                        <div class="summary-value"><span id="sum-amount" style="color: #fff;">0</span> <span>PLN</span></div>
-                    </div>
-                    <div class="summary-card cost-card">
-                        <div class="summary-label">Koszty towaru</div>
-                        <div class="summary-value"><span id="sum-costs" style="color: #aaa;">0</span> <span>PLN</span></div>
-                    </div>
-                    <div class="summary-card profit-card">
-                        <div class="summary-label">Czysty Zysk</div>
-                        <div class="summary-value"><span id="sum-profit">0</span> <span>PLN</span></div>
-                    </div>
-                </div>
-            </div>
+                let hasActiveProducts = false;
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (data.active === true) {
+                        hasActiveProducts = true;
+                        catalog[docSnap.id] = data;
+                        if (userCart[docSnap.id] === undefined) userCart[docSnap.id] = 0;
+
+                        const isOutOfStock = data.stock <= 0;
+                        const stockText = isOutOfStock ? 'Brak w magazynie' : 'Dostępny w magazynie';
+                        const stockClass = isOutOfStock ? 'out-stock' : 'in-stock';
+                        
+                        const btnState = isOutOfStock ? 'disabled' : '';
+                        const btnText = isOutOfStock ? 'Niedostępny' : 'Do koszyka';
+
+                        grid.innerHTML += `
+                            <div class="product-card">
+                                <h3>${data.name}</h3>
+                                <div class="price-tag">${data.price} <span>PLN</span></div>
+                                <div class="stock-info ${stockClass}">${stockText}</div>
+                                <p>${data.desc}</p>
+                                <div class="card-actions">
+                                    <button class="btn-action" onclick="showProduct('${docSnap.id}')">Szczegóły</button>
+                                    <button class="btn-action btn-solid" onclick="quickAddToCart('${docSnap.id}')" ${btnState}>${btnText}</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                if (!hasActiveProducts) grid.innerHTML = '<p style="text-align:center; width:100%; color:var(--text-muted);">Aktualnie brak produktów w ofercie.</p>';
+            } catch (error) {
+                document.getElementById('dynamic-products-grid').innerHTML = '<p style="text-align:center; color:var(--danger);">Błąd połączenia z magazynem.</p>';
+            }
+        };
+
+        function navigateTo(viewId) {
+            var views = document.querySelectorAll('.view-section');
+            for (var i = 0; i < views.length; i++) { views[i].style.display = 'none'; }
+            var target = document.getElementById(viewId);
+            if (target) { target.style.display = 'block'; }
+            if (viewId === 'view-cart') { updateCartUI(); }
+            window.scrollTo(0, 0);
+        }
+
+        function showProduct(prodKey) {
+            activeProductId = prodKey;
+            var item = catalog[prodKey];
+            document.getElementById('prod-name').innerText = item.name;
+            document.getElementById('prod-price').innerHTML = item.price + ' <span>PLN</span>';
+            document.getElementById('prod-desc').innerText = item.desc;
             
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Klient & Kontakt</th>
-                            <th>Produkty</th>
-                            <th>Kwota</th>
-                            <th>Dostawa / Płatność</th>
-                            <th>Paczkomat</th>
-                            <th>Status</th>
-                            <th>Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-body"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ZAKŁADKA 2: MAGAZYN (NOWA) -->
-        <div id="inventory-tab" class="tab-content">
-            <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Zarządzanie Ofertą i Stanem</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Zarządzaj widocznością produktów w sklepie i ich ilością. Stany aktualizują się automatycznie po zakupie.</p>
+            const btn = document.getElementById('prod-add-btn');
+            const stockInfo = document.getElementById('prod-stock-info');
             
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Produkt</th>
-                            <th>Cena Sprzedaży</th>
-                            <th>Ilość na stanie</th>
-                            <th>Status Widoczności</th>
-                            <th>Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventory-body"></tbody>
-                </table>
-            </div>
-        </div>
+            if (item.stock <= 0) {
+                btn.disabled = true; btn.innerText = 'Brak w magazynie';
+                stockInfo.innerText = 'Brak w magazynie'; stockInfo.className = 'stock-info out-stock';
+            } else {
+                btn.disabled = false; btn.innerText = 'Dodaj do koszyka';
+                stockInfo.innerText = 'Dostępny w magazynie'; stockInfo.className = 'stock-info in-stock';
+            }
+            navigateTo('view-product');
+        }
 
-        <!-- ZAKŁADKA 3: ZAKUP / KOSZTY -->
-        <div id="costs-tab" class="tab-content">
-            <div class="cost-box">
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">Parametry kosztów zakupu</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Wprowadź swoje stawki bazowe. Zysk ze sprzedaży przeliczy się automatycznie.</p>
+        function addCurrentToCart() {
+            if (activeProductId) {
+                var item = catalog[activeProductId];
+                if (userCart[activeProductId] + 1 > item.stock) {
+                    alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                    return;
+                }
+                userCart[activeProductId]++;
+                refreshBadge();
+                triggerToast();
+            }
+        }
 
-                <div class="cost-grid" id="dynamic-costs-grid"></div>
+        function quickAddToCart(prodKey) {
+            var item = catalog[prodKey];
+            if (userCart[prodKey] + 1 > item.stock) {
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                return;
+            }
+            userCart[prodKey]++;
+            refreshBadge();
+            triggerToast();
+        }
 
-                <div class="cost-grid" style="border-top: 1px solid #333; padding-top: 1.5rem;">
-                    <div class="cost-field">
-                        <label>Dodatki (do każdej 1 fiolki)</label>
-                        <input type="number" id="cost-extras" step="0.5" min="0">
-                        <div class="cost-desc">Woda + igły + strzykawki + gaziki (PLN)</div>
-                    </div>
-                    <div class="cost-field">
-                        <label>Opakowanie (do 1 zamówienia)</label>
-                        <input type="number" id="cost-pkg" step="0.5" min="0">
-                        <div class="cost-desc">Karton, folia, etykieta (PLN)</div>
-                    </div>
-                </div>
-                <button class="save-cost-btn" onclick="saveCostSettings()">Zapisz i Przelicz</button>
-            </div>
-        </div>
+        function refreshBadge() {
+            var count = 0;
+            for (var key in userCart) { count += userCart[key]; }
+            document.getElementById('badge-count').innerText = count;
+        }
 
-        <!-- ZAKŁADKA 4: WIADOMOŚCI -->
-        <div id="messages-tab" class="tab-content">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Nadawca</th>
-                            <th>Treść Wiadomości</th>
-                            <th>Status</th>
-                            <th>Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody id="messages-body"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+        function triggerToast() {
+            var toast = document.getElementById('toast-notify');
+            toast.style.display = 'block';
+            setTimeout(function() { toast.style.display = 'none'; }, 1800);
+        }
+
+        function changeCartQty(prodKey, step) {
+            var item = catalog[prodKey];
+            var currentQty = userCart[prodKey];
+            
+            if (step > 0 && currentQty + step > item.stock) {
+                alert(`Niestety, nie mamy już więcej tego produktu na stanie. Maksymalna dostępna ilość to ${item.stock} szt.`);
+                return;
+            }
+            if (currentQty + step >= 0) {
+                userCart[prodKey] += step;
+                refreshBadge();
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            var container = document.getElementById('cart-content');
+            var formWrapper = document.getElementById('form-container');
+            var subtotalDisplay = document.getElementById('cart-subtotal');
+            var shippingDisplay = document.getElementById('cart-shipping');
+            var sumDisplay = document.getElementById('cart-sum');
+            
+            container.innerHTML = '';
+            var subtotal = 0; var totalQty = 0;
+
+            for (var key in userCart) {
+                if (userCart[key] > 0) {
+                    totalQty += userCart[key];
+                    var prod = catalog[key];
+                    var itemSubtotal = userCart[key] * prod.price;
+                    subtotal += itemSubtotal;
+
+                    var row = document.createElement('div');
+                    row.className = 'cart-row';
+                    row.innerHTML = 
+                        '<div><div class="cart-row-title">' + prod.name + '</div><div style="font-size:0.8rem; color:var(--text-muted);">' + prod.price + ' PLN / zestaw</div></div>' +
+                        '<div class="cart-controls"><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', -1)">-</button><span style="font-weight:bold; width:20px; text-align:center;">' + userCart[key] + '</span><button class="qty-btn" type="button" onclick="changeCartQty(\'' + key + '\', 1)">+</button></div>' +
+                        '<div style="font-weight:bold;">' + itemSubtotal + ' PLN</div>';
+                    container.appendChild(row);
+                }
+            }
+
+            if (totalQty === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 1.5rem 0;">Twój koszyk jest pusty.</p>';
+                formWrapper.style.display = 'none';
+                subtotalDisplay.innerText = '0'; shippingDisplay.innerText = '0'; sumDisplay.innerText = '0';
+                return;
+            }
+
+            formWrapper.style.display = 'block';
+            var paymentMethod = document.getElementById('order-payment').value;
+            var shippingCost = (paymentMethod === 'pobranie') ? 20 : 15;
+            var finalTotal = subtotal + shippingCost;
+
+            subtotalDisplay.innerText = subtotal; shippingDisplay.innerText = shippingCost; sumDisplay.innerText = finalTotal;
+        }
+
+        function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
+        function validatePhone(phoneStr) {
+            var clean = phoneStr.replace(/[\s\-+]/g, '');
+            if (clean.startsWith('48') && clean.length === 11) clean = clean.substring(2);
+            if (clean.startsWith('0048') && clean.length === 13) clean = clean.substring(4);
+            return /^\d{9}$/.test(clean);
+        }
+
+        async function handleOrderSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('order-name').value.trim();
+            const email = document.getElementById('order-email').value.trim();
+            const phone = document.getElementById('order-phone').value.trim();
+            const paczkomat = document.getElementById('order-paczkomat').value.trim();
+            const customerNote = document.getElementById('order-customer-note').value.trim();
+
+            if (!name) { alert('Uzupełnij imię i nazwisko.'); return; }
+            if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
+            if (!validatePhone(phone)) { alert('Zły numer tel. Podaj 9-cyfrowy numer bez spacji.'); return; }
+            if (!paczkomat) { alert('Uzupełnij nr paczkomatu.'); return; }
+
+            var btn = document.getElementById('submit-btn');
+            btn.innerText = 'WYSYŁANIE...'; btn.disabled = true;
+
+            const orderData = {
+                total_amount: document.getElementById('cart-sum').innerText,
+                name: name, email: email, phone: phone, paczkomat: paczkomat,
+                customer_note: customerNote,
+                payment: document.getElementById('order-payment').value,
+                status: 'Nowe', date: new Date().toISOString(),
+                paid: false, sent: false, cancelled: false
+            };
+
+            for (var key in userCart) { if (userCart[key] > 0) orderData[key + '_qty'] = userCart[key]; }
+
+            try {
+                if (window.db && window.addDoc) {
+                    await window.addDoc(window.collection(window.db, "orders"), orderData);
+                    for (var k in userCart) {
+                        if (userCart[k] > 0) {
+                            const prodRef = window.doc(window.db, "products", k);
+                            await window.updateDoc(prodRef, { stock: window.increment(-userCart[k]) });
+                        }
+                    }
+                }
+
+                var payment = document.getElementById('order-payment').value;
+                var finalAmount = document.getElementById('cart-sum').innerText;
+                var modal = document.getElementById('modal-box');
+                document.getElementById('modal-title').innerText = 'Zamówienie Przyjęte';
+                var desc = document.getElementById('modal-desc');
+                var blikBox = document.getElementById('modal-blik');
+
+                if (payment === 'blik') {
+                    desc.innerText = 'Dziękujemy! Abyśmy mogli przejść do kompletowania paczki, opłać zamówienie (kwota: ' + finalAmount + ' PLN) BLIKiem:';
+                    blikBox.style.display = 'block';
+                } else {
+                    desc.innerText = 'Dziękujemy! Twoje zamówienie za pobraniem (kwota: ' + finalAmount + ' PLN) zostało przyjęte do realizacji.';
+                    blikBox.style.display = 'none';
+                }
+
+                modal.style.display = 'flex';
+                for (var r in userCart) { userCart[r] = 0; }
+                refreshBadge(); document.getElementById('order-form').reset(); updateCartUI();
+                window.loadProductsFromDB();
+                
+            } catch (error) { alert("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie.");
+            } finally { btn.innerText = 'ZŁÓŻ ZAMÓWIENIE'; btn.disabled = false; }
+        }
+
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const msg = document.getElementById('contact-msg').value.trim();
+
+            if (!name) { alert('Uzupełnij imię i nazwisko / nazwę firmy.'); return; }
+            if (!isValidEmail(email)) { alert('Zły adres mailowy.'); return; }
+            if (!msg) { alert('Uzupełnij treść wiadomości.'); return; }
+
+            var btn = document.getElementById('contact-submit-btn');
+            btn.innerText = 'WYSYŁANIE...'; btn.disabled = true;
+
+            const msgData = { name: name, email: email, message: msg, status: 'Nowa', date: new Date().toISOString(), replied: false };
+
+            try {
+                if (window.db && window.addDoc) await window.addDoc(window.collection(window.db, "messages"), msgData);
+                var modal = document.getElementById('modal-box');
+                document.getElementById('modal-title').innerText = 'Wiadomość wysłana';
+                document.getElementById('modal-desc').innerText = 'Dziękujemy za kontakt. Odpowiemy na Twój adres e-mail najszybciej jak to możliwe.';
+                document.getElementById('modal-blik').style.display = 'none';
+                modal.style.display = 'flex';
+                document.getElementById('contact-form').reset();
+            } catch (error) { alert("Wystąpił błąd podczas wysyłania wiadomości.");
+            } finally { btn.innerText = 'WYŚLIJ WIADOMOŚĆ'; btn.disabled = false; }
+        }
+    </script>
 </body>
 </html>
